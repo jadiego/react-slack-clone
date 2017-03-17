@@ -68,5 +68,12 @@ func SummaryHandler(w http.ResponseWriter, r *http.Request) {
 
 	//otherwise, respond by writing the openGrahProps
 	//map as a JSON-encoded object
+	//add the following headers to the response before
+	//you write the JSON-encoded object:
+	// - Content-Type: application/json; charset=utf-8
+	// - Access-Control-Allow-Origin: *
+	//the first tells the client that you are sending it JSON
+	//the second will allow JavaScript served from other origins
+	//to call this API
 
 }
