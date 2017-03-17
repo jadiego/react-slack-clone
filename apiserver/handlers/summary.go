@@ -19,10 +19,13 @@ func getPageSummary(url string) (openGraphProps, error) {
 	//https://golang.org/pkg/net/http/#Response
 
 	//if the response StatusCode is >= 400
-	//return an error with an appropriate message
+	//return an error, using the response's .Status
+	//property as the error message
 
-	//if the response's Content-Type header is not `text/html`
-	//return an error with an appropriate message
+	//if the response's Content-Type header does not
+	//start with "text/html", return an error noting
+	//what the content type was and that you were
+	//expecting HTML
 
 	//create a new openGraphProps map instance to hold
 	//the Open Graph properties you find
