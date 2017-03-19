@@ -47,10 +47,10 @@ func TestGetSessionState(t *testing.T) {
 		t.Fatalf("handler returned wrong status code: expected `%d` but got `%d`\n", http.StatusOK, resRec.Code)
 	}
 
-	//ensure that the Authorization response header was included
-	authHeader := resRec.Header().Get("Authorization")
-	if 0 == len(authHeader) {
-		t.Fatalf("Authorization header not included in response headers\n")
+	//ensure that the session ID response header was included
+	sidHeader := resRec.Header().Get(sessions.HeaderSessionID)
+	if 0 == len(sidHeader) {
+		t.Fatalf(sessions.HeaderSessionID + " header not included in response headers\n")
 	}
 
 	//decode the response JSON and ensure that it

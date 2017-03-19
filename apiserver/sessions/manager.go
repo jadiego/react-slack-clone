@@ -5,7 +5,8 @@ import (
 	"net/http"
 )
 
-const headerSessionID = "X-Session-ID"
+//HeaderSessionID is the name of the HTTP header used to transmit the session ID
+const HeaderSessionID = "X-Session-ID"
 
 //ErrNoSessionID is returned when no session token header was provided in the request
 var ErrNoSessionID = errors.New("No session ID provided with request")

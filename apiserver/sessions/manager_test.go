@@ -39,7 +39,7 @@ func TestManagerGetStateInvalidID(t *testing.T) {
 	if nil != err {
 		t.Fatal(err)
 	}
-	req.Header.Add(headerSessionID, sid.String())
+	req.Header.Add(HeaderSessionID, sid.String())
 
 	var state string
 	resrec := httptest.NewRecorder()
@@ -64,7 +64,7 @@ func TestManagerGetStateNoStateFound(t *testing.T) {
 	if nil != err {
 		t.Fatal(err)
 	}
-	req.Header.Add(headerSessionID, sid.String())
+	req.Header.Add(HeaderSessionID, sid.String())
 
 	var state string
 	resrec := httptest.NewRecorder()
@@ -93,7 +93,7 @@ func TestManagerGetState(t *testing.T) {
 	if nil != err {
 		t.Fatal(err)
 	}
-	req.Header.Add(headerSessionID, sid.String())
+	req.Header.Add(HeaderSessionID, sid.String())
 
 	resrec := httptest.NewRecorder()
 	var state2 string
@@ -124,7 +124,7 @@ func TestManagerBegin(t *testing.T) {
 	if nil != err {
 		t.Fatal(err)
 	}
-	req.Header.Add(headerSessionID, sid.String())
+	req.Header.Add(HeaderSessionID, sid.String())
 
 	resrec = httptest.NewRecorder()
 	var state2 string

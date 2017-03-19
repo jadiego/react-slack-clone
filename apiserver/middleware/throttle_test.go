@@ -16,7 +16,7 @@ import (
 	"github.com/info344-s17/challenges/apiserver/sessions"
 )
 
-func makeThrottledRequest(t *testing.T, handler http.Handler, authHeader string, state *SessionState) string {
+func makeThrottledRequest(t *testing.T, handler http.Handler, sidHeader string, state *SessionState) string {
 	//create a new response recorder
 	resRec := httptest.NewRecorder()
 	//create a new request (doesn't matter what the path is)
@@ -25,9 +25,9 @@ func makeThrottledRequest(t *testing.T, handler http.Handler, authHeader string,
 		t.Error(err)
 	}
 
-	//add the auth header (if provided)
-	if len(authHeader) > 0 {
-		req.Header.Add("Authorization", authHeader)
+	//add the session ID header (if provided)
+	if len(sidHeader) > 0 {
+		req.Header.Add(sessions.HeaderSessionID, sidHeader)
 	}
 
 	//call ServeHTTP to process it
@@ -38,10 +38,10 @@ func makeThrottledRequest(t *testing.T, handler http.Handler, authHeader string,
 		t.Errorf("handler returned wrong status code: expected `%d` but got `%d`\n", http.StatusOK, resRec.Code)
 	}
 
-	//get the Authorization header and ensure it's non-zero length
-	respAuthHeader := resRec.Header().Get("Authorization")
-	if len(respAuthHeader) == 0 {
-		t.Errorf("Authorization header was not included in the response\n")
+	//get the session ID header and ensure it's non-zero length
+	respsidHeader := resRec.Header().Get(sessions.HeaderSessionID)
+	if len(respsidHeader) == 0 {
+		t.Errorf(sessions.HeaderSessionID + " header was not included in the response\n")
 	}
 
 	//decode the response into a session state
@@ -50,7 +50,7 @@ func makeThrottledRequest(t *testing.T, handler http.Handler, authHeader string,
 		t.Errorf("error decoding response JSON: %v\n", err)
 	}
 
-	return respAuthHeader
+	return respsidHeader
 }
 
 func TestThrottle(t *testing.T) {
@@ -71,16 +71,16 @@ func TestThrottle(t *testing.T) {
 
 	//make a first request
 	state := &SessionState{}
-	respAuthHeader := makeThrottledRequest(t, adaptedHandler, "", state)
+	respsidHeader := makeThrottledRequest(t, adaptedHandler, "", state)
 
 	//ensure that state.Requests is 1
 	if 1 != state.Requests {
 		t.Errorf("incorrect number of requests in state: expected %d but got %d\n", 1, state.Requests)
 	}
 
-	//make another request and ensure state.Requests is 2
+	//make another request with the new session ID and ensure state.Requests is 2
 	state2 := &SessionState{}
-	makeThrottledRequest(t, adaptedHandler, respAuthHeader, state2)
+	makeThrottledRequest(t, adaptedHandler, respsidHeader, state2)
 	if state2.Requests != 2 {
 		t.Errorf("incorrect number of requests after second request: expected %d but got %d", 2, state2.Requests)
 	}
