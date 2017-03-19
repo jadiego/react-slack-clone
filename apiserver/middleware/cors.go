@@ -12,9 +12,10 @@ func CORS() Adapter {
 			//does the following:
 			// - adds the following response headers to every request:
 			//    - Access-Control-Allow-Origin: *
-			//    - Access-Control-Allow-Headers: Content-Type, Authorization
+			//    - Access-Control-Allow-Headers: Content-Type, X-Session-ID
 			//    - Access-Control-Allow-Methods: GET, PUT, POST, PATCH, DELETE
-			//    - Access-Control-Expose-Headers: Authorization
+			//    - Access-Control-Expose-Headers: X-Session-ID
+
 			// - if the request method is OPTIONS (pre-flight CORS request),
 			//   simply responds with http.StatusOK
 			//   else, calls the handler's ServeHTTP() method
