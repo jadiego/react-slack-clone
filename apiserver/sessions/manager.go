@@ -43,6 +43,10 @@ func (m *Manager) GetState(w http.ResponseWriter, r *http.Request, state interfa
 	//get the state from m.store
 	//if you get an error, return the validated SessionID and the error
 
+	//add a response header in the form of:
+	//  Authorization: Bearer <sessionID>
+	//where <sessionID> is replaced with the validated SessionID
+
 	//if you get to here, all is good, so
 	//return the validated SessionID and nil
 
