@@ -35,7 +35,7 @@ func Throttle(limit int, limitDuration time.Duration) Adapter {
 
 			//increment the Requests field
 
-			//if Requests >= Limit
+			//if Requests > Limit
 			//respond with an http.StatusTooManyRequests error
 
 			//else call the handler's .ServeHTTP() method
