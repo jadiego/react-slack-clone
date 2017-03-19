@@ -19,7 +19,7 @@ func TestManagerGetStateNoCookie(t *testing.T) {
 
 	sid, err := mgr.GetState(resrec, req, state)
 	if err != ErrNoSessionID {
-		t.Errorf("incorrect error returned from GetState(): expected ErrNoSessionToken, got %v\n", err)
+		t.Errorf("incorrect error returned from GetState(): expected ErrNoSessionID, got %v\n", err)
 	}
 	if InvalidSessionID != sid {
 		t.Errorf("incorrect session id: expected InvalidSessionID, got %v\n", sid)
@@ -39,7 +39,7 @@ func TestManagerGetStateInvalidID(t *testing.T) {
 	if nil != err {
 		t.Fatal(err)
 	}
-	req.Header.Add("Authorization", "Bearer "+sid.String())
+	req.Header.Add(headerSessionID, sid.String())
 
 	var state string
 	resrec := httptest.NewRecorder()
@@ -64,7 +64,7 @@ func TestManagerGetStateNoStateFound(t *testing.T) {
 	if nil != err {
 		t.Fatal(err)
 	}
-	req.Header.Add("Authorization", "Bearer "+sid.String())
+	req.Header.Add(headerSessionID, sid.String())
 
 	var state string
 	resrec := httptest.NewRecorder()
@@ -93,7 +93,7 @@ func TestManagerGetState(t *testing.T) {
 	if nil != err {
 		t.Fatal(err)
 	}
-	req.Header.Add("Authorization", "Bearer "+sid.String())
+	req.Header.Add(headerSessionID, sid.String())
 
 	resrec := httptest.NewRecorder()
 	var state2 string
@@ -124,7 +124,7 @@ func TestManagerBegin(t *testing.T) {
 	if nil != err {
 		t.Fatal(err)
 	}
-	req.Header.Add("Authorization", "Bearer "+sid.String())
+	req.Header.Add(headerSessionID, sid.String())
 
 	resrec = httptest.NewRecorder()
 	var state2 string
