@@ -7,7 +7,7 @@ import (
 
 const (
 	//DefaultRequestLimit is the default used for requests limits
-	DefaultRequestLimit = 10000
+	DefaultRequestLimit = 300
 	//DefaultRequestLimitDuration is the default used for the limit duration
 	DefaultRequestLimitDuration = time.Minute
 )
