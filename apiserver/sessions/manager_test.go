@@ -18,7 +18,7 @@ func TestManagerGetStateNoCookie(t *testing.T) {
 	resrec := httptest.NewRecorder()
 
 	sid, err := mgr.GetState(resrec, req, state)
-	if err != ErrNoSessionToken {
+	if err != ErrNoSessionID {
 		t.Errorf("incorrect error returned from GetState(): expected ErrNoSessionToken, got %v\n", err)
 	}
 	if InvalidSessionID != sid {
