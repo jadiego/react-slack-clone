@@ -14,18 +14,12 @@ func main() {
 	// PORT - port number to listen on for HTTP requests (if not set, use defaultPort)
 	// HOST - host address to respond to (if not set, leave empty, which means any host)
 
-	//create a NewServeMux() to be the main server router
-	//although this isn't strictly necessary at this stage,
-	//it will make things much easier when we start adding
-	//middleware and authenticated APIs
-	//HINT: https://golang.org/pkg/net/http/#NewServeMux
-
 	//add your handlers.SummaryHandler function as a handler
 	//for the apiSummary route
-	//HINT: https://golang.org/pkg/net/http/#ServeMux.HandleFunc
+	//HINT: https://golang.org/pkg/net/http/#HandleFunc
 
-	//start your web server, passing the main server mux
-	//as the handler for all requests
+	//start your web server and use log.Fatal() to log
+	//any errors that occur if the server can't start
 	//HINT: https://golang.org/pkg/net/http/#ListenAndServe
 
 }
