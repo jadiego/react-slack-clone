@@ -7,10 +7,11 @@ import "strings"
 func createNewUser() *NewUser {
 	return &NewUser{
 		Credentials: Credentials{
-			Email:    "invalid",
+			Email:    "test@test.com",
 			Password: "password",
 		},
 		PasswordConf: "password",
+		UserName:     "mrtester",
 		FirstName:    "test",
 		LastName:     "tester",
 	}
@@ -21,6 +22,7 @@ func TestNewUserDecode(t *testing.T) {
 	j := `{"email":"test@test.com",
 		"password":"secret",
 		"passwordConf":"secret",
+		"userName": "mrtester",
 		"firstName":"Test",
 		"lastName":"Tester"}`
 	nu := &NewUser{}
@@ -35,6 +37,7 @@ func TestNewUserDecode(t *testing.T) {
 func TestNewUserValidate(t *testing.T) {
 	nu := createNewUser()
 
+	nu.Email = "invalid"
 	if err := nu.Validate(); nil == err {
 		t.Errorf("should have gotten an error about invalid email\n")
 	}
@@ -42,6 +45,11 @@ func TestNewUserValidate(t *testing.T) {
 	nu.Email = "valid@example.com"
 	if err := nu.Validate(); nil != err {
 		t.Errorf("shouldn't have gotten an error about valid email\n")
+	}
+
+	nu.UserName = ""
+	if err := nu.Validate(); nil == err {
+		t.Errorf("should have gotten an error about missing user name\n")
 	}
 
 	nu.Password = "short"

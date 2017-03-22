@@ -12,6 +12,7 @@ type User struct {
 	ID        bson.ObjectId `bson:"_id"`
 	Email     string        `json:"email"`
 	PassHash  []byte        `json:"-" bson:"passHash"` //stored in mongo, but never encoded to clients
+	UserName  string        `json:"userName"`
 	FirstName string        `json:"firstName"`
 	LastName  string        `json:"lastName"`
 	PhotoURL  string        `json:"photoURL"`
@@ -27,6 +28,7 @@ type Credentials struct {
 type NewUser struct {
 	Credentials         //embeds the fields from Credentials in this struct
 	PasswordConf string `json:"passwordConf"`
+	UserName     string `json:"userName"`
 	FirstName    string `json:"firstName"`
 	LastName     string `json:"lastName"`
 }
@@ -41,7 +43,7 @@ func (nu *NewUser) Validate() error {
 
 	//ensure Password and PasswordConf match
 
-	//ensure LastName has non-zero length
+	//ensure UserName has non-zero length
 
 	//if you made here, it's valid, so return nil
 	return nil
