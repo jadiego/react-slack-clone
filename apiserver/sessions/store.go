@@ -12,7 +12,7 @@ const DefaultSessionDuration = time.Hour
 
 //ErrStateNotFound is returned from Store.Get() when the requested
 //session id was not found in the store
-var ErrStateNotFound = errors.New("No state found in session store")
+var ErrStateNotFound = errors.New("your session has expired")
 
 //Store represents a session data store.
 //This is an abstract interface that can be implemented
