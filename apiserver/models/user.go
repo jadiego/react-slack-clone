@@ -9,7 +9,7 @@ const gravatarBasePhotoURL = "https://www.gravatar.com/avatar/"
 
 //User represents a user account in the database
 type User struct {
-	ID        bson.ObjectId `bson:"_id"`
+	ID        bson.ObjectId `json:"id" bson:"_id"`
 	Email     string        `json:"email"`
 	PassHash  []byte        `json:"-" bson:"passHash"` //stored in mongo, but never encoded to clients
 	UserName  string        `json:"userName"`
