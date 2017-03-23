@@ -30,6 +30,12 @@ type NewUser struct {
 	LastName     string `json:"lastName"`
 }
 
+//UserUpdates represents updates one can make to a user
+type UserUpdates struct {
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+}
+
 //Validate validates the new user
 func (nu *NewUser) Validate() error {
 	//ensure Email field is a valid Email
