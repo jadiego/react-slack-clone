@@ -3,6 +3,7 @@ package users
 import (
 	"crypto/rand"
 	"encoding/hex"
+	"fmt"
 )
 
 //MemStore is an implementation of UserStore
@@ -63,6 +64,9 @@ func (mus *MemStore) Insert(newUser *NewUser) (*User, error) {
 	u, err := newUser.ToUser()
 	if err != nil {
 		return nil, err
+	}
+	if nil == u {
+		return nil, fmt.Errorf(".ToUser() returned nil")
 	}
 
 	id, err := mus.newID()
