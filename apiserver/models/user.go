@@ -1,21 +1,17 @@
 package models
 
-import (
-	"gopkg.in/mgo.v2/bson"
-)
-
 //gravatarBasePhotoURL is the base URL for Gravatar profile photos
 const gravatarBasePhotoURL = "https://www.gravatar.com/avatar/"
 
 //User represents a user account in the database
 type User struct {
-	ID        bson.ObjectId `json:"id" bson:"_id"`
-	Email     string        `json:"email"`
-	PassHash  []byte        `json:"-" bson:"passHash"` //stored in mongo, but never encoded to clients
-	UserName  string        `json:"userName"`
-	FirstName string        `json:"firstName"`
-	LastName  string        `json:"lastName"`
-	PhotoURL  string        `json:"photoURL"`
+	ID        string `json:"id" bson:"_id"`
+	Email     string `json:"email"`
+	PassHash  []byte `json:"-" bson:"passHash"` //stored in mongo, but never encoded to clients
+	UserName  string `json:"userName"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	PhotoURL  string `json:"photoURL"`
 }
 
 //Credentials represents user sign-in credentials
@@ -26,7 +22,8 @@ type Credentials struct {
 
 //NewUser represents a new user signing up for an account
 type NewUser struct {
-	Credentials         //embeds the fields from Credentials in this struct
+	Email        string `json:"email"`
+	Password     string `json:"password"`
 	PasswordConf string `json:"passwordConf"`
 	UserName     string `json:"userName"`
 	FirstName    string `json:"firstName"`

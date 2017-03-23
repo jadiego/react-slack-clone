@@ -6,31 +6,12 @@ import "strings"
 
 func createNewUser() *NewUser {
 	return &NewUser{
-		Credentials: Credentials{
-			Email:    "test@test.com",
-			Password: "password",
-		},
+		Email:        "test@test.com",
+		Password:     "password",
 		PasswordConf: "password",
 		UserName:     "mrtester",
 		FirstName:    "test",
 		LastName:     "tester",
-	}
-
-}
-
-func TestNewUserDecode(t *testing.T) {
-	j := `{"email":"test@test.com",
-		"password":"secret",
-		"passwordConf":"secret",
-		"userName": "mrtester",
-		"firstName":"Test",
-		"lastName":"Tester"}`
-	nu := &NewUser{}
-	if err := json.Unmarshal([]byte(j), nu); err != nil {
-		t.Errorf("error decoding json: %s\n", err.Error())
-	}
-	if nu.Email != "test@test.com" {
-		t.Errorf("email did not decode: expected `test@test.com`, but got `%s`\n", nu.Email)
 	}
 }
 
