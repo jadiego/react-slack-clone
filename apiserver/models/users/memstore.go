@@ -1,7 +1,8 @@
 package users
 
 import (
-	"time"
+	"crypto/rand"
+	"encoding/hex"
 )
 
 //MemStore is an implementation of UserStore
@@ -27,7 +28,7 @@ func (mus *MemStore) GetAll() ([]*User, error) {
 }
 
 //GetByID returns the User with the given ID
-func (mus *MemStore) GetByID(id string) (*User, error) {
+func (mus *MemStore) GetByID(id UserID) (*User, error) {
 	for _, u := range mus.entries {
 		if u.ID == id {
 			return u, nil
@@ -64,16 +65,30 @@ func (mus *MemStore) Insert(newUser *NewUser) (*User, error) {
 		return nil, err
 	}
 
-	u.ID = time.Now().String()
+	id, err := mus.newID()
+	if err != nil {
+		return nil, err
+	}
+	u.ID = id
 	mus.entries = append(mus.entries, u)
 	return u, nil
 }
 
 //Update applies UserUpdates to the currentUser
 func (mus *MemStore) Update(updates *UserUpdates, currentuser *User) error {
-	//since we are storing *model.User, this can
-	//simply update currentUser's fields and be done with it
-	currentuser.FirstName = updates.FirstName
-	currentuser.LastName = updates.LastName
+	u, err := mus.GetByID(currentuser.ID)
+	if err != nil {
+		return err
+	}
+	u.FirstName = updates.FirstName
+	u.LastName = updates.LastName
 	return nil
+}
+
+func (mus *MemStore) newID() (UserID, error) {
+	buf := make([]byte, 32)
+	if _, err := rand.Read(buf); nil != err {
+		return "", err
+	}
+	return UserID(hex.EncodeToString(buf)), nil
 }

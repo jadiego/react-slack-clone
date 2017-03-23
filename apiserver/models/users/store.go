@@ -14,7 +14,7 @@ type Store interface {
 	GetAll() ([]*User, error)
 
 	//GetByID returns the User with the given ID
-	GetByID(id string) (*User, error)
+	GetByID(id UserID) (*User, error)
 
 	//GetByEmail returns the User with the given email
 	GetByEmail(email string) (*User, error)

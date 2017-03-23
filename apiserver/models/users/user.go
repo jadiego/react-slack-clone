@@ -3,9 +3,12 @@ package users
 //gravatarBasePhotoURL is the base URL for Gravatar profile photos
 const gravatarBasePhotoURL = "https://www.gravatar.com/avatar/"
 
+//UserID defines the type for user IDs
+type UserID string
+
 //User represents a user account in the database
 type User struct {
-	ID        string `json:"id" bson:"_id"`
+	ID        UserID `json:"id" bson:"_id"`
 	Email     string `json:"email"`
 	PassHash  []byte `json:"-" bson:"passHash"` //stored in mongo, but never encoded to clients
 	UserName  string `json:"userName"`
@@ -60,7 +63,8 @@ func (nu *NewUser) ToUser() (*User, error) {
 	//https://www.gravatar.com/avatar/ + hex-encoded md5 has of email
 
 	//construct a new User setting the various fields
-	//use bson.NewObjectId() to generate a new ID for the user
+	//but don't assign a new ID here--do that in your
+	//concrete Store.Insert() method
 
 	//call the User's SetPassword() method to set the password,
 	//which will hash the plaintext password
