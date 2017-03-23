@@ -1,4 +1,4 @@
-package models
+package users
 
 //gravatarBasePhotoURL is the base URL for Gravatar profile photos
 const gravatarBasePhotoURL = "https://www.gravatar.com/avatar/"
