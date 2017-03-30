@@ -7,6 +7,7 @@ const (
 	apiSummary = apiRoot + "summary"
 )
 
+//TODO: implement the main() function as directed by the comments.
 //main is the main entry point for this program
 func main() {
 	//read and use the following environment variables
