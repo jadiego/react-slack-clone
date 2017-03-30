@@ -7,8 +7,6 @@ import (
 
 	"encoding/json"
 
-	"log"
-
 	"golang.org/x/net/html"
 )
 
@@ -18,8 +16,6 @@ const openGraphPrefix = "og:"
 //openGraphProps represents a map of open graph property names and values
 type openGraphProps map[string]string
 
-//TODO: Implement getPageSummary by following comments
-
 func getPageSummary(url string) (openGraphProps, error) {
 	//Get the URL
 	//If there was an error, return it
@@ -28,8 +24,6 @@ func getPageSummary(url string) (openGraphProps, error) {
 
 		return nil, err
 	}
-
-	log.Printf("========== For URL: %v ==========\n", url)
 
 	//ensure that the response body stream is closed eventually
 	//HINTS: https://gobyexample.com/defer
@@ -99,8 +93,6 @@ func getPageSummary(url string) (openGraphProps, error) {
 					//into the map. puts "title", not "og:title"
 					prop := strings.SplitN(token.Attr[0].Val, ":", 2)[1]
 					cont := token.Attr[1].Val
-
-					log.Printf("<meta property='%v' content='%v' />\n", prop, cont)
 
 					properties[prop] = cont
 				}
