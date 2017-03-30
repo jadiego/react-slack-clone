@@ -14,6 +14,8 @@ const openGraphPrefix = "og:"
 //openGraphProps represents a map of open graph property names and values
 type openGraphProps map[string]string
 
+//TODO: Implement getPageSummary by following comments
+
 func getPageSummary(url string) (openGraphProps, error) {
 	//Get the URL
 	//If there was an error, return it
@@ -100,10 +102,7 @@ func getPageSummary(url string) (openGraphProps, error) {
 		}
 
 	}
-
 }
-
-//TODO: Implement SummaryHandler by following comments
 
 //SummaryHandler fetches the URL in the `url` query string parameter, extracts
 //summary information about the returned page and sends those summary properties
@@ -113,15 +112,20 @@ func SummaryHandler(w http.ResponseWriter, r *http.Request) {
 	//   Access-Control-Allow-Origin: *
 	//this will allow JavaScript served from other origins
 	//to call this API
+	w.Header().Add("Access-Control-Allow-Origin", "*")
 
 	//get the `url` query string parameter
 	//if you use r.FormValue() it will also handle cases where
 	//the client did POST with `url` as a form field
 	//HINT: https://golang.org/pkg/net/http/#Request.FormValue
+	url := r.URL.Query().Get("url")
 
 	//if no `url` parameter was provided, respond with
 	//an http.StatusBadRequest error and return
 	//HINT: https://golang.org/pkg/net/http/#Error
+	if len(url) == 0 {
+		http.Error(w, "no url was found", http.StatusBadRequest)
+	}
 
 	//call getPageSummary() passing the requested URL
 	//and holding on to the returned openGraphProps map
@@ -135,5 +139,6 @@ func SummaryHandler(w http.ResponseWriter, r *http.Request) {
 	//you write the JSON-encoded object:
 	//   Content-Type: application/json; charset=utf-8
 	//this tells the client that you are sending it JSON
+	w.Header().Add("Content-Type", "application/json; charset=utf-8")
 
 }
