@@ -5,6 +5,10 @@ import (
 	"net/http"
 	"strings"
 
+	"encoding/json"
+
+	"log"
+
 	"golang.org/x/net/html"
 )
 
@@ -21,9 +25,11 @@ func getPageSummary(url string) (openGraphProps, error) {
 	//If there was an error, return it
 	resp, err := http.Get(url)
 	if err != nil {
-		//log.Fatalf("Error fetching URL: %v\n", err)
+
 		return nil, err
 	}
+
+	log.Printf("========== For URL: %v ==========\n", url)
 
 	//ensure that the response body stream is closed eventually
 	//HINTS: https://gobyexample.com/defer
@@ -91,14 +97,18 @@ func getPageSummary(url string) (openGraphProps, error) {
 				if strings.HasPrefix(token.Attr[0].Val, openGraphPrefix) {
 					//strips the openGraphPrefix prop from the prop name before adding
 					//into the map. puts "title", not "og:title"
-					prop := strings.Split(token.Attr[0].Val, ":")[1]
+					prop := strings.SplitN(token.Attr[0].Val, ":", 2)[1]
 					cont := token.Attr[1].Val
+
+					log.Printf("<meta property='%v' content='%v' />\n", prop, cont)
 
 					properties[prop] = cont
 				}
 			}
 		case html.EndTagToken:
-
+			if token.Data == "head" {
+				return properties, nil
+			}
 		}
 
 	}
@@ -132,13 +142,22 @@ func SummaryHandler(w http.ResponseWriter, r *http.Request) {
 	//(see type definition above)
 	//if you get back an error, respond to the client
 	//with that error and an http.StatusBadRequest code
+	if props, err := getPageSummary(url); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	} else {
+		//otherwise, respond by writing the openGrahProps
+		//map as a JSON-encoded object
+		//add the following headers to the response before
+		//you write the JSON-encoded object:
+		//   Content-Type: application/json; charset=utf-8
+		//this tells the client that you are sending it JSON
+		w.Header().Add("Content-Type", "application/json; charset=utf-8")
 
-	//otherwise, respond by writing the openGrahProps
-	//map as a JSON-encoded object
-	//add the following headers to the response before
-	//you write the JSON-encoded object:
-	//   Content-Type: application/json; charset=utf-8
-	//this tells the client that you are sending it JSON
-	w.Header().Add("Content-Type", "application/json; charset=utf-8")
-
+		encoder := json.NewEncoder(w)
+		if err := encoder.Encode(props); err != nil {
+			http.Error(w,
+				"error encoding json: "+err.Error(),
+				http.StatusInternalServerError)
+		}
+	}
 }
