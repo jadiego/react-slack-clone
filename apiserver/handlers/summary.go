@@ -72,13 +72,11 @@ func getPageSummary(url string) (openGraphProps, error) {
 		tokenType := d.Next()
 
 		token := d.Token()
-		fmt.Printf("%s : %s\n", tokenType, token)
 
 		switch tokenType {
 		//if it's an error token, we either reached the end of
 		//the file, or the HTML was malformed
 		case html.ErrorToken:
-			fmt.Println(properties)
 			return properties, d.Err()
 
 		case html.EndTagToken:
