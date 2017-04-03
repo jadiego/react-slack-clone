@@ -21,7 +21,6 @@ func getPageSummary(url string) (openGraphProps, error) {
 	//If there was an error, return it
 	resp, err := http.Get(url)
 	if err != nil {
-
 		return nil, err
 	}
 
@@ -73,23 +72,27 @@ func getPageSummary(url string) (openGraphProps, error) {
 		tokenType := d.Next()
 
 		token := d.Token()
+		fmt.Printf("%s : %s\n", tokenType, token)
 
 		switch tokenType {
 		//if it's an error token, we either reached the end of
 		//the file, or the HTML was malformed
 		case html.ErrorToken:
-			return properties, nil
+			fmt.Println(properties)
+			return properties, d.Err()
 
-		//if its a self closing tags, i.e <meta />, examine it
-		case html.SelfClosingTagToken:
+		case html.EndTagToken:
+			if token.Data == "head" {
+				return properties, d.Err()
+			}
+
+		default:
 			//if the self closing tag is a meta tag
 			if token.Data == "meta" {
-
 				metatag := make(map[string]string)
 
 				for _, c := range token.Attr {
 					metatag[c.Key] = c.Val
-
 				}
 				//if the metatag contains openGraphPrefix, ex: "og:blah"
 				if strings.HasPrefix(metatag["property"], openGraphPrefix) {
@@ -99,12 +102,7 @@ func getPageSummary(url string) (openGraphProps, error) {
 				}
 
 			}
-		case html.EndTagToken:
-			if token.Data == "head" {
-				return properties, nil
-			}
 		}
-
 	}
 }
 
@@ -112,6 +110,7 @@ func getPageSummary(url string) (openGraphProps, error) {
 //summary information about the returned page and sends those summary properties
 //to the client as a JSON-encoded object.
 func SummaryHandler(w http.ResponseWriter, r *http.Request) {
+
 	//Add the following header to the response
 	//   Access-Control-Allow-Origin: *
 	//this will allow JavaScript served from other origins
