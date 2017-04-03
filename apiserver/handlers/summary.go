@@ -64,38 +64,40 @@ func getPageSummary(url string) (openGraphProps, error) {
 	//and not `og:title` (for example).
 	//ex: <meta property="og:title" content="The Rock" />
 	//ex: <meta property="og:audio" content="http://example.com/bond/theme.mp3" />
+	//HINTS: http://golang-examples.tumblr.com/post/47426518779/parse-html
+	//https://godoc.org/golang.org/x/net/html
 	d := html.NewTokenizer(resp.Body)
 
 	for {
 		//get the next token type
 		tokenType := d.Next()
 
+		token := d.Token()
+
+		switch tokenType {
 		//if it's an error token, we either reached the end of
 		//the file, or the HTML was malformed
-		if tokenType == html.ErrorToken {
+		case html.ErrorToken:
 			return properties, nil
-		}
 
-		token := d.Token()
-		switch tokenType {
 		//if its a self closing tags, i.e <meta />, examine it
 		case html.SelfClosingTagToken:
 			//if the self closing tag is a meta tag
 			if token.Data == "meta" {
-				//assumes the first attribute will tell us if it's markupped with OGP
-				//like the property attribute. if so, grabs the key and content attr
-				//and puts it into the map
-				//assumes the below:
-				//token.Attr[0] ==> "property" attr
-				//token.Attr[1] ==> "content" attr
-				if strings.HasPrefix(token.Attr[0].Val, openGraphPrefix) {
-					//strips the openGraphPrefix prop from the prop name before adding
-					//into the map. puts "title", not "og:title"
-					prop := strings.SplitN(token.Attr[0].Val, ":", 2)[1]
-					cont := token.Attr[1].Val
 
+				metatag := make(map[string]string)
+
+				for _, c := range token.Attr {
+					metatag[c.Key] = c.Val
+
+				}
+				//if the metatag contains openGraphPrefix, ex: "og:blah"
+				if strings.HasPrefix(metatag["property"], openGraphPrefix) {
+					prop := strings.SplitN(metatag["property"], ":", 2)[1]
+					cont := metatag["content"]
 					properties[prop] = cont
 				}
+
 			}
 		case html.EndTagToken:
 			if token.Data == "head" {
