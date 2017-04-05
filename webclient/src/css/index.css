@@ -1,0 +1,22 @@
+body {
+	margin: 0;
+	padding: 0;
+	font-family: 'Helvetica-Nueue', Helvetica, sans-serif;
+	min-height: 100vh;
+}
+
+#search-container {
+	margin-top: 50px;
+	padding: 10px;
+	
+	height: 200px;
+	width: 100vw;
+}
+
+#search-form {
+	text-align: center;
+	position: relative;
+	top: 50%;
+	width: 50vw;
+	margin: 0 auto;
+}
