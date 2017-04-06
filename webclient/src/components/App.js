@@ -16,12 +16,19 @@ class TopNavbar extends Component {
 				</Navbar.Header>
 				<Navbar.Collapse>
 					<Nav pullRight>
-						<NavItem eventKey={1} href="#">Link 1</NavItem>
-						<NavItem eventKey={2} href="#">Link 2</NavItem>
 					</Nav>
 				</Navbar.Collapse>
 			</Navbar>
 		);
+	}
+}
+
+
+class ogpcard extends Component {
+	render() {
+		return (
+			<div></div>
+		)
 	}
 }
 
@@ -32,12 +39,19 @@ class SearchForm extends Component {
 		e.preventDefault();
 		let url = document.querySelector("#url").value;
 		console.log("Searching:", url)
+		// call on API to get Opengraph properties
 		fetch("http://localhost:8000/v1/summary?url=" + url)
 			.then(function (resp) {
 				return resp.json()
 			})
 			.then(function(data) {
 				console.log(data)
+				// When the server responds with a JSON of the OGP properties
+				// render the summary data to the page. Atleast renders the
+				// image, title, and description property.
+				// Handles missing properties gracefully.
+				// Communicates back the error if it comes across one.
+
 			})
 			.catch(function(err) {
 				console.log(err)
@@ -55,7 +69,7 @@ class SearchForm extends Component {
 						</Button>
 					</InputGroup.Button>
 					<FormControl id="url" name="url" type="text" placeholder="Search..." />
-					<InputGroup.Addon> {0} results </InputGroup.Addon>
+					<InputGroup.Addon onClick={this.search}> Search </InputGroup.Addon>
 				</InputGroup>
 			</Form>
 		);
@@ -69,6 +83,12 @@ class App extends Component {
 				<TopNavbar />
 				<section id="search-container">
 					<SearchForm></SearchForm>
+				</section>
+				<section id="results-container" fluid={true}>
+					<h2 >Results</h2>
+					<hr id="break" />
+					<div id="results-list" fluid={true}>
+					</div>
 				</section>
 			</div>
 		);

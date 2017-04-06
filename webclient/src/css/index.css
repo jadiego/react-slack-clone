@@ -20,3 +20,11 @@ body {
 	width: 50vw;
 	margin: 0 auto;
 }
+
+h2 {
+	text-align: center;
+}
+
+#break {
+	width: 50vw;
+}
