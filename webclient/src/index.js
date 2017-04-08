@@ -1,12 +1,16 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import App from './components/App';
+import React from 'react'
+import ReactDOM from 'react-dom'
+import { Provider } from 'react-redux'
 
 
-import 'semantic-ui-css/semantic.min.css';
-import './css/index.css';
+import App from './components/App'
+import store from './store'
+import 'semantic-ui-css/semantic.min.css'
+import './css/index.css'
 
 ReactDOM.render(
-    <App />,
+    <Provider store={store}>
+        <App />
+    </Provider>,
     document.getElementById('root')
 );
