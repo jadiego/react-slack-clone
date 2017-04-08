@@ -13,7 +13,7 @@ body {
 	width: 100vw;
 }
 
-#search-form {
+#search-input {
 	text-align: center;
 	position: relative;
 	top: 50%;
@@ -26,5 +26,13 @@ h2 {
 }
 
 #break {
-	width: 50vw;
+	width: 40vw;
+}
+
+.warningmsg {
+	margin: 0 auto;
+    width: 360px;
+    text-align: center;
+    border-radius: 2px;
+    background-color: rgba(240, 100, 100, 0.6);
 }
