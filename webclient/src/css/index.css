@@ -13,10 +13,14 @@ body {
 	width: 100vw;
 }
 
-#search-input {
+#results-container {
+	margin-top: 100px;
+}
+
+#search-form {
 	text-align: center;
 	position: relative;
-	top: 50%;
+	top: 30%;
 	width: 50vw;
 	margin: 0 auto;
 }
