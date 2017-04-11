@@ -9,7 +9,7 @@ import (
 	"github.com/info344-s17/challenges-jadiego/apiserver/handlers"
 )
 
-const defaultPort = "80"
+const defaultPort = "443"
 
 const (
 	apiRoot    = "/v1/"
@@ -32,6 +32,13 @@ func main() {
 		fmt.Println("Host not set. Defaulting to empty host")
 		host = ""
 	}
+	addr := fmt.Sprintf("%s:%s", host, port)
+
+	//get the TLS key and cert paths from environment variables
+	//this allows us to use a self-signed cert/key during development
+	//and the Let's Encrypt cert/key in production
+	tlsKeyPath := os.Getenv("TLSKEY")
+	tlsCertPath := os.Getenv("TLSCERT")
 
 	//add your handlers.SummaryHandler function as a handler
 	//for the apiSummary route
@@ -42,6 +49,6 @@ func main() {
 	//any errors that occur if the server can't start
 	//HINT: https://golang.org/pkg/net/http/#ListenAndServe
 	fmt.Printf("server is listening at %s:%s...\n", host, port)
-	log.Fatal(http.ListenAndServe(host+":"+port, nil))
+	log.Fatal(http.ListenAndServeTLS(addr, tlsCertPath, tlsKeyPath, nil))
 
 }
