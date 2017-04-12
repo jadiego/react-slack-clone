@@ -1,8 +1,8 @@
 import React, { Component } from 'react'
 import { Menu, Container, Form, Message, Card, Icon, Image } from 'semantic-ui-react'
 
-//http://104.131.146.195/v1/summary?url=http://ogp.me
-const baseURL = "http://104.131.146.195/v1/summary?url="
+
+const baseURL = "https://api.chat.jadiego.me/v1/summary?url="
 
 class TopNavbar extends Component {
     render() {
