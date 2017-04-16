@@ -42,14 +42,15 @@ func NewSessionID(signingKey string) (SessionID, error) {
 	//session ID, using the provided signing key,
 	//and put it in the last part of the byte slice
 	h := hmac.New(sha256.New, []byte(signingKey))
+	h.Write(buf[:idLength])
 	sig := h.Sum(nil)
 	copy(buf[idLength:], sig)
 
 	//use the encoding/base64 package to encode the
 	//byte slice into a base64.URLEncoding
 	//and return the result as a new SessionID
-	id := SessionID(base64.URLEncoding.EncodeToString(buf))
-	return id, nil
+	sid := SessionID(base64.URLEncoding.EncodeToString(buf))
+	return sid, nil
 
 }
 
@@ -77,8 +78,10 @@ func ValidateID(id string, signingKey string) (SessionID, error) {
 	//use hmac.Equal() to compare the two MACs
 	//if they are equal, return it as a SessionID
 	//with nil for the error
-	h := hmac.New(sha256.New, []byte(signingKey))
 	sig1 := buf[idLength:]
+	h := hmac.New(sha256.New, []byte(signingKey))
+	v := buf[:idLength]
+	h.Write(v)
 	sig2 := h.Sum(nil)
 	if hmac.Equal(sig1, sig2) {
 		return SessionID(id), nil
