@@ -59,4 +59,12 @@ func TestMongoStore(t *testing.T) {
 		t.Errorf("user username didn't match for GetByUserName(), expected %s but got %s", user.UserName, user3.UserName)
 	}
 
+	user4, err := store.GetByID(user.ID)
+	if err != nil {
+		t.Errorf("error fetching user by ID: %v", err)
+	}
+	if user4.ID != user.ID {
+		t.Errorf("ID didn't match, expected %s but got %s", user.ID, user4.ID)
+	}
+
 }
