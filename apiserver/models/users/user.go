@@ -1,5 +1,14 @@
 package users
 
+import (
+	"crypto/md5"
+	"encoding/hex"
+	"fmt"
+	"net/mail"
+
+	"golang.org/x/crypto/bcrypt"
+)
+
 //gravatarBasePhotoURL is the base URL for Gravatar profile photos
 const gravatarBasePhotoURL = "https://www.gravatar.com/avatar/"
 
@@ -44,12 +53,25 @@ func (nu *NewUser) Validate() error {
 	//ensure Email field is a valid Email
 	//HINT: use mail.ParseAddress()
 	//https://golang.org/pkg/net/mail/#ParseAddress
+	_, err := mail.ParseAddress(nu.Email)
+	if err != nil {
+		return fmt.Errorf("email must be a valid email")
+	}
 
 	//ensure Password is at least 6 chars
+	if len(nu.Password) < 6 {
+		return fmt.Errorf("password length not strong enough")
+	}
 
 	//ensure Password and PasswordConf match
+	if nu.Password != nu.PasswordConf {
+		return fmt.Errorf("password do not match")
+	}
 
 	//ensure UserName has non-zero length
+	if len(nu.UserName) < 1 {
+		return fmt.Errorf("username not valid")
+	}
 
 	//if you made here, it's valid, so return nil
 	return nil
@@ -61,16 +83,30 @@ func (nu *NewUser) ToUser() (*User, error) {
 	//hash of the new user's email address, converting
 	//that to a hex string, and appending it to their base URL:
 	//https://www.gravatar.com/avatar/ + hex-encoded md5 has of email
+	h := md5.New()
+	h.Write([]byte(nu.Email))
+	ehash := h.Sum(nil)
+	ehex := hex.EncodeToString(ehash)
 
 	//construct a new User setting the various fields
 	//but don't assign a new ID here--do that in your
 	//concrete Store.Insert() method
+	u := &User{
+		Email:     nu.Email,
+		UserName:  nu.UserName,
+		FirstName: nu.FirstName,
+		LastName:  nu.LastName,
+		PhotoURL:  gravatarBasePhotoURL + ehex,
+	}
 
 	//call the User's SetPassword() method to set the password,
 	//which will hash the plaintext password
+	if err := u.SetPassword(nu.Password); err != nil {
+		return nil, err
+	}
 
 	//return the User and nil
-	return nil, nil
+	return u, nil
 }
 
 //SetPassword hashes the password and stores it in the PassHash field
@@ -78,8 +114,12 @@ func (u *User) SetPassword(password string) error {
 	//hash the plaintext password using an adaptive
 	//crytographic hashing algorithm like bcrypt
 	//https://godoc.org/golang.org/x/crypto/bcrypt
-
+	ph, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
 	//set the User's PassHash field to the resulting hash
+	u.PassHash = ph
 
 	return nil
 }
@@ -89,6 +129,9 @@ func (u *User) SetPassword(password string) error {
 func (u *User) Authenticate(password string) error {
 	//compare the plaintext password with the PassHash field
 	//using the same hashing algorithm you used in SetPassword
-
+	err := bcrypt.CompareHashAndPassword(u.PassHash, []byte(password))
+	if err != nil {
+		return err
+	}
 	return nil
 }
