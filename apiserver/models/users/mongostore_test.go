@@ -67,4 +67,13 @@ func TestMongoStore(t *testing.T) {
 		t.Errorf("ID didn't match, expected %s but got %s", user.ID, user4.ID)
 	}
 
+	updates := &UserUpdates{
+		FirstName: "Test 2.0",
+		LastName:  "Tester 2.0",
+	}
+
+	if err := store.Update(updates, user); err != nil {
+		t.Errorf("error updating user, %v", err)
+	}
+
 }
