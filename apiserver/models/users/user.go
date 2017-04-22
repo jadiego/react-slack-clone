@@ -114,7 +114,7 @@ func (u *User) SetPassword(password string) error {
 	//hash the plaintext password using an adaptive
 	//crytographic hashing algorithm like bcrypt
 	//https://godoc.org/golang.org/x/crypto/bcrypt
-	ph, err := bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+	ph, err := bcrypt.GenerateFromPassword([]byte(password), 14)
 	if err != nil {
 		return err
 	}
