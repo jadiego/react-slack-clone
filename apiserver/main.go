@@ -22,6 +22,9 @@ func main() {
 	//when initializing and starting your web server
 	// PORT - port number to listen on for HTTP requests (if not set, use defaultPort)
 	// HOST - host address to respond to (if not set, leave empty, which means any host)
+	// SESSIONKEY - a string to use as the session ID singing key
+	// REDISADDR - the address of your redis session store
+	// DBADDR - the address of your database server
 	port := os.Getenv("PORT")
 	if len(port) == 0 {
 		fmt.Println("Port number not set. Defaulting to port: " + defaultPort)
@@ -33,6 +36,12 @@ func main() {
 		host = ""
 	}
 	addr := fmt.Sprintf("%s:%s", host, port)
+
+	redisAddr := os.Getenv("REDISADDR")
+	if len(redisAddr) == 0 {
+		fmt.Println("Redis address not set. Defaulting to empty host and default port")
+		redisAddr = fmt.Sprintf("%s:%s")
+	}
 
 	//get the TLS key and cert paths from environment variables
 	//this allows us to use a self-signed cert/key during development
