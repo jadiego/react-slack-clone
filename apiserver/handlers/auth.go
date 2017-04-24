@@ -41,7 +41,7 @@ func (ctx *Context) UsersHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		//Ensure there isn't already a user in the UserStore with the same user name
-		if _, err := ctx.UserStore.GetByEmail(r.FormValue("userName")); err != nil {
+		if _, err := ctx.UserStore.GetByUserName(r.FormValue("userName")); err != nil {
 			http.Error(w, "username is already used:"+err.Error(), http.StatusBadRequest)
 			return
 		}
@@ -60,6 +60,7 @@ func (ctx *Context) UsersHandler(w http.ResponseWriter, r *http.Request) {
 			ClientAddr: r.RemoteAddr,
 			User:       u,
 		}
+
 		sid, err := sessions.BeginSession(u.Email, ctx.SessionStore, s, w)
 		if err != nil {
 			http.Error(w, "error beginning session:"+err.Error(), http.StatusInternalServerError)
@@ -114,7 +115,50 @@ func (ctx *Context) SessionsHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		//Begin a new session
+		s := &SessionState{
+			BeganAt:    time.Now(),
+			ClientAddr: r.RemoteAddr,
+			User:       u,
+		}
+		sid, err := sessions.BeginSession(u.Email, ctx.SessionStore, s, w)
+		if err != nil {
+			http.Error(w, "error beginning session:"+err.Error(), http.StatusInternalServerError)
+			return
+		}
+		ctx.SessionKey = sid.String()
 
 		//Respond to the client with the models.User struct encoded as a JSON object
+		w.Header().Add(headerContentType, contentTypeJSONUTF8)
+		encoder := json.NewEncoder(w)
+		encoder.Encode(u)
 	}
+}
+
+//SessionsMineHandler allows authenticated users to sign-out
+func (ctx *Context) SessionsMineHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "DELETE" {
+		//end the sessions
+		sid, err := sessions.GetSessionID(r, ctx.SessionKey)
+		if err != nil {
+			http.Error(w, "error retrieving session id:"+err.Error(), http.StatusInternalServerError)
+			return
+		}
+		err = ctx.SessionStore.Delete(sid)
+		if err != nil {
+			http.Error(w, "error deleting session:"+err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		//Respond to the client with a simple message saying
+		//that the user has been signed out
+
+	}
+}
+
+//UsersMeHanlder gets the session state
+func (ctx *Context) UsersMeHanlder(w http.ResponseWriter, r *http.Request) {
+	//get the session state
+
+	//Respond to the client with the session
+	//state's User field, encoded as a JSON object
 }
