@@ -26,6 +26,9 @@ func (ms *MongoStore) GetAll() ([]*User, error) {
 func (ms *MongoStore) GetByID(id UserID) (*User, error) {
 	user := &User{}
 	err := ms.Session.DB(ms.DatabaseName).C(ms.CollectionName).FindId(id).One(user)
+	if err == mgo.ErrNotFound {
+		return nil, ErrUserNotFound
+	}
 	return user, err
 }
 
@@ -34,6 +37,11 @@ func (ms *MongoStore) GetByEmail(email string) (*User, error) {
 	user := &User{}
 	query := bson.M{"email": email}
 	err := ms.Session.DB(ms.DatabaseName).C(ms.CollectionName).Find(query).One(user)
+	//if the user was not found, Mongo will return a mgo.ErrNotFound,
+	//so we return a users.ErrUserNotFound
+	if err == mgo.ErrNotFound {
+		return nil, ErrUserNotFound
+	}
 	return user, err
 }
 
@@ -42,7 +50,9 @@ func (ms *MongoStore) GetByUserName(name string) (*User, error) {
 	user := &User{}
 	query := bson.M{"username": name}
 	err := ms.Session.DB(ms.DatabaseName).C(ms.CollectionName).Find(query).One(user)
-
+	if err == mgo.ErrNotFound {
+		return nil, ErrUserNotFound
+	}
 	return user, err
 }
 
