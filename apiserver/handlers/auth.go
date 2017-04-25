@@ -53,20 +53,18 @@ func (ctx *Context) UsersHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		//TODO: not sure if this is correct implementation
 		//Begin a new session
-		s := &SessionState{
+		ss := &SessionState{
 			BeganAt:    time.Now(),
 			ClientAddr: r.RemoteAddr,
 			User:       u,
 		}
 
-		sid, err := sessions.BeginSession(u.Email, ctx.SessionStore, s, w)
+		_, err = sessions.BeginSession(u.Email, ctx.SessionStore, ss, w)
 		if err != nil {
 			http.Error(w, "error beginning session:"+err.Error(), http.StatusInternalServerError)
 			return
 		}
-		ctx.SessionKey = sid.String()
 
 		//Respond to the client with the models.User struct encoded as a JSON object
 		w.Header().Add(headerContentType, contentTypeJSONUTF8)
@@ -120,12 +118,11 @@ func (ctx *Context) SessionsHandler(w http.ResponseWriter, r *http.Request) {
 			ClientAddr: r.RemoteAddr,
 			User:       u,
 		}
-		sid, err := sessions.BeginSession(u.Email, ctx.SessionStore, s, w)
+		_, err = sessions.BeginSession(u.Email, ctx.SessionStore, s, w)
 		if err != nil {
 			http.Error(w, "error beginning session:"+err.Error(), http.StatusInternalServerError)
 			return
 		}
-		ctx.SessionKey = sid.String()
 
 		//Respond to the client with the models.User struct encoded as a JSON object
 		w.Header().Add(headerContentType, contentTypeJSONUTF8)
@@ -138,27 +135,28 @@ func (ctx *Context) SessionsHandler(w http.ResponseWriter, r *http.Request) {
 func (ctx *Context) SessionsMineHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == "DELETE" {
 		//end the sessions
-		sid, err := sessions.GetSessionID(r, ctx.SessionKey)
+		_, err := sessions.EndSession(r, ctx.SessionKey, ctx.SessionStore)
 		if err != nil {
-			http.Error(w, "error retrieving session id:"+err.Error(), http.StatusInternalServerError)
-			return
-		}
-		err = ctx.SessionStore.Delete(sid)
-		if err != nil {
-			http.Error(w, "error deleting session:"+err.Error(), http.StatusInternalServerError)
+			http.Error(w, "error deleting session id:"+err.Error(), http.StatusInternalServerError)
 			return
 		}
 
 		//Respond to the client with a simple message saying
 		//that the user has been signed out
-
+		w.Header().Add(headerContentType, contentTypeText)
+		w.Write([]byte("User has signed out"))
 	}
 }
 
 //UsersMeHanlder gets the session state
 func (ctx *Context) UsersMeHanlder(w http.ResponseWriter, r *http.Request) {
 	//get the session state
+	ss := &SessionState{}
+	sessions.GetState(r, ctx.SessionKey, ctx.SessionStore, ss)
 
 	//Respond to the client with the session
 	//state's User field, encoded as a JSON object
+	w.Header().Add(headerContentType, contentTypeJSONUTF8)
+	encoder := json.NewEncoder(w)
+	encoder.Encode(ss.User)
 }
