@@ -20,6 +20,11 @@ import (
 func (ctx *Context) UsersHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 	case "POST":
+		if r.Body == nil {
+			http.Error(w, "Please send a request body", http.StatusBadRequest)
+			return
+		}
+
 		//Decode the request body into a models.NewUser struct
 		d := json.NewDecoder(r.Body)
 		nu := &users.NewUser{}
@@ -35,14 +40,14 @@ func (ctx *Context) UsersHandler(w http.ResponseWriter, r *http.Request) {
 		}
 
 		//Ensure there isn't already a user in the UserStore with the same email address
-		if _, err := ctx.UserStore.GetByEmail(r.FormValue("email")); err != nil {
-			http.Error(w, "email address is already used:"+err.Error(), http.StatusBadRequest)
+		if _, err := ctx.UserStore.GetByEmail(nu.Email); err != users.ErrUserNotFound {
+			http.Error(w, "email address is already used:"+nu.Email, http.StatusBadRequest)
 			return
 		}
 
 		//Ensure there isn't already a user in the UserStore with the same user name
-		if _, err := ctx.UserStore.GetByUserName(r.FormValue("userName")); err != nil {
-			http.Error(w, "username is already used:"+err.Error(), http.StatusBadRequest)
+		if _, err := ctx.UserStore.GetByUserName(nu.UserName); err != users.ErrUserNotFound {
+			http.Error(w, "username is already used:"+nu.UserName, http.StatusBadRequest)
 			return
 		}
 
