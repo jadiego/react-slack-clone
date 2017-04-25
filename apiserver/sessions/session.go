@@ -20,24 +20,24 @@ var ErrInvalidScheme = errors.New("scheme used in Authorization header is not su
 func BeginSession(signingKey string, store Store, state interface{}, w http.ResponseWriter) (SessionID, error) {
 	//create a new SessionID
 	//if you get an error, return InvalidSessionID and the error
-	id, err := NewSessionID(signingKey)
+	sid, err := NewSessionID(signingKey)
 	if err != nil {
 		return InvalidSessionID, err
 	}
 
 	//save the state to the store
 	//if you get an error, return InvalidSessionID and the error
-	if err := store.Save(id, state); err != nil {
+	if err := store.Save(sid, state); err != nil {
 		return InvalidSessionID, err
 	}
 
 	//Add a response header like this:
 	//  Authorization: Bearer <sid>
 	//where <sid> is the new SessionID
-	w.Header().Add(headerAuthorization, schemeBearer+id.String())
+	w.Header().Add(headerAuthorization, schemeBearer+sid.String())
 
 	//return the new SessionID and nil
-	return id, nil
+	return sid, nil
 }
 
 //GetSessionID extracts and validates the SessionID from the request headers
