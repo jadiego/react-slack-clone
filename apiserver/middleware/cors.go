@@ -27,6 +27,18 @@ func CORS(origins, methods, allowHeaders, exposeHeaders string) Adapter {
 	//if the origins, methods, allowHeaders, and exposeHeaders
 	//parameters are zero-length, default them to their default
 	//constant values listed above
+	if len(origins) == 0 {
+		origins = DefaultCORSOrigins
+	}
+	if len(methods) == 0 {
+		methods = DefaultCORSMethods
+	}
+	if len(allowHeaders) == 0 {
+		allowHeaders = DefaultCORSAllowHeaders
+	}
+	if len(exposeHeaders) == 0 {
+		exposeHeaders = DefaultCORSExposeHeaders
+	}
 
 	//return an Adapter function that...
 	return func(handler http.Handler) http.Handler {
@@ -37,13 +49,20 @@ func CORS(origins, methods, allowHeaders, exposeHeaders string) Adapter {
 			// - Access-Control-Allow-Methods: value of methods param
 			// - Access-Control-Allow-Headers: value of allowHeaders param
 			// - Access-Control-Expose-Headers: value of exposeHeaders param
+			w.Header().Add(headerAccessControlAllowOrigin, origins)
+			w.Header().Add(headerAccessControlAllowMethods, methods)
+			w.Header().Add(headerAccessControlAllowHeaders, allowHeaders)
+			w.Header().Add(headerAccessControlExposeHeaders, exposeHeaders)
 
 			//if the request method is OPTIONS, this is a pre-flight
 			//CORS request to see if the real request should be allowed
 			//so simply respond with no body and http.StatusOK
-
-			//else, call the ServeHTTP() method on `handler`
-
+			if r.Method == "OPTIONS" {
+				w.WriteHeader(http.StatusOK)
+			} else {
+				//else, call the ServeHTTP() method on `handler`
+				handler.ServeHTTP(w, r)
+			}
 		})
 	}
 }
