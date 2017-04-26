@@ -48,7 +48,7 @@ func (ctx *Context) UsersHandler(w http.ResponseWriter, r *http.Request) {
 		//Insert the new user into the UserStore
 		u, err := ctx.UserStore.Insert(nu)
 		if err != nil {
-			http.Error(w, "error inserting user:"+err.Error(), http.StatusBadRequest)
+			http.Error(w, "error inserting user into DB:"+err.Error(), http.StatusBadRequest)
 			return
 		}
 
@@ -100,14 +100,14 @@ func (ctx *Context) SessionsHandler(w http.ResponseWriter, r *http.Request) {
 		//respond with an http.StatusUnauthorized
 		u, err := ctx.UserStore.GetByEmail(c.Email)
 		if err != nil {
-			http.Error(w, "Incorrect username or password: "+err.Error(), http.StatusUnauthorized)
+			http.Error(w, "Incorrect username or password", http.StatusUnauthorized)
 			return
 		}
 
 		//Authenticate the user using the provided password; if that fails,
 		//respond with an http.StatusUnauthorized
 		if err := u.Authenticate(c.Password); err != nil {
-			http.Error(w, "Incorrect username or password: "+err.Error(), http.StatusUnauthorized)
+			http.Error(w, "Incorrect username or password", http.StatusUnauthorized)
 			return
 		}
 
