@@ -88,8 +88,6 @@ func NewMongoStore(mongoAddr, DBName, CollectName string) (*MongoStore, error) {
 	if err != nil {
 		return nil, err
 	}
-	defer sess.Close()
-
 	if len(DBName) == 0 {
 		DBName = "chat"
 	}
