@@ -65,7 +65,7 @@ func (ctx *Context) UsersHandler(w http.ResponseWriter, r *http.Request) {
 			User:       u,
 		}
 
-		_, err = sessions.BeginSession(u.Email, ctx.SessionStore, ss, w)
+		_, err = sessions.BeginSession(ctx.SessionKey, ctx.SessionStore, ss, w)
 		if err != nil {
 			http.Error(w, "error beginning session:"+err.Error(), http.StatusInternalServerError)
 			return
@@ -123,7 +123,7 @@ func (ctx *Context) SessionsHandler(w http.ResponseWriter, r *http.Request) {
 			ClientAddr: r.RemoteAddr,
 			User:       u,
 		}
-		_, err = sessions.BeginSession(u.Email, ctx.SessionStore, s, w)
+		_, err = sessions.BeginSession(ctx.SessionKey, ctx.SessionStore, s, w)
 		if err != nil {
 			http.Error(w, "error beginning session:"+err.Error(), http.StatusInternalServerError)
 			return

@@ -9,11 +9,17 @@ import (
 
 	"encoding/json"
 
-	"fmt"
-
 	"github.com/info344-s17/challenges-jadiego/apiserver/models/users"
 	"github.com/info344-s17/challenges-jadiego/apiserver/sessions"
 )
+
+//Each test functions are meant to be run separtely
+
+type userTestCase struct {
+	user                interface{}
+	expectedCode        int
+	expectedContentType string
+}
 
 //our new handlers use handlers.Context struct,
 //so we need to create an instance of that struct
@@ -27,46 +33,61 @@ var ctx = Context{
 func TestUsersPOSTHandler(t *testing.T) {
 	handler := http.HandlerFunc(ctx.UsersHandler)
 
-	cases := []users.NewUser{
-		users.NewUser{
-			Email:        "notanemailaddress",
-			UserName:     "",
-			FirstName:    "Test",
-			LastName:     "Tester",
-			Password:     "password",
-			PasswordConf: "password",
+	cases := []userTestCase{
+		{
+			users.NewUser{
+				Email:        "notanemailaddress",
+				UserName:     "",
+				FirstName:    "Test",
+				LastName:     "Tester",
+				Password:     "password",
+				PasswordConf: "password",
+			},
+			400,
+			contentTypeTextUTF8,
 		},
-		users.NewUser{
-			Email:        "test@test.com",
-			UserName:     "tester",
-			FirstName:    "Test",
-			LastName:     "Tester",
-			Password:     "password",
-			PasswordConf: "password",
-		},
+		{
+			users.NewUser{
+				Email:        "test@test.com",
+				UserName:     "tester",
+				FirstName:    "Test",
+				LastName:     "Tester",
+				Password:     "password",
+				PasswordConf: "password",
+			},
+			200,
+			contentTypeJSONUTF8},
 		//should fail by getbyemail
-		users.NewUser{
-			Email:        "test@test.com",
-			UserName:     "tester2",
-			FirstName:    "Test",
-			LastName:     "Tester",
-			Password:     "password",
-			PasswordConf: "password",
+		{
+			users.NewUser{
+				Email:        "test@test.com",
+				UserName:     "tester2",
+				FirstName:    "Test",
+				LastName:     "Tester",
+				Password:     "password",
+				PasswordConf: "password",
+			},
+			400,
+			contentTypeTextUTF8,
 		},
 		//should fail byusername
-		users.NewUser{
-			Email:        "test2@test.com",
-			UserName:     "tester",
-			FirstName:    "Test",
-			LastName:     "Tester",
-			Password:     "password",
-			PasswordConf: "password",
+		{
+			users.NewUser{
+				Email:        "test2@test.com",
+				UserName:     "tester",
+				FirstName:    "Test",
+				LastName:     "Tester",
+				Password:     "password",
+				PasswordConf: "password",
+			},
+			400,
+			contentTypeTextUTF8,
 		},
 	}
 	for i, c := range cases {
 		//add body to req
 		b := new(bytes.Buffer)
-		json.NewEncoder(b).Encode(c)
+		json.NewEncoder(b).Encode(c.user)
 		req, err := http.NewRequest("POST", "/v1/users", b)
 		if err != nil {
 			t.Fatal(err)
@@ -74,15 +95,13 @@ func TestUsersPOSTHandler(t *testing.T) {
 		rr := httptest.NewRecorder()
 		handler.ServeHTTP(rr, req)
 
-		//the second case should be the only one thats a valid post and so every
-		//case should return a 400 status
-		if i != 1 {
-			if rr.Code != http.StatusBadRequest {
-				t.Errorf("handler returned wrong status code: expected `%d` but got `%d`\n", http.StatusOK, rr.Code)
-			}
+		if rr.Code != c.expectedCode {
+			t.Errorf("handler returned wrong status code for cases[%v] in slice of cases: expected `%d` but got `%d`\n", i, http.StatusOK, rr.Code)
 		}
-		//Each error when logged returns proper error message
-		fmt.Printf("%v, %v", rr.Code, rr.Body)
+
+		if rr.Header().Get(headerContentType) != c.expectedContentType {
+			t.Errorf("handler returned wrong content type for cases[%v] in slice of cases: expected `%v` but got `%v`\n", i, c.expectedContentType, rr.Header().Get(headerContentType))
+		}
 	}
 }
 
@@ -123,25 +142,53 @@ func TestUsersGETHandler(t *testing.T) {
 func TestSessionsHandler(t *testing.T) {
 	handler := http.HandlerFunc(ctx.SessionsHandler)
 
-	cases := []users.Credentials{
-		users.Credentials{
-			Email:    "",
-			Password: "",
+	cases := []struct {
+		credentials         users.Credentials
+		expectedCode        int
+		expectedContentType string
+	}{
+		{
+			users.Credentials{
+				Email:    "",
+				Password: "",
+			},
+			401,
+			contentTypeTextUTF8,
 		},
-		users.Credentials{
-			Email:    "test@test.com",
-			Password: "dfagfg",
+		{
+			users.Credentials{
+				Email:    "test@test.com",
+				Password: "dfagfg",
+			},
+			401,
+			contentTypeTextUTF8,
 		},
-		users.Credentials{
-			Email:    "test@test.com",
-			Password: "password",
+		{
+			users.Credentials{
+				Email:    "test@test.com",
+				Password: "password",
+			},
+			200,
+			contentTypeJSONUTF8,
 		},
 	}
+
+	//If testing by itself uncomment these
+	// nu := &users.NewUser{
+	// 	Email:        "test@test.com",
+	// 	UserName:     "tester",
+	// 	FirstName:    "Test",
+	// 	LastName:     "Tester",
+	// 	Password:     "password",
+	// 	PasswordConf: "password",
+	// }
+
+	// u1, _ := ctx.UserStore.Insert(nu)
 
 	for i, c := range cases {
 		//add body to req
 		b := new(bytes.Buffer)
-		json.NewEncoder(b).Encode(c)
+		json.NewEncoder(b).Encode(c.credentials)
 		req, err := http.NewRequest("POST", "/v1/sessions", b)
 		if err != nil {
 			t.Fatal(err)
@@ -149,13 +196,22 @@ func TestSessionsHandler(t *testing.T) {
 		rr := httptest.NewRecorder()
 		handler.ServeHTTP(rr, req)
 
-		//the first two cases should be 401 error messages
-		if i != 2 {
-			if rr.Code != http.StatusUnauthorized {
-				t.Errorf("handler returned wrong status code: expected `%d` but got `%d`\n", http.StatusUnauthorized, rr.Code)
-			}
+		if rr.Code != c.expectedCode {
+			t.Errorf("handler returned wrong status code for cases[%v]: expected `%d` but got `%d`\n", i, c.expectedCode, rr.Code)
 		}
-		//Each error when logged returns proper error message
-		fmt.Printf("%v, %v", rr.Code, rr.Body)
+		if rr.Header().Get(headerContentType) != c.expectedContentType {
+			t.Errorf("handler returned wrong content type for cases[%v]: expected `%v` but got `%v`\n", i, c.expectedContentType, rr.Header().Get(headerContentType))
+		}
 	}
+
+}
+
+func TestSessionsMinehandler(t *testing.T) {
+	handler := http.HandlerFunc(ctx.SessionsMineHandler)
+	req, err := http.NewRequest("DELETE", "/v1/sessions/mine", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+	rr := httptest.NewRecorder()
+	handler.ServeHTTP(rr, req)
 }
