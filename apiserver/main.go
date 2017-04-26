@@ -55,7 +55,7 @@ func main() {
 	redisAddr := os.Getenv("REDISADDR")
 	if len(redisAddr) == 0 {
 		fmt.Println("Redis address not set. Defaulting to port: " + defaultRedisPort)
-		redisAddr = fmt.Sprintf("%s:%s", host, defaultRedisPort)
+		redisAddr = defaultRedisPort
 	}
 	rclient := redis.NewClient(&redis.Options{
 		Addr: redisAddr,
@@ -66,7 +66,7 @@ func main() {
 	dbAddr := os.Getenv("DBADDR")
 	if len(dbAddr) == 0 {
 		fmt.Println("DB address not set. Defaulting to port: " + defaultMongoPort)
-		dbAddr = fmt.Sprintf("%s:%s", host, defaultMongoPort)
+		dbAddr = defaultMongoPort
 	}
 	dbstore, err := users.NewMongoStore(dbAddr, "chat", "users")
 	if err != nil {
