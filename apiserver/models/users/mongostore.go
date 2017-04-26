@@ -76,3 +76,31 @@ func (ms *MongoStore) Update(updates *UserUpdates, currentuser *User) error {
 	err := col.UpdateId(currentuser.ID, userupdates)
 	return err
 }
+
+//NewMongoStore constructs a new MongoStore, using the provided
+//addr. If the `mongoAddr` is nil, it will use a default port and host
+func NewMongoStore(mongoAddr, DBName, CollectName string) (*MongoStore, error) {
+	if len(mongoAddr) == 0 {
+		mongoAddr = "127.0.0.1:27017"
+	}
+
+	sess, err := mgo.Dial(mongoAddr)
+	if err != nil {
+		return nil, err
+	}
+
+	if len(DBName) == 0 {
+		DBName = "chat"
+	}
+
+	if len(CollectName) == 0 {
+		CollectName = "users"
+	}
+
+	defer sess.Close()
+	return &MongoStore{
+		Session:        sess,
+		DatabaseName:   DBName,
+		CollectionName: CollectName,
+	}, nil
+}
