@@ -103,8 +103,7 @@ func main() {
 	mux.HandleFunc(apiSummary, handlers.SummaryHandler)
 
 	logger := log.New(os.Stdout, "", log.LstdFlags)
-	//mux.Handle(apiRoot, middleware.Adapt(mux, middleware.CORS("", "", "", ""), middleware.Notify(logger)))
-	mux.Handle(apiRoot, middleware.Notify(logger)(muxLogged))
+	mux.Handle(apiRoot, middleware.Adapt(mux, middleware.CORS("", "", "", ""), middleware.Notify(logger)))
 
 	//start your web server and use log.Fatal() to log
 	//any errors that occur if the server can't start
