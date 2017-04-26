@@ -6,10 +6,17 @@ import (
 	"net/http"
 	"os"
 
+	redis "gopkg.in/redis.v5"
+
 	"github.com/info344-s17/challenges-jadiego/apiserver/handlers"
+
+	"github.com/info344-s17/challenges-jadiego/apiserver/models/users"
+	"github.com/info344-s17/challenges-jadiego/apiserver/sessions"
 )
 
 const defaultPort = "443"
+const defaultRedisPort = "6379"
+const defaultMongoPort = "27017"
 
 const (
 	apiRoot    = "/v1/"
@@ -37,10 +44,36 @@ func main() {
 	}
 	addr := fmt.Sprintf("%s:%s", host, port)
 
+	//Set Redis
 	redisAddr := os.Getenv("REDISADDR")
 	if len(redisAddr) == 0 {
-		fmt.Println("Redis address not set. Defaulting to empty host and default port")
-		redisAddr = fmt.Sprintf("%s:%s")
+		fmt.Println("Redis address not set. Defaulting to port: " + defaultRedisPort)
+		redisAddr = fmt.Sprintf("%s:%s", host, defaultRedisPort)
+	}
+	rclient := redis.NewClient(&redis.Options{
+		Addr: redisAddr,
+	})
+	rstore := sessions.NewRedisStore(rclient, -1)
+
+	//Set DB
+	dbAddr := os.Getenv("DBADDR")
+	if len(dbAddr) == 0 {
+		fmt.Println("DB address not set. Defaulting to port: " + defaultMongoPort)
+		dbAddr = fmt.Sprintf("%s:%s", host, defaultMongoPort)
+	}
+	dbstore, err := users.NewMongoStore(dbAddr, "chat", "users")
+	if err != nil {
+		log.Fatalf("error starting DB: %v", err.Error())
+	}
+
+	//Get sessionkey
+	sesskey := os.Getenv("SESSIONKEY")
+
+	//Initialize context
+	ctx := handlers.Context{
+		SessionKey:   sesskey,
+		SessionStore: rstore,
+		UserStore:    dbstore,
 	}
 
 	//get the TLS key and cert paths from environment variables
