@@ -10,12 +10,6 @@ import (
 	"github.com/info344-s17/challenges-jadiego/apiserver/sessions"
 )
 
-//TODO: Define Handlers for Sign-Up, Sign-In, and Sign-Out
-//Now you're ready to implement the Handlers for sign-up, sign-in, and sign-out,
-//as well as one that returns the authenticated user.
-//Create a new file at apiserver/handlers/auth.go. In that file, create these four HTTP
-//handler functions, and on all of them, use a receiver of type *Context. For example:
-
 //UsersHandler allows new users to sign up (POST) or returns all users
 func (ctx *Context) UsersHandler(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {

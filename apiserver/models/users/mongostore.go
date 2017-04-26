@@ -29,7 +29,7 @@ func (ms *MongoStore) GetByID(id UserID) (*User, error) {
 	if err == mgo.ErrNotFound {
 		return nil, ErrUserNotFound
 	}
-	return user, err
+	return user, nil
 }
 
 //GetByEmail returns the User with the given email
@@ -42,7 +42,7 @@ func (ms *MongoStore) GetByEmail(email string) (*User, error) {
 	if err == mgo.ErrNotFound {
 		return nil, ErrUserNotFound
 	}
-	return user, err
+	return user, nil
 }
 
 //GetByUserName returns the User with the given user name
@@ -53,7 +53,7 @@ func (ms *MongoStore) GetByUserName(name string) (*User, error) {
 	if err == mgo.ErrNotFound {
 		return nil, ErrUserNotFound
 	}
-	return user, err
+	return user, nil
 }
 
 //Insert inserts a new NewUser into the store
@@ -88,6 +88,7 @@ func NewMongoStore(mongoAddr, DBName, CollectName string) (*MongoStore, error) {
 	if err != nil {
 		return nil, err
 	}
+	defer sess.Close()
 
 	if len(DBName) == 0 {
 		DBName = "chat"
@@ -97,7 +98,6 @@ func NewMongoStore(mongoAddr, DBName, CollectName string) (*MongoStore, error) {
 		CollectName = "users"
 	}
 
-	defer sess.Close()
 	return &MongoStore{
 		Session:        sess,
 		DatabaseName:   DBName,
