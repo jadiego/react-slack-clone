@@ -32,7 +32,7 @@ func NewRedisStore(client *redis.Client, sessionDuration time.Duration) *RedisSt
 	//pointing at a redis instance on the same machine
 	//i.e., Addr is "127.0.0.1"
 	ropts := redis.Options{
-		Addr: "127.0.0.1:6379",
+		Addr: "127.0.0.1",
 	}
 	if client == nil {
 		client = redis.NewClient(&ropts)

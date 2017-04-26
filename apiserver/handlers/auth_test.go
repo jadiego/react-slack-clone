@@ -205,13 +205,3 @@ func TestSessionsHandler(t *testing.T) {
 	}
 
 }
-
-func TestSessionsMinehandler(t *testing.T) {
-	handler := http.HandlerFunc(ctx.SessionsMineHandler)
-	req, err := http.NewRequest("DELETE", "/v1/sessions/mine", nil)
-	if err != nil {
-		t.Fatal(err)
-	}
-	rr := httptest.NewRecorder()
-	handler.ServeHTTP(rr, req)
-}

@@ -9,18 +9,25 @@ import (
 	redis "gopkg.in/redis.v5"
 
 	"github.com/info344-s17/challenges-jadiego/apiserver/handlers"
+	"github.com/info344-s17/challenges-jadiego/apiserver/middleware"
 
 	"github.com/info344-s17/challenges-jadiego/apiserver/models/users"
 	"github.com/info344-s17/challenges-jadiego/apiserver/sessions"
 )
 
-const defaultPort = "443"
-const defaultRedisPort = "6379"
-const defaultMongoPort = "27017"
+const (
+	defaultPort      = "443"
+	defaultRedisPort = "6379"
+	defaultMongoPort = "27017"
+)
 
 const (
-	apiRoot    = "/v1/"
-	apiSummary = apiRoot + "summary"
+	apiRoot         = "/v1/"
+	apiSummary      = apiRoot + "summary"
+	apiUsers        = apiRoot + "users"
+	apiSessions     = apiRoot + "sessions"
+	apiSessionsMine = apiSessions + "/mine"
+	apiUsersMe      = apiUsers + "/me"
 )
 
 //main is the main entry point for this program
@@ -70,7 +77,7 @@ func main() {
 	sesskey := os.Getenv("SESSIONKEY")
 
 	//Initialize context
-	ctx := handlers.Context{
+	ctx := &handlers.Context{
 		SessionKey:   sesskey,
 		SessionStore: rstore,
 		UserStore:    dbstore,
@@ -82,15 +89,27 @@ func main() {
 	tlsKeyPath := os.Getenv("TLSKEY")
 	tlsCertPath := os.Getenv("TLSCERT")
 
+	mux := http.NewServeMux()
+	muxLogged := http.NewServeMux()
+
+	muxLogged.HandleFunc(apiUsers, ctx.UsersHandler)
+	muxLogged.HandleFunc(apiSessions, ctx.SessionsHandler)
+	muxLogged.HandleFunc(apiSessionsMine, ctx.SessionsMineHandler)
+	muxLogged.HandleFunc(apiUsersMe, ctx.UsersMeHanlder)
+
 	//add your handlers.SummaryHandler function as a handler
 	//for the apiSummary route
 	//HINT: https://golang.org/pkg/net/http/#HandleFunc
-	http.HandleFunc(apiSummary, handlers.SummaryHandler)
+	mux.HandleFunc(apiSummary, handlers.SummaryHandler)
+
+	logger := log.New(os.Stdout, "", log.LstdFlags)
+	//mux.Handle(apiRoot, middleware.Adapt(mux, middleware.CORS("", "", "", ""), middleware.Notify(logger)))
+	mux.Handle(apiRoot, middleware.Notify(logger)(muxLogged))
 
 	//start your web server and use log.Fatal() to log
 	//any errors that occur if the server can't start
 	//HINT: https://golang.org/pkg/net/http/#ListenAndServe
 	fmt.Printf("server is listening at %s:%s...\n", host, port)
-	log.Fatal(http.ListenAndServeTLS(addr, tlsCertPath, tlsKeyPath, nil))
+	log.Fatal(http.ListenAndServeTLS(addr, tlsCertPath, tlsKeyPath, mux))
 
 }
