@@ -149,13 +149,40 @@ func (ctx *Context) SessionsMineHandler(w http.ResponseWriter, r *http.Request) 
 
 //UsersMeHanlder gets the session state
 func (ctx *Context) UsersMeHanlder(w http.ResponseWriter, r *http.Request) {
-	//get the session state
-	ss := &SessionState{}
-	sessions.GetState(r, ctx.SessionKey, ctx.SessionStore, ss)
+	switch r.Method {
+	case "GET":
+		//get the session state
+		ss := &SessionState{}
+		sessions.GetState(r, ctx.SessionKey, ctx.SessionStore, ss)
 
-	//Respond to the client with the session
-	//state's User field, encoded as a JSON object
-	w.Header().Add(headerContentType, contentTypeJSONUTF8)
-	encoder := json.NewEncoder(w)
-	encoder.Encode(ss.User)
+		//Respond to the client with the session
+		//state's User field, encoded as a JSON object
+		w.Header().Add(headerContentType, contentTypeJSONUTF8)
+		encoder := json.NewEncoder(w)
+		encoder.Encode(ss.User)
+	case "PATCH":
+		//read and decode whatever gets posted
+		//decode whats being passed into a userupdates model
+		//once decoded, passs to store update method
+		decoder := json.NewDecoder(r.Body)
+		userupdate := &users.UserUpdates{}
+		if err := decoder.Decode(userupdate); err != nil {
+			http.Error(w, "error decoding JSON: "+err.Error(), http.StatusBadRequest)
+			return
+		}
+
+		//get the current user to get context for which update this belongs to
+		ss := &SessionState{}
+		_, err := sessions.GetState(r, ctx.SessionKey, ctx.SessionStore, ss)
+		if err != nil {
+			http.Error(w, "error getting current state : "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+
+		if err := ctx.UserStore.Update(userupdate, ss.User); err != nil {
+			http.Error(w, "error updating: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+		w.Write([]byte("update succesful!"))
+	}
 }
