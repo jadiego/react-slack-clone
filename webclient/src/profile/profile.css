@@ -1,0 +1,13 @@
+#profile .profile-container {
+    background-color: #fafbfc;
+}
+
+#profile i.profile-icon {
+    display: block;
+    margin: 0 auto;
+    font-size: 25px;
+}
+
+h3.header {
+    text-align: center;
+}

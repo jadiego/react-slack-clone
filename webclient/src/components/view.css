@@ -1,0 +1,66 @@
+#messages-container {
+    min-height: 100vh;
+    margin: 0px;
+}
+
+#messages-container .messages-pushable {
+    min-height: 100vh;
+    padding: 0px;
+    margin: 0px;
+    margin-left: 56px;
+}
+
+#messages-container #sidebar{
+    background-color: rgb(67, 72, 76);
+    border-radius: 0px !important;
+    padding: 0px !important;
+    border: none;
+    width: 56px;
+}
+
+#messages-container #sidebar .logo{
+    background-color: #f95c3c;
+    padding: 15px;
+}
+
+#messages-container #left{
+    border-radius: 0px !important;
+    background-color: #f2f2f2;
+    max-width: 280px
+}
+
+#messages-container #left #profile{
+    border: 0px !important;
+    cursor: pointer;
+    border-radius: 0px;
+    margin-bottom: 0px;
+    clear: both;
+    background-color: #fafbfc;
+}
+
+#messages-container #left #profile:hover{
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+
+
+#messages-container #left #profile #edit-icon, .profile-menu-icon{
+    float: right !important;
+}
+
+#messages-container #center {
+    height: 100vh;
+    overflow-y: scroll;
+    width: calc(100vw - 316px);
+}
+
+#popup-menu {
+    border-radius: 0px !important;
+    padding: 0px !important;
+    border: none;
+    box-shadow: 1px;
+}
+
+#edit-profile-menu {
+    background-color: #f2f2f2;
+}
