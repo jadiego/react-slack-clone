@@ -12,10 +12,10 @@ node_modules
 .idea
 .vscode
 tls
-.env
 
 /webclient/.env
 /webclient/npm-debug.log*
 /webclient/yarn-debug.log*
 /webclient/yarn-error.log*
 
+/apiserver/.env
