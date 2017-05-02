@@ -36,11 +36,11 @@ class Profile extends Component {
                     <Segment padded='very' className='profile-container'>
                         <Divider horizontal> <Header as='h3'> Update Personal Information </Header></Divider>
                         <Segment basic padded>
-                            <Form size='small'>
+                            <Form size='small' onSubmit={event => this.props.handleSubmitUpdate(event)}>
                                 <Segment>
-                                    <Form.Input control='Input' label='First Name' type='text' icon='image' />
-                                    <Form.Input control='Input' label='Last Name' type='text' icon='image' />
-                                    <Button size='tiny' className='submit-update'>Submit</Button>
+                                    <Form.Input control='Input' label='First Name' type='text' icon='image' value={this.props.firstname} onChange={event => this.props.handleFirstNameChange(event)}/>
+                                    <Form.Input control='Input' label='Last Name' type='text' icon='image' value={this.props.lastname} onChange={event => this.props.handleLastNameChange(event)}/>
+                                    <Button size='tiny' className='submit-update' onClick={event => this.props.handleSubmitUpdate(event)}>Submit</Button>
                                 </Segment>
                             </Form>
                         </Segment>

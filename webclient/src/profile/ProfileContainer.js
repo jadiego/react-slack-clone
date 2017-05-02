@@ -1,3 +1,4 @@
+import 'whatwg-fetch';
 import React, { Component } from 'react';
 import Profile from './Profile';
 import { apiRoot, storageKey } from '../Auth';
@@ -7,7 +8,9 @@ class ProfileContainer extends Component {
         super(props);
 
         this.state = {
-            user: {}
+            user:{},
+            firstname: "",
+            lastname: ""
         }
     }
 
@@ -30,6 +33,40 @@ class ProfileContainer extends Component {
             })
             .then(data => {
                 this.setState({ ...this.state, user: data })
+                console.log(this.state)
+            })
+            .catch(err => {
+                console.log(err)
+            })
+    }
+    
+
+    handleFirstNameChange = (event) => this.setState({ firstname: event.target.value })
+    handleLastNameChange = (event) => this.setState({ lastname: event.target.value })
+    handleSubmitUpdate = (event) => {
+        event.preventDefault();
+
+        fetch(`${apiRoot}users/me`,{
+            method: 'PATCH',  
+            headers: {  
+                "Content-Type": "application/json",
+                "Authorization": localStorage.getItem(storageKey)
+            },  
+            body: JSON.stringify({
+                firstName: this.state.firstname,
+                lastName: this.state.lastname
+            }) 
+        })
+            .then(resp => {
+                if (resp.status === 200) {
+                    return resp.text()
+                    this.forceUpdate()
+                } else {
+                    return resp.text()
+                }
+            })
+            .then(data => {
+                this.setState({ ...this.state, resp: data })
             })
             .catch(err => {
                 console.log(err)
@@ -38,7 +75,12 @@ class ProfileContainer extends Component {
 
     render() {
         return (
-            <Profile {...this.state}/>
+            <Profile 
+            handleFirstNameChange={this.handleFirstNameChange}
+            handleLastNameChange={this.handleLastNameChange}
+            handleSubmitUpdate={this.handleSubmitUpdate}
+            {...this.state}
+            />
         )
     }
 }
