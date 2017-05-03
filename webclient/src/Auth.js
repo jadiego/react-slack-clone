@@ -122,6 +122,6 @@ export const Auth = {
             })
     },
     isAuthenticated() {
-        return !!localStorage.getItem(storageKey)
+        return localStorage.getItem(storageKey) || this.user
     }
 }

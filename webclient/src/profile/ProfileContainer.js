@@ -10,7 +10,10 @@ class ProfileContainer extends Component {
         this.state = {
             user:{},
             firstname: "",
-            lastname: ""
+            lastname: "",
+            loading: false,
+            resp: "",
+            showresp: false
         }
     }
 
@@ -45,6 +48,8 @@ class ProfileContainer extends Component {
     handleLastNameChange = (event) => this.setState({ lastname: event.target.value })
     handleSubmitUpdate = (event) => {
         event.preventDefault();
+        this.setState({ loading: true })
+        this.setState({ showresp: false })
 
         fetch(`${apiRoot}users/me`,{
             method: 'PATCH',  
@@ -58,17 +63,15 @@ class ProfileContainer extends Component {
             }) 
         })
             .then(resp => {
-                if (resp.status === 200) {
-                    return resp.text()
-                    this.forceUpdate()
-                } else {
-                    return resp.text()
-                }
+                this.setState({ loading: false })
+                this.setState({ loading: true })
+                return resp.text()
             })
             .then(data => {
-                this.setState({ ...this.state, resp: data })
+                this.setState({ ...this.state, resp: data})
             })
             .catch(err => {
+                this.setState({ resp: "Internal server error" })
                 console.log(err)
             })
     }

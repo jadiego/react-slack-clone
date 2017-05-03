@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Header, Divider, Form, Icon, Container, Card, Image, Button } from 'semantic-ui-react';
+import { Segment, Header, Divider, Form, Icon, Container, Card, Image, Button, Message } from 'semantic-ui-react';
 import './profile.css';
 
 
@@ -36,11 +36,12 @@ class Profile extends Component {
                     <Segment padded='very' className='profile-container'>
                         <Divider horizontal> <Header as='h3'> Update Personal Information </Header></Divider>
                         <Segment basic padded>
-                            <Form size='small' onSubmit={event => this.props.handleSubmitUpdate(event)}>
+                            <Form size='small' onSubmit={event => this.props.handleSubmitUpdate(event)} warning={this.props.showresp}>
                                 <Segment>
                                     <Form.Input control='Input' label='First Name' type='text' icon='image' value={this.props.firstname} onChange={event => this.props.handleFirstNameChange(event)}/>
                                     <Form.Input control='Input' label='Last Name' type='text' icon='image' value={this.props.lastname} onChange={event => this.props.handleLastNameChange(event)}/>
                                     <Button size='tiny' className='submit-update' onClick={event => this.props.handleSubmitUpdate(event)}>Submit</Button>
+                                    <Message warning>{this.props.resp}</Message>
                                 </Segment>
                             </Form>
                         </Segment>
