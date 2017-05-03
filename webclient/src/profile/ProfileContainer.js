@@ -48,8 +48,7 @@ class ProfileContainer extends Component {
     handleLastNameChange = (event) => this.setState({ lastname: event.target.value })
     handleSubmitUpdate = (event) => {
         event.preventDefault();
-        this.setState({ loading: true })
-        this.setState({ showresp: false })
+        this.setState({ loading: true, showresp: false })
 
         fetch(`${apiRoot}users/me`,{
             method: 'PATCH',  
@@ -63,8 +62,7 @@ class ProfileContainer extends Component {
             }) 
         })
             .then(resp => {
-                this.setState({ loading: false })
-                this.setState({ loading: true })
+                this.setState({ loading: false, showresp: true })
                 return resp.text()
             })
             .then(data => {
