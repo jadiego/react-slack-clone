@@ -21,7 +21,8 @@ type Channel struct {
 	Private     bool           `json:"private"`
 }
 
-//NewChannel represents a new channel a user creates
+//NewChannel represents a new channel a user creates.
+//Only name is required when creating a new channel
 type NewChannel struct {
 	Name        string         `json:"name"`
 	Description string         `json:"description"`
@@ -40,8 +41,9 @@ func (nc *NewChannel) Validate() error {
 
 	//ensure Name is not empty
 	if len(nc.Name) < 1 {
-		return fmt.Errorf("name can't be empty")
+		return fmt.Errorf("channel name can't be empty")
 	}
+
 	//if you made here, it's valid, so return nil
 	return nil
 }
@@ -51,9 +53,9 @@ func (nc *NewChannel) ToChannel() *Channel {
 	c := &Channel{
 		Name:        nc.Name,
 		Description: nc.Description,
+		CreatedAt:   time.Now(),
 		Members:     nc.Members,
 		Private:     nc.Private,
-		CreatedAt:   time.Now(),
 	}
 
 	return c

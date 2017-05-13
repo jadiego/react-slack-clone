@@ -20,7 +20,8 @@ type Message struct {
 	EditedAt  time.Time    `json:"editedAt"`
 }
 
-//NewMessage represents a new message a user posts to a channel
+//NewMessage represents a new message a user posts to a channel.
+//A ChannelID and Body field is required for a new message.
 type NewMessage struct {
 	ChannelID ChannelID `json:"channelid" bson:"channel_id"`
 	Body      string    `json:"body"`
