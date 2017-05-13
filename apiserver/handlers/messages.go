@@ -43,6 +43,11 @@ func (ctx *Context) ChannelsHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		//adds creator to members list if empty
+		if len(nc.Members) == 0 {
+			nc.Members = append(nc.Members, ss.User.ID)
+		}
+
 		c, err := ctx.MessageStore.InsertChannel(ss.User.ID, nc)
 		if err != nil {
 			http.Error(w, "error inserting channel: "+err.Error(), http.StatusInternalServerError)
