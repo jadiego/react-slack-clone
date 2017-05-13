@@ -3,6 +3,8 @@ package messages
 import (
 	"time"
 
+	"fmt"
+
 	"github.com/info344-s17/challenges-jadiego/apiserver/models/users"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
@@ -39,9 +41,6 @@ func (ms *MongoStore) GetChannelByID(id ChannelID) (*Channel, error) {
 
 //InsertChannel inserts a new channel into the store
 func (ms *MongoStore) InsertChannel(id users.UserID, newchannel *NewChannel) (*Channel, error) {
-	if err := newchannel.Validate(); err != nil {
-		return nil, err
-	}
 	c := newchannel.ToChannel()
 
 	//attach creator's id in new channel
@@ -107,6 +106,16 @@ func (ms *MongoStore) RemoveChannelmember(id users.UserID, currentchannel *Chann
 	return err
 }
 
+//GetMessageByID gets a single message by the given id parameter
+func (ms *MongoStore) GetMessageByID(id MessageID) (*Message, error) {
+	message := &Message{}
+	err := ms.Session.DB(ms.DatabaseName).C(ms.MessagesCollectionName).FindId(id).One(message)
+	if err == mgo.ErrNotFound {
+		return nil, ErrMessageNotFound
+	}
+	return message, err
+}
+
 //InsertMessage inserts a new message and returns a new Message
 //with a newly assigned ID
 func (ms *MongoStore) InsertMessage(id users.UserID, newmessage *NewMessage) (*Message, error) {
@@ -160,6 +169,20 @@ func NewMongoStore(mongoAddr, DBName, ChannelCollectionName, MessageCollectionNa
 
 	if len(MessageCollectionName) == 0 {
 		MessageCollectionName = "messages"
+	}
+
+	//If the channel collection has no public channels, start a 'general' public Channel
+	if n, _ := sess.DB(DBName).C(ChannelCollectionName).Find(bson.M{"private": false}).Count(); n == 0 {
+		nch := &NewChannel{
+			Name:        "general",
+			Description: "This channel is open to all members",
+			Private:     false,
+		}
+		ch := nch.ToChannel()
+		ch.ID = ChannelID(bson.NewObjectId().Hex())
+		if err := sess.DB(DBName).C(ChannelCollectionName).Insert(ch); err != nil {
+			return nil, fmt.Errorf("error starting empty DB: " + err.Error())
+		}
 	}
 
 	return &MongoStore{
