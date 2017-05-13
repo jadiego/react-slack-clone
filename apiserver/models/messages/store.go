@@ -32,10 +32,10 @@ type Store interface {
 	DeleteChannel(id ChannelID) error
 
 	//AddChannelMember add a user to a channel's Members list
-	AddChannelMember(memberusername string, currentchannel *Channel) error
+	AddChannelMember(member *users.User, currentchannel *Channel) error
 
 	//RemoveChannelmember remove a user from a channel's Members list
-	RemoveChannelmember(memberusername string, currentchannel *Channel) error
+	RemoveChannelmember(member *users.User, currentchannel *Channel) error
 
 	//InsertMessage inserts a new message and returns a new Message
 	//with a newly assigned ID
