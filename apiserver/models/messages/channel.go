@@ -60,3 +60,13 @@ func (nc *NewChannel) ToChannel() *Channel {
 
 	return c
 }
+
+//IsMember checks if the given userID is a member
+func (c *Channel) IsMember(id users.UserID) bool {
+	for _, v := range c.Members {
+		if v == id {
+			return true
+		}
+	}
+	return false
+}
