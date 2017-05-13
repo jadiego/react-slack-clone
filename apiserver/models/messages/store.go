@@ -18,6 +18,9 @@ type Store interface {
 	//channels the user is a member of, as well as all public channels)
 	GetMyChannels(id users.UserID) ([]*Channel, error)
 
+	//GetChannelByID gets a single channel by the given id parameter
+	GetChannelByID(id ChannelID) (*Channel, error)
+
 	//InsertChannel inserts a new channel into the store
 	InsertChannel(id users.UserID, newchannel *NewChannel) (*Channel, error)
 
@@ -26,23 +29,23 @@ type Store interface {
 	GetChannelMessages(id ChannelID, n int) ([]*Message, error)
 
 	//UpdateChannel updates a channels name and description
-	UpdateChannel(updates *ChannelUpdates, currentchannel *Channel) error
+	UpdateChannel(id users.UserID, updates *ChannelUpdates, currentchannel *Channel) (*Channel, error)
 
-	//DeleteChannel delete a channel, as well as all messages posted to that channel
+	//DeleteChannel deletes a channel, as well as all messages posted to that channel
 	DeleteChannel(id ChannelID) error
 
 	//AddChannelMember add a user to a channel's Members list
-	AddChannelMember(member *users.User, currentchannel *Channel) error
+	AddChannelMember(id users.UserID, currentchannel *Channel) error
 
 	//RemoveChannelmember remove a user from a channel's Members list
-	RemoveChannelmember(member *users.User, currentchannel *Channel) error
+	RemoveChannelmember(id users.UserID, currentchannel *Channel) error
 
 	//InsertMessage inserts a new message and returns a new Message
 	//with a newly assigned ID
 	InsertMessage(id users.UserID, newmessage *NewMessage) (*Message, error)
 
 	//UpdateMessage applies the MessageUpdates to the current message
-	UpdateMessage(updates *MessageUpdates, currentmessage *Message) error
+	UpdateMessage(updates *MessageUpdates, currentmessage *Message) (*Message, error)
 
 	//DeleteMessage deletes a message
 	DeleteMessage(id MessageID) error
