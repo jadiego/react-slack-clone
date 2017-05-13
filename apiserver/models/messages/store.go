@@ -29,7 +29,7 @@ type Store interface {
 	GetChannelMessages(id ChannelID, n int) ([]*Message, error)
 
 	//UpdateChannel updates a channels name and description
-	UpdateChannel(id users.UserID, updates *ChannelUpdates, currentchannel *Channel) (*Channel, error)
+	UpdateChannel(updates *ChannelUpdates, currentchannel *Channel) (*Channel, error)
 
 	//DeleteChannel deletes a channel, as well as all messages posted to that channel
 	DeleteChannel(id ChannelID) error
@@ -39,6 +39,9 @@ type Store interface {
 
 	//RemoveChannelmember remove a user from a channel's Members list
 	RemoveChannelmember(id users.UserID, currentchannel *Channel) error
+
+	//GetMessageByID gets a single message by the given id parameter
+	GetMessageByID(id MessageID) (*Message, error)
 
 	//InsertMessage inserts a new message and returns a new Message
 	//with a newly assigned ID
