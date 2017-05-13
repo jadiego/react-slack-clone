@@ -1,6 +1,7 @@
 package handlers
 
 import (
+	"github.com/info344-s17/challenges-jadiego/apiserver/models/messages"
 	"github.com/info344-s17/challenges-jadiego/apiserver/models/users"
 	"github.com/info344-s17/challenges-jadiego/apiserver/sessions"
 )
@@ -15,4 +16,6 @@ type Context struct {
 	SessionStore sessions.Store
 	//an users.Store that will contain the server's user store
 	UserStore users.Store
+	//an messages.Store that will contain the server's message store
+	MessageStore messages.Store
 }
