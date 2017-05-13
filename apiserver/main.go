@@ -11,6 +11,7 @@ import (
 	"github.com/info344-s17/challenges-jadiego/apiserver/handlers"
 	"github.com/info344-s17/challenges-jadiego/apiserver/middleware"
 
+	"github.com/info344-s17/challenges-jadiego/apiserver/models/messages"
 	"github.com/info344-s17/challenges-jadiego/apiserver/models/users"
 	"github.com/info344-s17/challenges-jadiego/apiserver/sessions"
 )
@@ -22,12 +23,16 @@ const (
 )
 
 const (
-	apiRoot         = "/v1/"
-	apiSummary      = apiRoot + "summary"
-	apiUsers        = apiRoot + "users"
-	apiSessions     = apiRoot + "sessions"
-	apiSessionsMine = apiSessions + "/mine"
-	apiUsersMe      = apiUsers + "/me"
+	apiRoot             = "/v1/"
+	apiSummary          = apiRoot + "summary"
+	apiUsers            = apiRoot + "users"
+	apiSessions         = apiRoot + "sessions"
+	apiChannels         = apiRoot + "channels"
+	apiMessages         = apiRoot + "messages"
+	apiSpecificChannels = apiChannels + "/"
+	apiSpecificMessages = apiMessages + "/"
+	apiSessionsMine     = apiSessions + "/mine"
+	apiUsersMe          = apiUsers + "/me"
 )
 
 //main is the main entry point for this program
@@ -62,17 +67,26 @@ func main() {
 	})
 	rstore := sessions.NewRedisStore(rclient, -1)
 
-	//Set DB
 	dbAddr := os.Getenv("DBADDR")
 	if len(dbAddr) == 0 {
 		fmt.Println("DB address not set. Defaulting to port: " + defaultMongoPort)
 		dbAddr = defaultMongoPort
 	}
-	dbstore, err := users.NewMongoStore(dbAddr, "chat", "users")
+	//Set Users DB
+	udbstore, err := users.NewMongoStore(dbAddr, "", "")
 	if err != nil {
-		log.Fatalf("error starting DB: %v", err.Error())
+		log.Fatalf("error starting users DB: %v", err.Error())
 	}
-	defer dbstore.Session.Close()
+	defer udbstore.Session.Close()
+	//Set Messages DB
+	//Ensure atleast one public channel named "general"
+	//to ensure users have somewhere to post messages
+
+	mdbstore, err := messages.NewMongoStore(dbAddr, "", "", "")
+	if err != nil {
+		log.Fatalf("error starting messages DB: %v", err.Error())
+	}
+	defer mdbstore.Session.Close()
 
 	//Get sessionkey
 	sesskey := os.Getenv("SESSIONKEY")
@@ -81,7 +95,8 @@ func main() {
 	ctx := &handlers.Context{
 		SessionKey:   sesskey,
 		SessionStore: rstore,
-		UserStore:    dbstore,
+		UserStore:    udbstore,
+		MessageStore: mdbstore,
 	}
 
 	//get the TLS key and cert paths from environment variables
@@ -97,6 +112,10 @@ func main() {
 	muxLogged.HandleFunc(apiSessions, ctx.SessionsHandler)
 	muxLogged.HandleFunc(apiSessionsMine, ctx.SessionsMineHandler)
 	muxLogged.HandleFunc(apiUsersMe, ctx.UsersMeHanlder)
+	muxLogged.HandleFunc(apiChannels, ctx.ChannelsHandler)
+	muxLogged.HandleFunc(apiSpecificChannels, ctx.SpecificChannelHandler)
+	muxLogged.HandleFunc(apiMessages, ctx.MessageHandler)
+	muxLogged.HandleFunc(apiSpecificMessages, ctx.SpecificMessageHandler)
 
 	//add your handlers.SummaryHandler function as a handler
 	//for the apiSummary route
