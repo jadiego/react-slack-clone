@@ -32,8 +32,9 @@ class Login extends Component {
 
         if (!_.isEmpty(currentUser)) {
             console.log("logged in, redirecting to home page")
+            console.log(from)
             return (
-                <Redirect to='/messages' />
+                <Redirect to={from.pathname} />
             )
         }
 

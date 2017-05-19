@@ -5,7 +5,6 @@ import _, { find } from 'lodash';
 
 class Messages extends Component {
     render() {
-        console.log(this.props)
         let {
             fetching,
             currentUser,
@@ -13,6 +12,8 @@ class Messages extends Component {
             users,
             newMessage,
             channels,
+            changeTextArea,
+            postMessage
         } = this.props
 
         //Set public icon depending if private or not
@@ -22,9 +23,6 @@ class Messages extends Component {
         }
         return (
             <Container fluid id='channel-container'>
-                <Dimmer active={fetching !== 0} inverted>
-                    <Loader inverted content='Loading' />
-                </Dimmer>
                 <Segment basic id='channel-container-left'>
                     <Segment basic padded id='channel-description'>
                         <Header as='h2' color='orange'>
@@ -45,6 +43,9 @@ class Messages extends Component {
                             className='textbox ui'
                             placeholder={`Message ${currentChannel.name}`}
                             autoHeight
+                            value={newMessage}
+                            onChange={(event) => changeTextArea(event)}
+                            onKeyDown={event => postMessage(event)}
                         />
                     </Segment>
                 </Segment>
@@ -63,6 +64,7 @@ class Messages extends Component {
                                     return <Menu.Item
                                         key={`key-${member}`}
                                         className='channel-item'
+                                        style={{padding: 5}}
                                     >
                                         <Image src={person.photoURL} inline shape='rounded' spaced width={30} />
                                         {`${person.firstName} ${person.lastName} (@${person.userName})`}

@@ -50,6 +50,9 @@ let channels = (state = [], action) => {
 let currentChannel = (state = {}, action) => {
     switch (action.type) {
         case "SET CURRENT CHANNEL":
+            if (action.data === undefined) {
+                return state
+            }
             return action.data;
         default:
             return state
@@ -59,16 +62,25 @@ let currentChannel = (state = {}, action) => {
 let messages = (state = {}, action) => {
     switch (action.type) {
         case "SET MESSAGES":
-            let obj = Object.assign({}, { ...state })
+            var obj = Object.assign({}, { ...state })
             obj[action.channelid] = action.data
             return obj;
+        case "MESSAGE NEW":
+            var obj = Object.assign({}, { ...state })
+            obj[action.data.channelid].push(action.data)
+            return obj
         default:
             return state
     }
 }
 
 let newMessage = (state = "", action) => {
-    return state
+    switch (action.type) {
+        case "UPDATE NEW MESSAGE":
+            return action.body
+        default:
+            return state
+    }
 }
 
 const rootReducer = combineReducers({

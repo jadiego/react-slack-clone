@@ -8,14 +8,14 @@ const contentTypeJSONUTF8 = contentTypeJSON + "; " + charsetUTF8
 const contentTypeTextUTF8 = contentTypeText + "; " + charsetUTF8
 const storageKey = "auth"
 
-var apiRoot = "https://api.chat.jadiego.me/v1/";
+export var apiRoot = "https://api.chat.jadiego.me/v1/";
 if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
   apiRoot = "https://localhost:4000/v1/"
 };
 
 //Handler for fetch calls that either calls handleJSONResponse or handleTextresponse
 //depending on the response from fetch call
-const handleResponse = (response) => {
+export const handleResponse = (response) => {
   let contentType = response.headers.get(headerContentType)
   if (contentType.includes(contentTypeJSON)) {
     return handleJSONResponse(response)
@@ -27,7 +27,7 @@ const handleResponse = (response) => {
   }
 }
 //Handler for JSON response fetch calls
-const handleJSONResponse = (response) => {
+export const handleJSONResponse = (response) => {
   return response.json()
     .then(json => {
       if (response.ok) {
@@ -41,7 +41,7 @@ const handleJSONResponse = (response) => {
     })
 }
 //Handler for Text response fetch calls
-const handleTextResponse = (response) => {
+export const handleTextResponse = (response) => {
   return response.text()
     .then(text => {
       if (response.ok) {
@@ -57,36 +57,36 @@ const handleTextResponse = (response) => {
 
 export const fetchSignUp = (e, u, fn, ln, p1, p2) => {
   e.preventDefault()
-  
+
   return dispatch => {
     dispatch({ type: 'FETCH START' })
 
     return fetch(`${apiRoot}users`, {
-            method: "POST",
-            mode: "cors",
-            headers: new Headers({
-                "Content-Type": contentTypeJSONUTF8
-            }),
-            body: JSON.stringify({
-                firstName: fn,
-                lastName: ln,
-                userName: u,
-                password: p1,
-                passwordConf: p2,
-                email: e
-            })
-        })
-            .then(resp => {
-                    localStorage.setItem(storageKey, resp.headers.get("Authorization"))
-                    return handleResponse(resp)
-                })
-            .then(data => {
-                dispatch({ type: 'SET CURRENT USER', data })
-                dispatch({ type: 'FETCH END', message: "" })
-            })
-            .catch(error => {
-                dispatch({ type: 'FETCH END', message: error.message })
-            })
+      method: "POST",
+      mode: "cors",
+      headers: new Headers({
+        "Content-Type": contentTypeJSONUTF8
+      }),
+      body: JSON.stringify({
+        firstName: fn,
+        lastName: ln,
+        userName: u,
+        password: p1,
+        passwordConf: p2,
+        email: e
+      })
+    })
+      .then(resp => {
+        localStorage.setItem(storageKey, resp.headers.get("Authorization"))
+        return handleResponse(resp)
+      })
+      .then(data => {
+        dispatch({ type: 'SET CURRENT USER', data })
+        dispatch({ type: 'FETCH END', message: "" })
+      })
+      .catch(error => {
+        dispatch({ type: 'FETCH END', message: error.message })
+      })
   }
 }
 
@@ -137,11 +137,11 @@ export const fetchSignOut = () => {
         localStorage.removeItem(storageKey)
         dispatch({ type: 'SET CURRENT USER', data: {} })
         dispatch({ type: 'FETCH END', message: data })
-        console.log(data)
+
       })
       .catch(error => {
         dispatch({ type: 'FETCH END', message: error.message })
-        console.log(error)
+
       })
   }
 }
@@ -214,7 +214,7 @@ export const fetchUsers = () => {
 export const fetchChannelMessages = (channelname) => {
   return (dispatch, getState) => {
     const { currentChannel, channels } = getState();
-    let co = _.find(channels, (c) => { 
+    let co = _.find(channels, (c) => {
       return c.name === channelname
     });
 
@@ -238,16 +238,56 @@ export const fetchChannelMessages = (channelname) => {
   }
 }
 
-export const setCurrentChannel = (event, channelname) => {
-
-    console.log(event, channelname)
-    return dispatch => {
-      return fetchChannelMessages(channelname)
-    }
+export const fetchLinkToChannel = (channelid) => {
+  return dispatch => {
+    return fetch(`${apiRoot}channels/${channelid}`, {
+      method: "LINK",
+      mode: "cors",
+      headers: new Headers({
+        "Authorization": localStorage.getItem(storageKey)
+      })
+    })
+      .then(handleResponse)
+      .then(data => {
+      })
+      .catch(error => console.log("error: ", error))
+  }
 }
 
-export const changeTextArea = () => {
-  return disatch => {
+export const changeTextArea = (event) => {
+  event.preventDefault()
+  return dispatch => {
+    dispatch({ type: 'UPDATE NEW MESSAGE', body: event.target.value })
+  }
+}
 
-  }  
+export const postMessage = (event) => {
+
+  return (dispatch, getState) => {
+    if (event.keyCode === 13 && event.shiftKey === false) {
+      const { currentChannel, newMessage } = getState()
+
+      dispatch({ type: 'FETCH START' })
+
+      return fetch(`${apiRoot}messages`, {
+        method: "POST",
+        mode: "cors",
+        headers: new Headers({
+          "Content-Type": contentTypeJSONUTF8,
+          "Authorization": localStorage.getItem(storageKey)
+        }),
+        body: JSON.stringify({
+          channelid: currentChannel.id,
+          body: newMessage
+        })
+      })
+        .then(handleResponse)
+        .then(data => {
+          dispatch({ type: 'FETCH END', message: "" })
+          dispatch({ type: 'MESSAGE NEW', data})
+          dispatch({ type: 'UPDATE NEW MESSAGE', body: "" })
+        })
+        .catch(error => dispatch({ type: 'FETCH END', message: error.message }))
+    }
+  }
 }

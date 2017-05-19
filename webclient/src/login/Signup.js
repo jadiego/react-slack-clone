@@ -44,23 +44,23 @@ class Signup extends Component {
                         <Header textAlign='center' as='h1'> Get started with <strong>Chat</strong> </Header>
                         <Header textAlign='center' as='h3'> Sign up with a free account</Header>
                         <Form.Field>
-                            <input placeholder='First Name' type='text' value={fn} onChange={handleFirstNameChange(event)} />
+                            <input placeholder='First Name' type='text' value={fn} onChange={event => handleFirstNameChange(event)} />
                         </Form.Field>
                         <Form.Field>
-                            <input placeholder='Last Name' type='text' value={ln} onChange={handleLastNameChange(event)} />
+                            <input placeholder='Last Name' type='text' value={ln} onChange={event => handleLastNameChange(event)} />
                         </Form.Field>
                         <Form.Field required>
-                            <input placeholder='Username' type='text' value={u} onChange={handleUsernameChange(event)} />
+                            <input placeholder='Username' type='text' value={u} onChange={event => handleUsernameChange(event)} />
                         </Form.Field>
                         <Form.Field required>
-                            <input placeholder='Email Address' type='email' value={e} onChange={handleEmailChange(event)} />
+                            <input placeholder='Email Address' type='email' value={e} onChange={event => handleEmailChange(event)} />
                         </Form.Field>
                         <Form.Field required>
-                            <input placeholder='Password' type='password' value={p1} onChange={handlePasswordChange(event)} />
+                            <input placeholder='Password' type='password' value={p1} onChange={event => handlePasswordChange(event)} />
                         </Form.Field>
                         
                         <Form.Field required>
-                            <input placeholder='Confirm Password' type='password' value={p2} onChange={handlePasswordConfChange(event)} />
+                            <input placeholder='Confirm Password' type='password' value={p2} onChange={event => handlePasswordConfChange(event)} />
                         </Form.Field>
                         <Button className="submit-button" fluid={true} onClick={(event) => fetchSignUp(event, e, u, fn, ln, p1, p2)}>Submit</Button>
                         <Message warning>{fetchError}</Message>

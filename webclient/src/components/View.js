@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Menu, Image, Segment, Sidebar, Icon } from 'semantic-ui-react';
 import './view.css';
 import logooutline from '../images/chat-outline.png';
-import { Route, Link, Switch, Redirect } from 'react-router-dom';
+import { Route, NavLink, Link, Switch, Redirect } from 'react-router-dom';
 import logo from '../images/chat-outline.png'
 
 import ProfilePopup from './ProfilePopupContainer';
@@ -14,7 +14,9 @@ class View extends Component {
         let {
             channels,
             users,
-            fetchChannelMessages
+            currentUser,
+            fetchChannelMessages,
+            directMessage,
         } = this.props
         return (
             <div id='messages-container'>
@@ -33,9 +35,15 @@ class View extends Component {
                         {channels.map(channel =>
                                 <Menu.Item 
                                 key={`key-${channel.id}`} 
-                                as={Link} to={{ pathname: `/messages/${channel.name}`}}
+                                as={NavLink} to={{ pathname: `/messages/${channel.name}`}}
                                 className='channel-item'
                                 onClick={() => fetchChannelMessages(channel.name)}
+                                activeClassName='active'
+                                activeStyle={{
+                                    border: "none",
+                                    backgroundColor: "rgba(249, 92, 60, 0.8)",
+                                    color: "white"
+                                }}
                                 >
                                     <Image src='https://g.flockusercontent.com/default-group-1.png' inline shape='rounded' spaced width={30} />
                                     {channel.name}      
@@ -47,8 +55,15 @@ class View extends Component {
                         {users.map(user =>
                                 <Menu.Item 
                                 key={`key-${user.id}`} 
-                                as={Link} to={{ pathname: `/messages/dm/${user.userName}`, state: { ...user } }}
+                                as={NavLink} to={{ pathname: `/messages/dm:${user.userName}:${currentUser.userName}` }}
                                 className='channel-item'
+                                activeClassName='active'
+                                activeStyle={{
+                                    border: "none",
+                                    backgroundColor: "rgba(249, 92, 60, 0.8)",
+                                    color: "white"
+                                }}
+                                onClick={() => directMessage(user)}
                                 >
                                     <Image src={user.photoURL} inline shape='rounded' spaced width={30}/>
                                     {user.userName}      

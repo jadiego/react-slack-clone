@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Feed, Image } from 'semantic-ui-react';
+import { Feed, Image, Card } from 'semantic-ui-react';
 import moment from "moment";
 import _, { find } from 'lodash';
+import OGPCard from './OGPCard'
+import * as linkify from 'linkifyjs';;
 
 import { connect } from 'react-redux';
 
@@ -14,7 +16,6 @@ class MessageComments extends Component {
         } = this.props
 
         messages = messages[currentChannel.id]
-
         return (
             <Feed>
                 {messages !== undefined && (
@@ -28,9 +29,18 @@ class MessageComments extends Component {
                                     <Feed.Date>{moment(message.createdAt).fromNow()}</Feed.Date>
                                     <Feed.Date className='comment-date-right'>{moment(message.createdAt).format("LLL")}</Feed.Date>
                                 </Feed.Summary>
-                                <div className="text">
-                                    {message.body}
-                                </div>
+                                {
+                                    linkify.find(message.body).length !== 0 ? (
+                                        <div>
+                                            <a href={message.body} target="_blank">{message.body}</a>
+                                            <OGPCard link={message.body}/>
+                                        </div>
+                                    ) : (
+                                            <div className="text">
+                                                {message.body}
+                                            </div>
+                                        )
+                                }
                             </Feed.Content>
                         </Feed.Event>
                     }
