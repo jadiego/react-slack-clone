@@ -6,9 +6,9 @@ const (
 	//DefaultCORSOrigins are the default allowed origins
 	DefaultCORSOrigins = "*"
 	//DefaultCORSMethods are the default allowed methods
-	DefaultCORSMethods = "GET, PUT, POST, PATCH, DELETE"
+	DefaultCORSMethods = "GET, PUT, POST, PATCH, DELETE, LINK, UNLINK"
 	//DefaultCORSAllowHeaders are the default allowed request headers
-	DefaultCORSAllowHeaders = "Content-Type, Authorization"
+	DefaultCORSAllowHeaders = "Content-Type, Authorization, Link"
 	//DefaultCORSExposeHeaders are the default exposed response headers
 	DefaultCORSExposeHeaders = "Authorization"
 )
