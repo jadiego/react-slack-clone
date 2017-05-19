@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Segment, Header, Image, Form, Button, Message, Container } from 'semantic-ui-react';
-import { Link } from 'react-router-dom';
+import _, { isEmpty } from 'lodash';
+import { Link, Redirect } from 'react-router-dom';
 import './login.css';
 import logo from '../images/chat.svg';
 import logooutline from '../images/chat-outline.png';
@@ -9,6 +10,28 @@ import PropTypes from 'prop-types';
 class Signup extends Component {
 
     render() {
+        let {
+            fetching,
+            fetchError,
+            currentUser,
+            fetchSignUp,
+            e, u, fn, ln, p1, p2,
+            handleEmailChange,
+            handleFirstNameChange,
+            handleLastNameChange,
+            handleNewUserSubmit,
+            handlePasswordChange,
+            handlePasswordConfChange,
+            handleUsernameChange
+        } = this.props
+
+        if (!_.isEmpty(currentUser)) {
+            console.log("logged in, redirecting to home page")
+            return (
+                <Redirect to='/messages' />
+            )
+        }
+
         return (
             <Segment.Group id='login-container' horizontal>
                 <Segment basic id='login-container-left'>
@@ -17,30 +40,30 @@ class Signup extends Component {
                         <Header.Content>Chat</Header.Content>
                     </Header>
 
-                    <Form id='signup-form' onSubmit={event => this.props.handleNewUserSubmit(event)} loading={this.props.loading} warning={this.props.error}>
+                    <Form id='signup-form' onSubmit={(event) => fetchSignUp(event, e, u, fn, ln, p1, p2)} loading={fetching !== 0} warning={fetchError.length > 0}>
                         <Header textAlign='center' as='h1'> Get started with <strong>Chat</strong> </Header>
                         <Header textAlign='center' as='h3'> Sign up with a free account</Header>
                         <Form.Field>
-                            <input placeholder='First Name' type='text' value={this.props.firstname} onChange={event => this.props.handleFirstNameChange(event)} />
+                            <input placeholder='First Name' type='text' value={fn} onChange={handleFirstNameChange(event)} />
                         </Form.Field>
                         <Form.Field>
-                            <input placeholder='Last Name' type='text' value={this.props.lastname} onChange={event => this.props.handleLastNameChange(event)} />
+                            <input placeholder='Last Name' type='text' value={ln} onChange={handleLastNameChange(event)} />
                         </Form.Field>
                         <Form.Field required>
-                            <input placeholder='Username' type='text' value={this.props.username} onChange={event => this.props.handleUsernameChange(event)} />
+                            <input placeholder='Username' type='text' value={u} onChange={handleUsernameChange(event)} />
                         </Form.Field>
                         <Form.Field required>
-                            <input placeholder='Email Address' type='email' value={this.props.emailaddress} onChange={event => this.props.handleEmailChange(event)} />
+                            <input placeholder='Email Address' type='email' value={e} onChange={handleEmailChange(event)} />
                         </Form.Field>
                         <Form.Field required>
-                            <input placeholder='Password' type='password' value={this.props.password} onChange={event => this.props.handlePasswordChange(event)} />
+                            <input placeholder='Password' type='password' value={p1} onChange={handlePasswordChange(event)} />
                         </Form.Field>
                         
                         <Form.Field required>
-                            <input placeholder='Confirm Password' type='password' value={this.props.passwordconf} onChange={event => this.props.handlePasswordConfChange(event)} />
+                            <input placeholder='Confirm Password' type='password' value={p2} onChange={handlePasswordConfChange(event)} />
                         </Form.Field>
-                        <Button className="submit-button" fluid={true} onClick={event => this.props.handleNewUserSubmit(event)}>Submit</Button>
-                        <Message warning>{this.props.errmsg}</Message>
+                        <Button className="submit-button" fluid={true} onClick={(event) => fetchSignUp(event, e, u, fn, ln, p1, p2)}>Submit</Button>
+                        <Message warning>{fetchError}</Message>
                         <Segment textAlign='center' as='p' basic>
                             Already have an account? 
                             <Link to='/login'> Log In</Link>
@@ -59,15 +82,12 @@ class Signup extends Component {
 }
 
 Signup.propTypes = {
-    handleNewUserSubmit: PropTypes.func.isRequired,
     handleEmailChange: PropTypes.func.isRequired,
     handlePasswordChange: PropTypes.func.isRequired,
     handlePasswordConfChange: PropTypes.func.isRequired,
     handleUsernameChange: PropTypes.func.isRequired,
     handleFirstNameChange: PropTypes.func.isRequired,
     handleLastNameChange: PropTypes.func.isRequired,
-    loading: PropTypes.bool.isRequired,
-    error: PropTypes.bool.isRequired,
 }
 
 export default Signup

@@ -1,39 +1,28 @@
 import React, { Component } from 'react';
 import Signup from './Signup';
-import { Auth } from '../Auth';
+
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { fetchSignUp } from '../actions'
+
 
 
 class SignupContainer extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            emailaddress: "",
-            username: "",
-            firstname: "",
-            lastname: "",
-            password: "",
-            passwordconf: "",
-            loading: false,
-            error: false,
-            errmsg: ""
-        }
+    state = {
+        e: "",
+        u: "",
+        fn: "",
+        ln: "",
+        p1: "",
+        p2: ""
     }
 
-    handleEmailChange = (event) => this.setState({ emailaddress: event.target.value })
-    handleUsernameChange = (event) => this.setState({ username: event.target.value })
-    handlePasswordChange = (event) => this.setState({ password: event.target.value })
-    handlePasswordConfChange = (event) => this.setState({ passwordconf: event.target.value })
-    handleFirstNameChange = (event) => this.setState({ firstname: event.target.value })
-    handleLastNameChange = (event) => this.setState({ lastname: event.target.value })
-
-
-    //Submits the fields in the form to the API server with the following prompts in order
-    //f, e, u, fn, ln, p1, p2
-    handleNewUserSubmit = (event) => {
-        event.preventDefault();
-        Auth.signup(this, this.state.emailaddress, this.state.username, this.state.firstname, this.state.lastname, this.state.password, this.state.passwordconf)
-    }
+    handleEmailChange = (event) => this.setState({ e: event.target.value })
+    handleUsernameChange = (event) => this.setState({ u: event.target.value })
+    handlePasswordChange = (event) => this.setState({ p1: event.target.value })
+    handlePasswordConfChange = (event) => this.setState({ p2: event.target.value })
+    handleFirstNameChange = (event) => this.setState({ fn: event.target.value })
+    handleLastNameChange = (event) => this.setState({ ln: event.target.value })
 
     render() {
         return (
@@ -46,9 +35,24 @@ class SignupContainer extends Component {
                 handleFirstNameChange={this.handleFirstNameChange}
                 handleLastNameChange={this.handleLastNameChange}
                 {...this.state}
+                {...this.props}
             />
         )
     }
 }
 
-export default SignupContainer
+const mapStateToProps = (state) => {
+    return {
+        fetching: state.fetching,
+        fetchError: state.fetchError,
+        currentUser: state.currentUser,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        fetchSignUp,
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SignupContainer)

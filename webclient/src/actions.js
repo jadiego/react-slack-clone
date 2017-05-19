@@ -55,6 +55,41 @@ const handleTextResponse = (response) => {
     })
 }
 
+export const fetchSignUp = (e, u, fn, ln, p1, p2) => {
+  e.preventDefault()
+  
+  return dispatch => {
+    dispatch({ type: 'FETCH START' })
+
+    fetch(`${apiRoot}users`, {
+            method: "POST",
+            mode: "cors",
+            headers: new Headers({
+                "Content-Type": contentTypeJSONUTF8
+            }),
+            body: JSON.stringify({
+                firstName: fn,
+                lastName: ln,
+                userName: u,
+                password: p1,
+                passwordConf: p2,
+                email: e
+            })
+        })
+            .then(resp => {
+                    localStorage.setItem(storageKey, resp.headers.get("Authorization"))
+                    return handleResponse(resp)
+                })
+            .then(data => {
+                dispatch({ type: 'SET CURRENT USER', data })
+                dispatch({ type: 'FETCH END', message: "" })
+            })
+            .catch(error => {
+                dispatch({ type: 'FETCH END', message: error.message })
+            })
+  }
+}
+
 export const fetchAuthenticate = (event, email, password) => {
   event.preventDefault()
 
@@ -77,7 +112,6 @@ export const fetchAuthenticate = (event, email, password) => {
         return handleResponse(resp)
       })
       .then(data => {
-        let message = ""
         dispatch({ type: 'FETCH END', message: "" })
         dispatch({ type: 'SET CURRENT USER', data })
       })
