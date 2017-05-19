@@ -8,6 +8,7 @@ class ProfilePopup extends Component {
             fetching,
             fetchError,
             currentUser,
+            fetchSignOut,
         } = this.props
 
         const popoverstyle = {
@@ -49,7 +50,7 @@ class ProfilePopup extends Component {
                             </List.Content>
                             <Icon name='pencil' className='profile-menu-icon' color='orange' />
                         </List.Item>
-                        <List.Item onClick={this.props.handleSignOut}>
+                        <List.Item onClick={fetchSignOut}>
                             <List.Header>Sign out</List.Header>
                             <List.Content>{currentUser.email}</List.Content>
                         </List.Item>

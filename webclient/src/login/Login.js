@@ -38,7 +38,7 @@ class Login extends Component {
         }
 
         let warningmessage = null
-        if (this.props.location.state) {
+        if (this.props.location.state && !from.pathname.includes("signed out")) {
             warningmessage = <Message id='wrong-route-message' color='yellow'>
                     <Icon name='warning circle'></Icon>
                     You need to sign in to access this page.

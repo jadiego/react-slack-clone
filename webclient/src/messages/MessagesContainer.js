@@ -4,7 +4,6 @@ import './messages.css'
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { fetchChannelMessages } from '../actions'
 
 
 class MessagesContainer extends Component {
@@ -22,31 +21,6 @@ class MessagesContainer extends Component {
     //         .then(data => {this.forceUpdate();console.log(data)})
     //         .catch(error => console.log("error: ", error))
     // }
-
-    componentDidUpdate() {
-        console.log("updating to: ", this.props.match.params.channelname)
-        this.props.fetchChannelMessages(this.props.match.params.channelname)
-    }
-
-    componentDidMount() {
-        console.log("mounting to: ", this.props.match.params.channelname)
-        setTimeout(() => {
-            this.props.fetchChannelMessages(this.props.match.params.channelname)
-        }, 1000)
-        setTimeout(() => {
-            this.forceUpdate()
-        }, 1300)
-    }
-
-    shouldComponentUpdate(nextProps, nextState) {
-        console.log(nextProps)
-        if (nextProps.match.params.channelname !== this.props.match.params.channelname) {
-            return true
-        } else {
-            return false
-        }
-    }
-
 
     // handleTextAreaChange = (e) => {
     //     e.preventDefault()
@@ -96,11 +70,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        fetchChannelMessages,
-    }, dispatch)
-}
-
-
-export default connect(mapStateToProps, mapDispatchToProps)(MessagesContainer)
+export default connect(mapStateToProps)(MessagesContainer)

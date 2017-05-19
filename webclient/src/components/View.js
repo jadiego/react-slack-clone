@@ -11,6 +11,11 @@ import ProfileContainer from '../profile/ProfileContainer';
 
 class View extends Component {
     render() {
+        let {
+            channels,
+            users,
+            fetchChannelMessages
+        } = this.props
         return (
             <div id='messages-container'>
                 <Menu id='sidebar' vertical fixed='left' size='mini'>
@@ -25,11 +30,12 @@ class View extends Component {
                             <Icon name='plus'/>
                             Channels
                         </Menu.Item>
-                        {this.props.channels.map(channel =>
+                        {channels.map(channel =>
                                 <Menu.Item 
                                 key={`key-${channel.id}`} 
                                 as={Link} to={{ pathname: `/messages/${channel.name}`}}
                                 className='channel-item'
+                                onClick={() => fetchChannelMessages(channel.name)}
                                 >
                                     <Image src='https://g.flockusercontent.com/default-group-1.png' inline shape='rounded' spaced width={30} />
                                     {channel.name}      
@@ -38,7 +44,7 @@ class View extends Component {
                         <Menu.Item header className='menu-header'>
                             Direct messages
                         </Menu.Item>
-                        {this.props.users.map(user =>
+                        {users.map(user =>
                                 <Menu.Item 
                                 key={`key-${user.id}`} 
                                 as={Link} to={{ pathname: `/messages/dm/${user.userName}`, state: { ...user } }}
@@ -53,7 +59,6 @@ class View extends Component {
                             <Switch>
                                 <Route exact path="/profile" component={ProfileContainer} />
                                 <Route exact path="/messages/:channelname" component={MessagesContainer} />
-                                <Redirect from='/messages' to='/messages/general'/>
                             </Switch>
                     </Sidebar.Pusher>
                 </Sidebar.Pushable>

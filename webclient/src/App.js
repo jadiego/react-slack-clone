@@ -36,8 +36,9 @@ class App extends Component {
                 <Container fluid id='app'>
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/" component={Signup} />
-                    <AuthRoute path="/messages/" component={View} />
+                    <AuthRoute exact path="/messages/:channelname" component={View} />
                     <AuthRoute exact path="/profile" component={View} />
+                    <Route exact path='/messages' render={() => <Redirect to ='/messages/general' />}/>
                 </Container>
             </BrowserRouter>
         )

@@ -61,7 +61,7 @@ export const fetchSignUp = (e, u, fn, ln, p1, p2) => {
   return dispatch => {
     dispatch({ type: 'FETCH START' })
 
-    fetch(`${apiRoot}users`, {
+    return fetch(`${apiRoot}users`, {
             method: "POST",
             mode: "cors",
             headers: new Headers({
@@ -96,7 +96,7 @@ export const fetchAuthenticate = (event, email, password) => {
   return dispatch => {
     dispatch({ type: 'FETCH START' })
 
-    fetch(`${apiRoot}sessions`, {
+    return fetch(`${apiRoot}sessions`, {
       method: "POST",
       mode: "cors",
       headers: new Headers({
@@ -122,10 +122,10 @@ export const fetchAuthenticate = (event, email, password) => {
 }
 
 export const fetchSignOut = () => {
-  return disatch => {
-    disatch({ type: 'FETCH START' })
+  return dispatch => {
+    dispatch({ type: 'FETCH START' })
 
-    fetch(`${apiRoot}sessions/mine`, {
+    return fetch(`${apiRoot}sessions/mine`, {
       method: "DELETE",
       mode: "cors",
       headers: new Headers({
@@ -135,11 +135,12 @@ export const fetchSignOut = () => {
       .then(handleResponse)
       .then(data => {
         localStorage.removeItem(storageKey)
-        disatch({ type: 'FETCH END', message: data })
+        dispatch({ type: 'SET CURRENT USER', data: {} })
+        dispatch({ type: 'FETCH END', message: data })
         console.log(data)
       })
       .catch(error => {
-        disatch({ type: 'FETCH END', message: error.message })
+        dispatch({ type: 'FETCH END', message: error.message })
         console.log(error)
       })
   }
@@ -150,7 +151,7 @@ export const fetchCheckSession = () => {
   return dispatch => {
     dispatch({ type: 'FETCH START' })
 
-    fetch(`${apiRoot}users/me`, {
+    return fetch(`${apiRoot}users/me`, {
       mode: "cors",
       headers: new Headers({
         "Authorization": localStorage.getItem(storageKey)
@@ -175,7 +176,7 @@ export const fetchChannels = () => {
   return dispatch => {
     dispatch({ type: 'FETCH START' })
 
-    fetch(`${apiRoot}channels`, {
+    return fetch(`${apiRoot}channels`, {
       mode: "cors",
       headers: new Headers({
         "Authorization": localStorage.getItem(storageKey)
@@ -196,7 +197,7 @@ export const fetchUsers = () => {
   return dispatch => {
     dispatch({ type: 'FETCH START' })
 
-    fetch(`${apiRoot}users`, {
+    return fetch(`${apiRoot}users`, {
       mode: "cors",
     })
       .then(handleResponse)
@@ -217,10 +218,10 @@ export const fetchChannelMessages = (channelname) => {
       return c.name === channelname
     });
 
-    dispatch({ type: 'FETCH START' })
     dispatch({ type: 'SET CURRENT CHANNEL', data: co })
+    dispatch({ type: 'FETCH START' })
 
-    fetch(`${apiRoot}channels/${co.id}`, {
+    return fetch(`${apiRoot}channels/${co.id}`, {
       mode: "cors",
       headers: new Headers({
         "Authorization": localStorage.getItem(storageKey)
@@ -235,6 +236,14 @@ export const fetchChannelMessages = (channelname) => {
         dispatch({ type: 'FETCH END', message: error.message })
       })
   }
+}
+
+export const setCurrentChannel = (event, channelname) => {
+
+    console.log(event, channelname)
+    return dispatch => {
+      return fetchChannelMessages(channelname)
+    }
 }
 
 export const changeTextArea = () => {
