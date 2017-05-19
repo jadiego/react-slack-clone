@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { Container, Menu, Image, Segment, Sidebar } from 'semantic-ui-react';
+import { Menu, Image, Segment, Sidebar, Icon } from 'semantic-ui-react';
 import './view.css';
 import logooutline from '../images/chat-outline.png';
-import { Route, Link } from 'react-router-dom';
+import { Route, Link, Switch, Redirect } from 'react-router-dom';
+import logo from '../images/chat-outline.png'
 
 import ProfilePopup from './ProfilePopupContainer';
-import Messages from '../messages/MessagesContainer';
-import Profile from '../profile/ProfileContainer';
+import MessagesContainer from '../messages/MessagesContainer';
+import ProfileContainer from '../profile/ProfileContainer';
 
 class View extends Component {
     render() {
@@ -19,16 +20,41 @@ class View extends Component {
                 </Menu>
                 <Sidebar.Pushable as={Segment} className='messages-pushable'>
                     <Sidebar as={Menu} animation='push' visible tabular vertical id='left'>
-                        <ProfilePopup {...this.props}/>
-                        <Menu.Item>
+                        <ProfilePopup />
+                        <Menu.Item header className='menu-header'>
+                            <Icon name='plus'/>
                             Channels
-                            </Menu.Item>
+                        </Menu.Item>
+                        {this.props.channels.map(channel =>
+                                <Menu.Item 
+                                key={`key-${channel.id}`} 
+                                as={Link} to={{ pathname: `/messages/${channel.name}`}}
+                                className='channel-item'
+                                >
+                                    <Image src='https://g.flockusercontent.com/default-group-1.png' inline shape='rounded' spaced width={30} />
+                                    {channel.name}      
+                                </Menu.Item>
+                            )}
+                        <Menu.Item header className='menu-header'>
+                            Direct messages
+                        </Menu.Item>
+                        {this.props.users.map(user =>
+                                <Menu.Item 
+                                key={`key-${user.id}`} 
+                                as={Link} to={{ pathname: `/messages/dm/${user.userName}`, state: { ...user } }}
+                                className='channel-item'
+                                >
+                                    <Image src={user.photoURL} inline shape='rounded' spaced width={30}/>
+                                    {user.userName}      
+                                </Menu.Item>
+                            )}
                     </Sidebar>
                     <Sidebar.Pusher id='center'>
-                            <Container fluid>
-                                <Route exact path="/profile" component={Profile} />
-                                <Route exact path="/messages" component={Messages} />
-                            </Container>
+                            <Switch>
+                                <Route exact path="/profile" component={ProfileContainer} />
+                                <Route exact path="/messages/:channelname" component={MessagesContainer} />
+                                <Redirect from='/messages' to='/messages/general'/>
+                            </Switch>
                     </Sidebar.Pusher>
                 </Sidebar.Pushable>
             </div>

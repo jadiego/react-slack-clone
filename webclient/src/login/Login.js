@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Segment, Header, Image, Form, Button, Message, Container, Icon } from 'semantic-ui-react';
+import _, { isEmpty } from 'lodash';
 import { Link, Redirect, withRouter } from 'react-router-dom';
 import './login.css';
 import logo from '../images/chat.svg';
@@ -7,10 +8,21 @@ import logooutline from '../images/chat-outline.png';
 import PropTypes from 'prop-types';
 
 class Login extends Component {
+    
 
     render() {
+        let { emailaddress, 
+            password, 
+            fetching, 
+            fetchError, 
+            handleEmailChange, 
+            handlePasswordChange, 
+            fetchAuthenticate, 
+            redirectToReferrer,
+            currentUser 
+        } = this.props;
+
         const { from } = this.props.location.state || { from: { pathname: '/' } }
-        const { redirectToReferrer } = this.props
 
         if (redirectToReferrer) {
             return (
@@ -18,14 +30,20 @@ class Login extends Component {
             )
         }
 
+        if (!_.isEmpty(currentUser)) {
+            console.log("logged in, redirecting to home page")
+            return (
+                <Redirect to='/messages' />
+            )
+        }
+
         let warningmessage = null
-        if (from.pathname === "/messages" || from.pathname === "/profile") {
+        if (this.props.location.state) {
             warningmessage = <Message id='wrong-route-message' color='yellow'>
                     <Icon name='warning circle'></Icon>
                     You need to sign in to access this page.
                 </Message>
         }
-
         return (
             <Segment.Group id='login-container' horizontal>
                 <Segment basic id='login-container-left'>
@@ -34,16 +52,16 @@ class Login extends Component {
                         <Header.Content>Chat</Header.Content>
                     </Header>
                     {warningmessage}
-                    <Form id='login-form' onSubmit={event => this.props.handleSignInSubmit(event)} loading={this.props.loading} warning={this.props.error}>
+                    <Form id='login-form' onSubmit={(event) => fetchAuthenticate(event, emailaddress, password)} loading={fetching !== 0} warning={fetchError.length > 0}>
                         <Header textAlign='center' as='h1'> Sign in </Header>
                         <Form.Field>
-                            <input placeholder='Email Address' required type='email' value={this.props.emailaddress} onChange={event => this.props.handleEmailChange(event)} />
+                            <input placeholder='Email Address' required type='email' value={emailaddress} onChange={handleEmailChange} />
                         </Form.Field>
                         <Form.Field>
-                            <input placeholder='Password' required type='password' value={this.props.password} onChange={event => this.props.handlePasswordChange(event)} />
+                            <input placeholder='Password' required type='password' value={password} onChange={handlePasswordChange} />
                         </Form.Field>
-                        <Button className="submit-button" fluid={true} onClick={event => this.props.handleSignInSubmit(event)}>Submit</Button>
-                        <Message warning>{this.props.errmsg}</Message>
+                        <Button className="submit-button" fluid={true} onClick={(event) => fetchAuthenticate(event, emailaddress, password)}>Submit</Button>
+                        <Message warning>{fetchError}</Message>
                         <Segment textAlign='center' as='p' basic>
                             Don't have an account?
                         <Link to='/'> Sign Up</Link>
@@ -61,11 +79,8 @@ class Login extends Component {
 }
 
 Login.propTypes = {
-    handleSignInSubmit: PropTypes.func.isRequired,
     handlePasswordChange: PropTypes.func.isRequired,
     handleEmailChange: PropTypes.func.isRequired,
-    loading: PropTypes.bool.isRequired,
-    error: PropTypes.bool.isRequired,
 }
 
 export default withRouter(Login)

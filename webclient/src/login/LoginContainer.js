@@ -1,6 +1,10 @@
 import React, { Component } from 'react';
 import Login from './Login';
-import {Auth} from '../Auth';
+
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { fetchAuthenticate, fetchUsers } from '../actions'
+
 
 class LoginContainer extends Component {
     constructor(props) {
@@ -10,31 +14,37 @@ class LoginContainer extends Component {
             password: "",
             emailaddress: "",
             redirectToReferrer: false,
-            loading: false,
-            error: false,
-            errmsg: ""
         }
     }
 
     handlePasswordChange = (event) => this.setState({ password: event.target.value })
     handleEmailChange = (event) => this.setState({ emailaddress: event.target.value })
 
-    handleSignInSubmit = (event) => {
-        event.preventDefault();
-        Auth.authenticate(this, this.state.emailaddress, this.state.password)
-    }
-
     render() {
         return (
             <Login 
             {...this.state}
+            {...this.props}
             handleEmailChange={this.handleEmailChange}
             handlePasswordChange={this.handlePasswordChange}
-            handleSignInSubmit={this.handleSignInSubmit}
 
             />
         )
     }
 }
 
-export default LoginContainer
+const mapStateToProps = (state) => {
+    return {
+        fetching: state.fetching,
+        fetchError: state.fetchError,
+        currentUser: state.currentUser,
+    }
+}
+
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        fetchAuthenticate,
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(LoginContainer)
