@@ -39,13 +39,31 @@
 }
 
 #messages-container #left #profile:hover{
-    background-color: rgba(0, 0, 0, 0.05);
+    background-color: rgba(250, 251, 252, 0.3)
 }
 
 
 
 #messages-container #left #profile #edit-icon, .profile-menu-icon{
     float: right !important;
+}
+
+#messages-container #left .menu-header {
+    text-transform: uppercase;
+    color: rgb(67, 72, 76);
+    background-color: rgba(235, 235, 235, 1);
+    border-bottom: 1px solid #dedede;
+    border-top: 1px solid #dedede;
+}
+
+#messages-container #left .channel-item {
+    border-bottom: 1px solid #dedede;
+    clear: both;
+    
+}
+
+#messages-container #left .channel-item:hover {
+    background-color: rgba(250, 251, 252, 0.8)
 }
 
 #messages-container #center {

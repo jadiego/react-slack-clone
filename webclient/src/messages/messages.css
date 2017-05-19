@@ -1,0 +1,62 @@
+#channel-textbox {
+    position: absolute;
+    width: 100%;
+    bottom: 0;
+    left: 0;
+    right: 0;
+}
+
+#channel-textbox textarea.textbox {
+    width: 100%;
+    max-width: 100%;   
+    min-height: 80px !important;
+    border: 1px solid #dedede;
+    padding: 5px;
+}
+
+#channel-container, #channel-container-left, #channel-container-right {
+    height: 100%;
+    margin: 0;
+}
+
+#channel-container-left {
+    max-height: 100%;
+    display: inline-block;
+    position: relative;
+    width: calc(100% - 350px);
+}
+
+#channel-container-left #channel-messages {
+    height: calc(100% - 231px);
+    overflow-y: scroll;
+}
+
+#channel-container-right {
+    padding: 0px;
+    z-index: 101;
+    display: inline-block;
+    position: absolute;
+    width: 350px;
+    border-left: 1px solid #dedede;
+}
+
+#channel-container-right div:first-child {
+    padding-bottom: 0px;
+}
+
+#channel-container-right .active.item i::before {
+    color: #F2711C;
+}
+
+#channel-messages .message-item:hover {
+    background-color: rgb(245, 246, 248);
+}
+
+#channel-messages .message-item .comment-date-right {
+    opacity: 0;
+    float: right;
+}
+
+#channel-messages .message-item:hover .comment-date-right  {
+    opacity: 1;
+}
