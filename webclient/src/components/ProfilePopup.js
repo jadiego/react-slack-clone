@@ -4,7 +4,11 @@ import { Link } from 'react-router-dom';
 
 class ProfilePopup extends Component {
     render() {
-        console.log(this.props.user)
+        let {
+            fetching,
+            fetchError,
+            currentUser,
+        } = this.props
 
         const popoverstyle = {
             borderRadius: 0,
@@ -21,9 +25,9 @@ class ProfilePopup extends Component {
                             </Card.Description>
                             <div>
                                 <Icon name='settings' id='edit-icon' color='orange' />
-                                <Image floated='left' size='mini' src={this.props.user.photoURL} />
-                                <Card.Header>@{this.props.user.userName}</Card.Header>
-                                <Card.Meta>{this.props.user.firstName} {this.props.user.lastName}</Card.Meta>
+                                <Image floated='left' size='mini' src={currentUser.photoURL} />
+                                <Card.Header>@{currentUser.userName}</Card.Header>
+                                <Card.Meta>{currentUser.firstName} {currentUser.lastName}</Card.Meta>
                             </div>
                         </Card.Content>
                     </Card>
@@ -38,16 +42,16 @@ class ProfilePopup extends Component {
                             <Header as='h5' color='orange'>Profile Settings</Header>
                         </List.Item>
                         <List.Item as={Link} to='/profile'>
-                            <Image floated='left' size='mini' src={this.props.user.photoURL} />
+                            <Image floated='left' size='mini' src={currentUser.photoURL} />
                             <List.Content>
-                                <List.Header>@{this.props.user.userName}</List.Header>
-                                <List.Description>{this.props.user.firstName} {this.props.user.lastName}</List.Description>
+                                <List.Header>@{currentUser.userName}</List.Header>
+                                <List.Description>{currentUser.firstName} {currentUser.lastName}</List.Description>
                             </List.Content>
                             <Icon name='pencil' className='profile-menu-icon' color='orange' />
                         </List.Item>
                         <List.Item onClick={this.props.handleSignOut}>
                             <List.Header>Sign out</List.Header>
-                            <List.Content>{this.props.user.email}</List.Content>
+                            <List.Content>{currentUser.email}</List.Content>
                         </List.Item>
                     </Segment.Group>
                 </Popup.Content>
