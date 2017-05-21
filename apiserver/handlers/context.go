@@ -4,6 +4,7 @@ import (
 	"github.com/info344-s17/challenges-jadiego/apiserver/models/messages"
 	"github.com/info344-s17/challenges-jadiego/apiserver/models/users"
 	"github.com/info344-s17/challenges-jadiego/apiserver/sessions"
+	"github.com/info344-s17/challenges-jadiego/apiserver/websocket"
 )
 
 //Context is a way for the main function to provide
@@ -18,4 +19,6 @@ type Context struct {
 	UserStore users.Store
 	//an messages.Store that will contain the server's message store
 	MessageStore messages.Store
+	//a pointer to Notifier fo websockets
+	Notifier *notifier.Notifier
 }
