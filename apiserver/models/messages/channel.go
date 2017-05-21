@@ -4,7 +4,10 @@ import (
 	"fmt"
 	"time"
 
+	"encoding/json"
+
 	"github.com/info344-s17/challenges-jadiego/apiserver/models/users"
+	"github.com/info344-s17/challenges-jadiego/apiserver/websocket"
 )
 
 //ChannelID defines the type for channel IDs
@@ -69,4 +72,37 @@ func (c *Channel) IsMember(id users.UserID) bool {
 		}
 	}
 	return false
+}
+
+//ToNewChannelEvent converts the channel to a channel event for
+//a websocket notification
+func (c *Channel) ToNewChannelEvent() (*notifier.ChannelEvent, error) {
+	jsonstring, err := json.Marshal(c)
+	return &notifier.ChannelEvent{
+		Type:      notifier.NewChannel,
+		Message:   string(jsonstring),
+		CreatedAt: time.Now(),
+	}, err
+}
+
+//ToUpdatedChannelEvent converts the channel to a channel event for
+//a websocket notification
+func (c *Channel) ToUpdatedChannelEvent() (*notifier.ChannelEvent, error) {
+	jsonstring, err := json.Marshal(c)
+	return &notifier.ChannelEvent{
+		Type:      notifier.UpdatedChannel,
+		Message:   string(jsonstring),
+		CreatedAt: time.Now(),
+	}, err
+}
+
+//ToDeletedChannelEvent converts the channel to a channel event for
+//a websocket notification
+func (c *Channel) ToDeletedChannelEvent() (*notifier.ChannelEvent, error) {
+	jsonstring, err := json.Marshal(c)
+	return &notifier.ChannelEvent{
+		Type:      notifier.DeletedChannel,
+		Message:   string(jsonstring),
+		CreatedAt: time.Now(),
+	}, err
 }

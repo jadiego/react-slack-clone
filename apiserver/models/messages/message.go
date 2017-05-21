@@ -1,10 +1,12 @@
 package messages
 
 import (
+	"encoding/json"
 	"fmt"
 	"time"
 
 	"github.com/info344-s17/challenges-jadiego/apiserver/models/users"
+	"github.com/info344-s17/challenges-jadiego/apiserver/websocket"
 )
 
 //MessageID defines the type for message IDs
@@ -57,4 +59,37 @@ func (nm *NewMessage) ToMessage() *Message {
 	}
 
 	return m
+}
+
+//ToNewMessageEvent converts the channel to a message event for
+//a websocket notification
+func (m *Message) ToNewMessageEvent() (*notifier.MessageEvent, error) {
+	jsonstring, err := json.Marshal(m)
+	return &notifier.MessageEvent{
+		Type:      notifier.NewMessage,
+		Message:   string(jsonstring),
+		CreatedAt: time.Now(),
+	}, err
+}
+
+//ToUpdatedMessageEvent converts the channel to a message event for
+//a websocket notification
+func (m *Message) ToUpdatedMessageEvent() (*notifier.MessageEvent, error) {
+	jsonstring, err := json.Marshal(m)
+	return &notifier.MessageEvent{
+		Type:      notifier.UpdatedMessage,
+		Message:   string(jsonstring),
+		CreatedAt: time.Now(),
+	}, err
+}
+
+//ToDeletedMessageEvent converts the channel to a message event for
+//a websocket notification
+func (m *Message) ToDeletedMessageEvent() (*notifier.MessageEvent, error) {
+	jsonstring, err := json.Marshal(m)
+	return &notifier.MessageEvent{
+		Type:      notifier.DeletedMessage,
+		Message:   string(jsonstring),
+		CreatedAt: time.Now(),
+	}, err
 }

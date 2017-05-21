@@ -3,9 +3,12 @@ package users
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"encoding/json"
 	"fmt"
 	"net/mail"
+	"time"
 
+	"github.com/info344-s17/challenges-jadiego/apiserver/websocket"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -134,4 +137,37 @@ func (u *User) Authenticate(password string) error {
 		return err
 	}
 	return nil
+}
+
+//ToNewUserEvent converts the channel to a user event for
+//a websocket notification
+func (u *User) ToNewUserEvent() (*notifier.UserEvent, error) {
+	jsonstring, err := json.Marshal(u)
+	return &notifier.UserEvent{
+		Type:      notifier.NewUser,
+		Message:   string(jsonstring),
+		CreatedAt: time.Now(),
+	}, err
+}
+
+//ToUserJoinedChannelEvent converts the channel to a user event for
+//a websocket notification
+func (u *User) ToUserJoinedChannelEvent() (*notifier.UserEvent, error) {
+	jsonstring, err := json.Marshal(u)
+	return &notifier.UserEvent{
+		Type:      notifier.UserJoinedChannel,
+		Message:   string(jsonstring),
+		CreatedAt: time.Now(),
+	}, err
+}
+
+//ToUserLeftChannelEvent converts the channel to a user event for
+//a websocket notification
+func (u *User) ToUserLeftChannelEvent() (*notifier.UserEvent, error) {
+	jsonstring, err := json.Marshal(u)
+	return &notifier.UserEvent{
+		Type:      notifier.UserLeftChannel,
+		Message:   string(jsonstring),
+		CreatedAt: time.Now(),
+	}, err
 }
