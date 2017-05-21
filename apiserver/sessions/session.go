@@ -45,6 +45,11 @@ func GetSessionID(r *http.Request, signingKey string) (SessionID, error) {
 	//get the value of the Authorization header
 	v := r.Header.Get(headerAuthorization)
 
+	//get auth from query string parameter as fallback
+	if len(v) == 0 {
+		v = r.URL.Query().Get("auth")
+	}
+
 	//if it's zero-length, return InvalidSessionID and ErrNoSessionID
 	if len(v) == 0 {
 		return InvalidSessionID, ErrNoSessionID
