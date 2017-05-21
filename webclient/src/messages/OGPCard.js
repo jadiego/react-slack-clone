@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Card, Image } from 'semantic-ui-react';
-import { apiRoot, handleResponse, handleJSONResponse, handleTextResponse } from '../actions'
+import { apiRoot, handleResponse } from '../actions'
 
 class OGPCard extends Component {
     state = {

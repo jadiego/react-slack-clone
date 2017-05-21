@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Segment, Header, Image, Form, Button, Message, Container, Icon } from 'semantic-ui-react';
-import _, { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 import { Link, Redirect, withRouter } from 'react-router-dom';
 import './login.css';
 import logo from '../images/chat.svg';
@@ -30,9 +30,8 @@ class Login extends Component {
             )
         }
 
-        if (!_.isEmpty(currentUser)) {
+        if (!isEmpty(currentUser)) {
             console.log("logged in, redirecting to home page")
-            console.log(from)
             return (
                 <Redirect to={from.pathname} />
             )

@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Segment, Header, Image, Form, Button, Message, Container } from 'semantic-ui-react';
-import _, { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 import { Link, Redirect } from 'react-router-dom';
 import './login.css';
 import logo from '../images/chat.svg';
@@ -19,13 +19,12 @@ class Signup extends Component {
             handleEmailChange,
             handleFirstNameChange,
             handleLastNameChange,
-            handleNewUserSubmit,
             handlePasswordChange,
             handlePasswordConfChange,
             handleUsernameChange
         } = this.props
 
-        if (!_.isEmpty(currentUser)) {
+        if (!isEmpty(currentUser)) {
             console.log("logged in, redirecting to home page")
             return (
                 <Redirect to='/messages' />

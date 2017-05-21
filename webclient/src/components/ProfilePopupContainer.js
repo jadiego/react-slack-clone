@@ -1,11 +1,10 @@
 import React, { Component } from 'react';
 import ProfilePopup from './ProfilePopup';
-import { Auth } from '../Auth';
 import { withRouter } from 'react-router-dom';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { fetchCheckSession, fetchSignOut } from '../actions'
+import { fetchSignOut } from '../actions'
 
 
 class ProfilePopupContainer extends Component {

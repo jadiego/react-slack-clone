@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import { Feed, Image, Card } from 'semantic-ui-react';
+import { Feed, Image } from 'semantic-ui-react';
 import moment from "moment";
-import _, { find } from 'lodash';
+import { find } from 'lodash';
 import OGPCard from './OGPCard'
 import * as linkify from 'linkifyjs';;
 
@@ -20,8 +20,8 @@ class MessageComments extends Component {
             <Feed>
                 {messages !== undefined && (
                     messages.map(message => {
-                        let person = _.find(users, function (u) { return u.id === message.creatorid; });
-                        return <Feed.Event className='message-item' key={`key-${message.id}`}>
+                        let person = find(users, function (u) { return u.id === message.creatorid; });
+                        return <Feed.Event className='message-item' key={`key-${message.id}${Math.random()}`}>
                             <Feed.Label><Image src={person.photoURL} /></Feed.Label>
                             <Feed.Content>
                                 <Feed.Summary>

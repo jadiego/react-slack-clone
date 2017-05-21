@@ -1,7 +1,7 @@
 import 'whatwg-fetch';
 import React, { Component } from 'react';
 import Profile from './Profile';
-import { apiRoot, storageKey } from '../Auth';
+import { apiRoot, storageKey } from '../actions';
 
 class ProfileContainer extends Component {
     constructor(props) {

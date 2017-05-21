@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
-import { Segment, Header, Divider, Icon, Container, TextArea, Feed, Menu, Image, Dimmer, Loader } from 'semantic-ui-react';
+import { Segment, Header, Divider, Icon, Container, TextArea, Menu, Image } from 'semantic-ui-react';
 import MessageComments from './MessageComments'
-import _, { find } from 'lodash';
+import { find } from 'lodash';
 
 class Messages extends Component {
     render() {
         let {
-            fetching,
-            currentUser,
             currentChannel,
             users,
             newMessage,
-            channels,
             changeTextArea,
             postMessage
         } = this.props
@@ -64,9 +61,9 @@ class Messages extends Component {
                     </Container>
                     <Container>
                         {
-                            currentChannel.members != undefined && (
+                            currentChannel.members !== undefined && (
                                 currentChannel.members.map(member => {
-                                    let person = _.find(users, function(u) { return u.id === member; });
+                                    let person = find(users, function(u) { return u.id === member; });
                                     return <Menu.Item
                                         key={`key-${member}`}
                                         className='channel-item'

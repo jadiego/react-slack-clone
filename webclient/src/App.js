@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Container } from 'semantic-ui-react';
 import { BrowserRouter, Route, Redirect } from 'react-router-dom';
-import _, { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash';
 import 'whatwg-fetch';
 
 import Login from './login/LoginContainer';
@@ -20,7 +20,7 @@ class App extends Component {
     render() {
         const AuthRoute = ({ component: Component, ...rest }) => (
             <Route {...rest} render={props => (
-                !_.isEmpty(this.props.currentUser) && localStorage.getItem("auth") ? (
+                !isEmpty(this.props.currentUser) && localStorage.getItem("auth") ? (
                     <Component {...props} />
                 ) : (
                         <Redirect to={{
@@ -39,7 +39,7 @@ class App extends Component {
                     <AuthRoute exact path="/messages/:channelname" component={View} />
                     <AuthRoute exact path="/messages/@:username" component={View} />
                     <AuthRoute exact path="/profile" component={View} />
-                    <Route path='/messages' render={() => <Redirect to ='/messages/general' />}/>
+                    <Route path='/messages' render={() => <Redirect to='/messages/general' />}/>
                 </Container>
             </BrowserRouter>
         )

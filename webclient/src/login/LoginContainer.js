@@ -3,7 +3,7 @@ import Login from './Login';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { fetchAuthenticate, fetchUsers } from '../actions'
+import { fetchAuthenticate } from '../actions'
 
 
 class LoginContainer extends Component {

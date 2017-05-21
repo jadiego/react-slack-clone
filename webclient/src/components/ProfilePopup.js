@@ -5,8 +5,6 @@ import { Link } from 'react-router-dom';
 class ProfilePopup extends Component {
     render() {
         let {
-            fetching,
-            fetchError,
             currentUser,
             fetchSignOut,
         } = this.props

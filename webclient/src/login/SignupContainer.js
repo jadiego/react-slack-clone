@@ -27,7 +27,6 @@ class SignupContainer extends Component {
     render() {
         return (
             <Signup
-                handleNewUserSubmit={this.handleNewUserSubmit}
                 handleEmailChange={this.handleEmailChange}
                 handlePasswordChange={this.handlePasswordChange}
                 handlePasswordConfChange={this.handlePasswordConfChange}
