@@ -14,6 +14,7 @@ import (
 	"github.com/info344-s17/challenges-jadiego/apiserver/models/messages"
 	"github.com/info344-s17/challenges-jadiego/apiserver/models/users"
 	"github.com/info344-s17/challenges-jadiego/apiserver/sessions"
+	"github.com/info344-s17/challenges-jadiego/apiserver/websocket"
 )
 
 const (
@@ -29,6 +30,7 @@ const (
 	apiSessions         = apiRoot + "sessions"
 	apiChannels         = apiRoot + "channels"
 	apiMessages         = apiRoot + "messages"
+	apiWebSocket        = apiRoot + "websocket"
 	apiSpecificChannels = apiChannels + "/"
 	apiSpecificMessages = apiMessages + "/"
 	apiSessionsMine     = apiSessions + "/mine"
@@ -97,7 +99,10 @@ func main() {
 		SessionStore: rstore,
 		UserStore:    udbstore,
 		MessageStore: mdbstore,
+		Notifier:     notifier.NewNotifier(),
 	}
+
+	go ctx.Notifier.Start()
 
 	//get the TLS key and cert paths from environment variables
 	//this allows us to use a self-signed cert/key during development
@@ -121,6 +126,7 @@ func main() {
 	//for the apiSummary route
 	//HINT: https://golang.org/pkg/net/http/#HandleFunc
 	mux.HandleFunc(apiSummary, handlers.SummaryHandler)
+	mux.HandleFunc(apiWebSocket, ctx.WebSocketUpgradeHandler)
 
 	logger := log.New(os.Stdout, "", log.LstdFlags)
 	mux.Handle(apiRoot, middleware.Adapt(muxLogged, middleware.CORS("", "", "", ""), middleware.Notify(logger)))
