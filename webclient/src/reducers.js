@@ -64,13 +64,9 @@ let currentChannel = (state = {}, action) => {
 let messages = (state = {}, action) => {
     switch (action.type) {
         case "SET MESSAGES":
-            var obj = Object.assign({}, { ...state })
-            obj[action.channelid] = action.data
-            return obj;
+            return {...state, ...state[action.channelid] = action.data}
         case "MESSAGE NEW":
-            var obj = Object.assign({}, { ...state })
-            obj[action.data.channelid].push(action.data)
-            return obj
+            return {...state, ...state[action.data.channelid].push(action.data)}
         default:
             return state
     }

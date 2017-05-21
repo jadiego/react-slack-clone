@@ -2,8 +2,7 @@ import React, { Component } from 'react';
 import { Menu, Image, Segment, Sidebar, Icon } from 'semantic-ui-react';
 import './view.css';
 import logooutline from '../images/chat-outline.png';
-import { Route, NavLink, Link, Switch, Redirect } from 'react-router-dom';
-import logo from '../images/chat-outline.png'
+import { Route, NavLink, Link, Switch } from 'react-router-dom';
 
 import ProfilePopup from './ProfilePopupContainer';
 import MessagesContainer from '../messages/MessagesContainer';

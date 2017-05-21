@@ -1,4 +1,4 @@
-import _, { find } from 'lodash';
+import { find } from 'lodash';
 
 const headerContentType = "Content-Type"
 const charsetUTF8 = "charset=utf-8"
@@ -8,9 +8,21 @@ const contentTypeJSONUTF8 = contentTypeJSON + "; " + charsetUTF8
 const contentTypeTextUTF8 = contentTypeText + "; " + charsetUTF8
 const storageKey = "auth"
 
+const newChannel = "new channel"
+const newUser = "new user"
+const newMessage = "new message"
+const updatedChannel = "updated channel"
+const updatedMessage = "updated message"
+const deletedChannel = "deleted channel"
+const deletedMessage = "deleted message"
+const userJoinedChannel = "user joined channel"
+const userLeftChannel = "user left channel"
+
 export var apiRoot = "https://api.chat.jadiego.me/v1/";
+var apiWS = "wss://api.chat.jadiego.me/v1/websocket"
 if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
   apiRoot = "https://localhost:4000/v1/"
+  apiWS = "wss://localhost:4000/v1/websocket"
 };
 
 //Handler for fetch calls that either calls handleJSONResponse or handleTextresponse
@@ -214,13 +226,12 @@ export const fetchUsers = () => {
 export const fetchChannelMessages = (channelname) => {
   return (dispatch, getState) => {
     const { currentChannel, channels } = getState();
-    let co = _.find(channels, (c) => {
+    let co = find(channels, (c) => {
       return c.name === channelname
     });
 
     dispatch({ type: 'SET CURRENT CHANNEL', data: co })
     dispatch({ type: 'FETCH START' })
-
     return fetch(`${apiRoot}channels/${co.id}`, {
       mode: "cors",
       headers: new Headers({
@@ -265,6 +276,7 @@ export const postMessage = (event) => {
 
   return (dispatch, getState) => {
     if (event.keyCode === 13 && event.shiftKey === false) {
+      event.preventDefault()
       const { currentChannel, newMessage } = getState()
 
       dispatch({ type: 'FETCH START' })
@@ -284,7 +296,6 @@ export const postMessage = (event) => {
         .then(handleResponse)
         .then(data => {
           dispatch({ type: 'FETCH END', message: "" })
-          dispatch({ type: 'MESSAGE NEW', data })
           dispatch({ type: 'UPDATE NEW MESSAGE', body: "" })
         })
         .catch(error => dispatch({ type: 'FETCH END', message: error.message }))
@@ -317,5 +328,18 @@ export const fetchCreateChannel = (channelname, privatechan, description, member
         dispatch({ type: 'SET CURRENT CHANNEL', data })
       })
       .catch(error => dispatch({ type: 'FETCH END', message: error.message }))
+  }
+}
+
+export const initiateWebSocketConnection = () => {
+  return dispatch => {
+    var websock = new WebSocket(`${apiWS}?auth=${localStorage.getItem(storageKey)}`)
+    websock.addEventListener("message", (wsevent) => {
+      var event = JSON.parse(wsevent.data)
+      switch (event.type) {
+        case newMessage:
+          dispatch({ type: 'MESSAGE NEW', data: JSON.parse(event.message) })
+      }
+  })
   }
 }

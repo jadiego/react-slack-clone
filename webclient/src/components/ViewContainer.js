@@ -1,15 +1,16 @@
 import React, { Component } from 'react';
 import View from './View';
-import _, { find, reduce, isEqual } from 'lodash';
+import { find } from 'lodash';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { fetchChannels, fetchUsers, fetchChannelMessages, setCurrentChannel, fetchLinkToChannel, fetchCreateChannel } from '../actions'
+import { fetchChannels, fetchUsers, fetchChannelMessages, fetchLinkToChannel, fetchCreateChannel, initiateWebSocketConnection } from '../actions'
 
 class ViewContainer extends Component {
     componentDidMount() {
         console.log("mounting: ", this.props)
         if (this.props.location.pathname.includes("messages/")) {
+            this.props.initiateWebSocketConnection()
             this.props.fetchUsers()
             this.props.fetchChannels()
                 .then(resp => {
@@ -21,22 +22,14 @@ class ViewContainer extends Component {
         }
     }
 
-    componentWillUpdate(nextProps) {
-        console.log(_.reduce(nextProps, (result, value, key) => {
-            return _.isEqual(value, this.props[key]) ?
-                result : result.concat(key);
-        }, []))
-    }
-
     directMessage = (user) => {
-        var found = _.find(this.props.channels, (c) => {
+        var found = find(this.props.channels, (c) => {
             if (c.name.includes(user.userName) && c.name.includes(this.props.currentUser.userName)) {
                 return c
             }
         })
         //If the channel is found, then create the channel
         if (found === undefined) {
-            console.log(`creating new private dm: dm:${user.userName}:${this.props.currentUser.userName}`)
             let channelname = `dm:${user.userName}:${this.props.currentUser.userName}`
             let privatechan = true
             let description = `Direct messsages between you and ${user.userName}`
@@ -49,7 +42,6 @@ class ViewContainer extends Component {
             }
             this.props.fetchCreateChannel(channelname, privatechan, description, members)
         } else {
-            console.log("redirecting to: ", found)
             this.props.fetchChannelMessages(found.name)
         }
     }
@@ -71,7 +63,8 @@ const mapDispatchToProps = (dispatch) => {
         fetchChannels,
         fetchUsers,
         fetchLinkToChannel,
-        fetchCreateChannel
+        fetchCreateChannel,
+        initiateWebSocketConnection
     }, dispatch)
 }
 
