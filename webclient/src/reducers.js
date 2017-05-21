@@ -42,6 +42,8 @@ let channels = (state = [], action) => {
     switch (action.type) {
         case "SET CHANNELS":
             return action.data;
+        case "CHANNEL NEW":
+            return state.concat([action.data])
         default:
             return state
     }

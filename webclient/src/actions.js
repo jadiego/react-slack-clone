@@ -284,10 +284,38 @@ export const postMessage = (event) => {
         .then(handleResponse)
         .then(data => {
           dispatch({ type: 'FETCH END', message: "" })
-          dispatch({ type: 'MESSAGE NEW', data})
+          dispatch({ type: 'MESSAGE NEW', data })
           dispatch({ type: 'UPDATE NEW MESSAGE', body: "" })
         })
         .catch(error => dispatch({ type: 'FETCH END', message: error.message }))
     }
+  }
+}
+
+export const fetchCreateChannel = (channelname, privatechan, description, members) => {
+  return dispatch => {
+    dispatch({ type: 'FETCH START' })
+
+    return fetch(`${apiRoot}channels`, {
+      method: "POST",
+      mode: "cors",
+      headers: new Headers({
+        "Content-Type": contentTypeJSONUTF8,
+        "Authorization": localStorage.getItem(storageKey)
+      }),
+      body: JSON.stringify({
+        name: channelname,
+        description: description,
+        members: members,
+        private: privatechan
+      })
+    })
+      .then(handleResponse)
+      .then(data => {
+        dispatch({ type: 'FETCH END', message: "" })
+        dispatch({ type: 'CHANNEL NEW', data })
+        dispatch({ type: 'SET CURRENT CHANNEL', data })
+      })
+      .catch(error => dispatch({ type: 'FETCH END', message: error.message }))
   }
 }

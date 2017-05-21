@@ -23,7 +23,7 @@
 
 #login-container-left #login-form, #login-container-left #signup-form {
     position: relative;
-    top: 25vh;
+    top: 18vh;
     padding: 5px;
     margin: 20px 13vw;
 }

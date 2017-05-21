@@ -31,10 +31,7 @@ class MessageComments extends Component {
                                 </Feed.Summary>
                                 {
                                     linkify.find(message.body).length !== 0 ? (
-                                        <div>
-                                            <a href={message.body} target="_blank">{message.body}</a>
-                                            <OGPCard link={message.body}/>
-                                        </div>
+                                        <OGPCard body={message.body} links={linkify.find(message.body)} />
                                     ) : (
                                             <div className="text">
                                                 {message.body}

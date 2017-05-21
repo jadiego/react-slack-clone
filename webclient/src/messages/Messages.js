@@ -28,7 +28,13 @@ class Messages extends Component {
                         <Header as='h2' color='orange'>
                             <Icon name={privateiconname} className='private-icon' color='grey' />
                             <Header.Content>
-                                {currentChannel.name}
+                                {
+                                    this.props.match.path.includes("@") ? (
+                                            <div><Icon name='at' color='orange' fitted style={{marginRight: 0}}/> { this.props.match.params.username}</div>
+                                        ) : (
+                                            <div><Icon name='hashtag' color='orange' fitted style={{marginRight: 0}}/> { this.props.match.params.channelname}</div>
+                                        )
+                                }
                                 <Header.Subheader>{currentChannel.description}</Header.Subheader>
                             </Header.Content>
                         </Header>

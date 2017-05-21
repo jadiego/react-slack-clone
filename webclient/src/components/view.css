@@ -57,6 +57,10 @@
     border-top: 1px solid #dedede;
 }
 
+#messages-container #left .menu-header .hashtag, #messages-container #left .menu-header .at {
+    float: left;
+}
+
 #messages-container #left .channel-item {
     border-bottom: 1px solid #dedede;
     clear: both;

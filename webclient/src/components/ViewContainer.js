@@ -4,7 +4,7 @@ import _, { find, reduce, isEqual } from 'lodash';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { fetchChannels, fetchUsers, fetchChannelMessages, setCurrentChannel, fetchLinkToChannel } from '../actions'
+import { fetchChannels, fetchUsers, fetchChannelMessages, setCurrentChannel, fetchLinkToChannel, fetchCreateChannel } from '../actions'
 
 class ViewContainer extends Component {
     componentDidMount() {
@@ -29,16 +29,34 @@ class ViewContainer extends Component {
     }
 
     directMessage = (user) => {
-        let found = _.find(this.props.channels, (c) => {
-            return c.name = user.userName
+        var found = _.find(this.props.channels, (c) => {
+            if (c.name.includes(user.userName) && c.name.includes(this.props.currentUser.userName)) {
+                return c
+            }
         })
-        console.log(found, user)
-        
+        //If the channel is found, then create the channel
+        if (found === undefined) {
+            console.log(`creating new private dm: dm:${user.userName}:${this.props.currentUser.userName}`)
+            let channelname = `dm:${user.userName}:${this.props.currentUser.userName}`
+            let privatechan = true
+            let description = `Direct messsages between you and ${user.userName}`
+            //if the user prompt is the current user, then leave members list empty,
+            //server side will automatically add in creator
+            if (user.id === this.props.currentUser.id) {
+                var members = []
+            } else {
+                var members = [user.id, this.props.currentUser.id]
+            }
+            this.props.fetchCreateChannel(channelname, privatechan, description, members)
+        } else {
+            console.log("redirecting to: ", found)
+            this.props.fetchChannelMessages(found.name)
+        }
     }
 
     render() {
         return (
-            <View {...this.props} directMessage={this.directMessage}/>
+            <View {...this.props} directMessage={this.directMessage} />
         )
     }
 }
@@ -52,7 +70,8 @@ const mapDispatchToProps = (dispatch) => {
         fetchChannelMessages,
         fetchChannels,
         fetchUsers,
-        fetchLinkToChannel
+        fetchLinkToChannel,
+        fetchCreateChannel
     }, dispatch)
 }
 

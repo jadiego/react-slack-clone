@@ -4,43 +4,60 @@ import { apiRoot, handleResponse, handleJSONResponse, handleTextResponse } from 
 
 class OGPCard extends Component {
     state = {
-        data: {}
+        ogp: [],
     }
 
     componentWillMount() {
-        fetch(`${apiRoot}summary?url=${this.props.link}`, {
-            mode: "cors",
-        })
-            .then(handleResponse)
-            .then(data => {
-                this.setState({ data })
+        for (let i = 0; i < this.props.links.length; i++) {
+            fetch(`${apiRoot}summary?url=${this.props.links[i].href}`, {
+                mode: "cors",
             })
-            .catch(error => {
-                console.log("not a link, rendering by mistake", error);
-            })
+                .then(handleResponse)
+                .then(data => {
+                    //returns a new array with new value appended
+                    this.setState({ ogp: this.state.ogp.concat([data]) })
+                })
+                .catch(error => {
+                    console.log("not a link, rendering by mistake", error);
+                })
+        }
     }
 
     render() {
 
-        let { data } = this.state
-        if (data === undefined) {
-            return null
-        }
+        let { ogp } = this.state
+        let { body } = this.props
 
-        return <Card fluid color='orange'>
-            <Card.Content>
-                <Image src={data.image} href={data.url} floated="right" size="small" />
-                <Card.Header>
-                    {data.title}
-                </Card.Header>
-                <Card.Meta>
-                    {data.site_name}
-                </Card.Meta>
-                <div>
-                    {data.description}
-                </div>
-            </Card.Content>
-        </Card>
+
+        return (
+            <div>
+                {body}
+                {
+                    ogp.length !== 0 && (
+                        ogp.map((link, i) => {
+                            return (link.description === undefined) ? (
+                                null
+                            ) : (
+                                    <Card fluid color='orange' key={`key-${i}`}>
+                                        <Card.Content>
+                                            <Image src={link.image} href={link.url} floated="right" size="small" />
+                                            <Card.Header>
+                                                {link.title}
+                                            </Card.Header>
+                                            <Card.Meta>
+                                                {link.site_name}
+                                            </Card.Meta>
+                                            <div>
+                                                {link.description}
+                                            </div>
+                                        </Card.Content>
+                                    </Card>
+                                )
+                        })
+                    )
+                }
+            </div>
+        )
     }
 }
 

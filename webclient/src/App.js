@@ -37,6 +37,7 @@ class App extends Component {
                     <Route exact path="/login" component={Login} />
                     <Route exact path="/" component={Signup} />
                     <AuthRoute exact path="/messages/:channelname" component={View} />
+                    <AuthRoute exact path="/messages/@:username" component={View} />
                     <AuthRoute exact path="/profile" component={View} />
                     <Route path='/messages' render={() => <Redirect to ='/messages/general' />}/>
                 </Container>
