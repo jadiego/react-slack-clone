@@ -55,8 +55,8 @@ export const handleTextResponse = (response) => {
     })
 }
 
-export const fetchSignUp = (e, u, fn, ln, p1, p2) => {
-  e.preventDefault()
+export const fetchSignUp = (event, e, u, fn, ln, p1, p2) => {
+  event.preventDefault()
 
   return dispatch => {
     dispatch({ type: 'FETCH START' })

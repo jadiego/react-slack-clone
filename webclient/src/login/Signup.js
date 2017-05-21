@@ -39,6 +39,7 @@ class Signup extends Component {
                         <Image src={logo}></Image>
                         <Header.Content>Chat</Header.Content>
                     </Header>
+                    <Message warning>{fetchError}</Message>
 
                     <Form id='signup-form' onSubmit={(event) => fetchSignUp(event, e, u, fn, ln, p1, p2)} loading={fetching !== 0} warning={fetchError.length > 0}>
                         <Header textAlign='center' as='h1'> Get started with <strong>Chat</strong> </Header>
@@ -63,7 +64,6 @@ class Signup extends Component {
                             <input placeholder='Confirm Password' type='password' value={p2} onChange={event => handlePasswordConfChange(event)} />
                         </Form.Field>
                         <Button className="submit-button" fluid={true} onClick={(event) => fetchSignUp(event, e, u, fn, ln, p1, p2)}>Submit</Button>
-                        <Message warning>{fetchError}</Message>
                         <Segment textAlign='center' as='p' basic>
                             Already have an account? 
                             <Link to='/login'> Log In</Link>
