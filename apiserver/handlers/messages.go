@@ -22,7 +22,7 @@ func (ctx *Context) ChannelsHandler(w http.ResponseWriter, r *http.Request) {
 	ss := &SessionState{}
 	_, err := sessions.GetState(r, ctx.SessionKey, ctx.SessionStore, ss)
 	if err != nil {
-		http.Error(w, "error getting current session : "+err.Error(), http.StatusInternalServerError)
+		http.Error(w, "error getting current session : "+err.Error(), http.StatusUnauthorized)
 		return
 	}
 
@@ -90,7 +90,7 @@ func (ctx *Context) SpecificChannelHandler(w http.ResponseWriter, r *http.Reques
 	ss := &SessionState{}
 	_, err := sessions.GetState(r, ctx.SessionKey, ctx.SessionStore, ss)
 	if err != nil {
-		http.Error(w, "error getting current session : "+err.Error(), http.StatusInternalServerError)
+		http.Error(w, "error getting current session : "+err.Error(), http.StatusUnauthorized)
 		return
 	}
 
@@ -226,7 +226,7 @@ func (ctx *Context) MessageHandler(w http.ResponseWriter, r *http.Request) {
 	ss := &SessionState{}
 	_, err := sessions.GetState(r, ctx.SessionKey, ctx.SessionStore, ss)
 	if err != nil {
-		http.Error(w, "error getting current session : "+err.Error(), http.StatusInternalServerError)
+		http.Error(w, "error getting current session : "+err.Error(), http.StatusUnauthorized)
 		return
 	}
 
@@ -270,7 +270,7 @@ func (ctx *Context) SpecificMessageHandler(w http.ResponseWriter, r *http.Reques
 	ss := &SessionState{}
 	_, err := sessions.GetState(r, ctx.SessionKey, ctx.SessionStore, ss)
 	if err != nil {
-		http.Error(w, "error getting current session : "+err.Error(), http.StatusInternalServerError)
+		http.Error(w, "error getting current session : "+err.Error(), http.StatusUnauthorized)
 		return
 	}
 
