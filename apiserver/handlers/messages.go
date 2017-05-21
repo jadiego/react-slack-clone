@@ -11,8 +11,6 @@ import (
 	"github.com/info344-s17/challenges-jadiego/apiserver/sessions"
 )
 
-const headerLink = "Link"
-
 //ChannelsHandler handles all requests to the /v1/channels path.
 //A GET request returns a slice of channels the current user is authorized to see.
 //A POST request adds the current user to the channel's member list and
@@ -53,6 +51,14 @@ func (ctx *Context) ChannelsHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "error inserting channel: "+err.Error(), http.StatusInternalServerError)
 			return
 		}
+
+		//Notify client of new channel through websocket
+		n, err := c.ToNewChannelEvent()
+		if err != nil {
+			http.Error(w, "error creating channel event: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+		ctx.Notifier.Notify(n)
 
 		w.Header().Add(headerContentType, contentTypeJSONUTF8)
 		encoder := json.NewEncoder(w)
@@ -138,6 +144,14 @@ func (ctx *Context) SpecificChannelHandler(w http.ResponseWriter, r *http.Reques
 			return
 		}
 
+		//Notify client of updated channel through websocket
+		n, err := uc.ToUpdatedChannelEvent()
+		if err != nil {
+			http.Error(w, "error creating channel event: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+		ctx.Notifier.Notify(n)
+
 		w.Header().Add(headerContentType, contentTypeJSONUTF8)
 		encoder := json.NewEncoder(w)
 		encoder.Encode(uc)
@@ -153,6 +167,14 @@ func (ctx *Context) SpecificChannelHandler(w http.ResponseWriter, r *http.Reques
 			http.Error(w, "error deleting channel: "+err.Error(), http.StatusInternalServerError)
 			return
 		}
+
+		//Notify client of deleted channel through websocket
+		n, err := c.ToDeletedChannelEvent()
+		if err != nil {
+			http.Error(w, "error creating channel event: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+		ctx.Notifier.Notify(n)
 
 		w.Header().Add(headerContentType, contentTypeText)
 		w.Write([]byte("channel succesfully deleted"))
@@ -182,9 +204,18 @@ func (ctx *Context) SpecificChannelHandler(w http.ResponseWriter, r *http.Reques
 			w.Write([]byte("succesfully added member to channel"))
 		} else {
 			if err := ctx.MessageStore.AddChannelMember(ss.User.ID, c); err != nil {
-				http.Error(w, "error adding member to channel: "+err.Error(), http.StatusInternalServerError)
+				http.Error(w, "error adding current user to channel: "+err.Error(), http.StatusInternalServerError)
 				return
 			}
+
+			//Notify client of new user joined channel through websocket
+			n, err := ss.User.ToUserJoinedChannelEvent()
+			if err != nil {
+				http.Error(w, "error creating user event: "+err.Error(), http.StatusInternalServerError)
+				return
+			}
+			ctx.Notifier.Notify(n)
+
 			w.Write([]byte("succesfully added member to channel"))
 		}
 	//removes the current user to the members list. Uses 'Link' header to
@@ -214,6 +245,15 @@ func (ctx *Context) SpecificChannelHandler(w http.ResponseWriter, r *http.Reques
 				http.Error(w, "error removing member from channel: "+err.Error(), http.StatusInternalServerError)
 				return
 			}
+
+			//Notify client of user left channel through websocket
+			n, err := ss.User.ToUserLeftChannelEvent()
+			if err != nil {
+				http.Error(w, "error creating user event: "+err.Error(), http.StatusInternalServerError)
+				return
+			}
+			ctx.Notifier.Notify(n)
+
 			w.Write([]byte("succesfully removed member from channel"))
 		}
 	}
@@ -250,6 +290,14 @@ func (ctx *Context) MessageHandler(w http.ResponseWriter, r *http.Request) {
 			http.Error(w, "error inserting message: "+err.Error(), http.StatusBadRequest)
 			return
 		}
+
+		//Notify client of new message through websocket
+		n, err := m.ToNewMessageEvent()
+		if err != nil {
+			http.Error(w, "error creating message event: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+		ctx.Notifier.Notify(n)
 
 		w.Header().Add(headerContentType, contentTypeJSONUTF8)
 		encoder := json.NewEncoder(w)
@@ -304,6 +352,14 @@ func (ctx *Context) SpecificMessageHandler(w http.ResponseWriter, r *http.Reques
 			return
 		}
 
+		//Notify client of updated message through websocket
+		n, err := um.ToUpdatedMessageEvent()
+		if err != nil {
+			http.Error(w, "error creating message event: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+		ctx.Notifier.Notify(n)
+
 		w.Header().Add(headerContentType, contentTypeJSONUTF8)
 		encoder := json.NewEncoder(w)
 		encoder.Encode(um)
@@ -313,6 +369,15 @@ func (ctx *Context) SpecificMessageHandler(w http.ResponseWriter, r *http.Reques
 			http.Error(w, "error deleting message: "+err.Error(), http.StatusInternalServerError)
 			return
 		}
+
+		//Notify client of updated message through websocket
+		n, err := m.ToDeletedMessageEvent()
+		if err != nil {
+			http.Error(w, "error creating message event: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+		ctx.Notifier.Notify(n)
+
 		w.Header().Add(headerContentType, contentTypeText)
 		w.Write([]byte("message succesfully deleted"))
 	}

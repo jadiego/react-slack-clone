@@ -7,6 +7,19 @@ import (
 	"github.com/gorilla/websocket"
 )
 
+//Event types for websocket events
+const (
+	NewChannel        = "new channel"
+	NewUser           = "new user"
+	NewMessage        = "new message"
+	UpdatedChannel    = "updated channel"
+	UpdatedMessage    = "updated message"
+	DeletedChannel    = "deleted channel"
+	DeletedMessage    = "deleted message"
+	UserJoinedChannel = "user joined channel"
+	UserLeftChannel   = "user left channel"
+)
+
 //UserEvent represents an event with messages about
 //user related events
 type UserEvent struct {

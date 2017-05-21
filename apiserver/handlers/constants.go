@@ -11,3 +11,5 @@ const (
 	contentTypeJSONUTF8 = contentTypeJSON + "; " + charsetUTF8
 	contentTypeTextUTF8 = contentTypeText + "; " + charsetUTF8
 )
+
+const headerLink = "Link"
