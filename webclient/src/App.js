@@ -6,7 +6,7 @@ import 'whatwg-fetch';
 
 import Login from './login/LoginContainer';
 import Signup from './login/SignupContainer';
-import View from './components/ViewContainer';
+import View from './mainview/ViewContainer';
 
 import { bindActionCreators } from 'redux';
 import { fetchCheckSession } from './actions';

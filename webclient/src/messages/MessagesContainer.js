@@ -17,7 +17,6 @@ class MessagesContainer extends Component {
 
 const mapStateToProps = (state) => {
     return {
-        fetching: state.fetching,
         currentUser: state.currentUser,
         currentChannel: state.currentChannel,
         users: state.users,

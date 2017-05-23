@@ -27,9 +27,9 @@ class Messages extends Component {
                             <Header.Content>
                                 {
                                     this.props.match.path.includes("@") ? (
-                                            <div><Icon name='at' color='orange' fitted style={{marginRight: 0}}/> { this.props.match.params.username}</div>
-                                        ) : (
-                                            <div><Icon name='hashtag' color='orange' fitted style={{marginRight: 0}}/> { this.props.match.params.channelname}</div>
+                                        <div><Icon name='at' color='orange' fitted style={{ marginRight: 0 }} /> {this.props.match.params.username}</div>
+                                    ) : (
+                                            <div><Icon name='hashtag' color='orange' fitted style={{ marginRight: 0 }} /> {this.props.match.params.channelname}</div>
                                         )
                                 }
                                 <Header.Subheader>{currentChannel.description}</Header.Subheader>
@@ -38,7 +38,7 @@ class Messages extends Component {
                         <Divider />
                     </Segment>
                     <Segment basic padded id='channel-messages'>
-                       <MessageComments />
+                        <MessageComments />
                     </Segment>
                     <Segment basic padded id='channel-textbox'>
                         <Divider />
@@ -63,15 +63,17 @@ class Messages extends Component {
                         {
                             currentChannel.members !== undefined && (
                                 currentChannel.members.map(member => {
-                                    let person = find(users, function(u) { return u.id === member; });
-                                    return <Menu.Item
-                                        key={`key-${member}`}
-                                        className='channel-item'
-                                        style={{padding: 5}}
-                                    >
-                                        <Image src={person.photoURL} inline shape='rounded' spaced width={30} />
-                                        {`${person.firstName} ${person.lastName} (@${person.userName})`}
-                                    </Menu.Item>
+                                    let person = find(users, (u) => { return u.id === member })
+                                    return person !== undefined && (
+                                        <Menu.Item
+                                            key={`key-${member}`}
+                                            className='channel-item'
+                                            style={{ padding: 5 }}
+                                        >
+                                            <Image src={person.photoURL} inline shape='rounded' spaced width={30} />
+                                            {`${person.firstName} ${person.lastName} (@${person.userName})`}
+                                        </Menu.Item>
+                                    )
                                 })
                             )
                         }

@@ -8,21 +8,21 @@ import { fetchChannels, fetchUsers, fetchChannelMessages, fetchLinkToChannel, fe
 
 class ViewContainer extends Component {
     componentWillMount() {
-        if (this.props.location.pathname.includes("messages/")) {
-            this.props.initiateWebSocketConnection()
-            this.props.fetchUsers()
-            this.props.fetchChannels()
-                .then(resp => {
-                    if (this.props.match.params.channelname.includes("@")) {
-                        return this.props.fetchChannelMessages(null, this.props.match.params.channelname.substring(1))
-                    } else {
-                        return this.props.fetchChannelMessages(this.props.match.params.channelname)
-                    }
-                })
-                .then(resp => {
-                    return this.props.fetchLinkToChannel(this.props.currentChannel.id)
-                })
-        }
+        this.props.initiateWebSocketConnection()
+        this.props.fetchUsers()
+            .then(resp => {
+                return this.props.fetchChannels()
+            })
+            .then(resp => {
+                if (this.props.match.params.channelname.includes("@")) {
+                    return this.props.fetchChannelMessages(null, this.props.match.params.channelname.substring(1))
+                } else {
+                    return this.props.fetchChannelMessages(this.props.match.params.channelname)
+                }
+            })
+            .then(resp => {
+                return this.props.fetchLinkToChannel(this.props.currentChannel.id)
+            })
     }
 
     render() {

@@ -2,10 +2,11 @@ import React, { Component } from 'react';
 import { Segment, Header, Divider, Form, Icon, Container, Card, Image, Button, Message } from 'semantic-ui-react';
 import './profile.css';
 
-
-
 class Profile extends Component {
     render() {
+        const { currentUser, fetching, fetchError,
+            fetchUpdateCurrentUser, firstname, lastname,
+            handleFirstNameChange, handleLastNameChange } = this.props
         return (
             <Segment basic padded='very' id='profile'>
                 <Header as='h2'>Account Settings</Header>
@@ -16,32 +17,32 @@ class Profile extends Component {
                             <Icon name='id card outline' className='profile-icon' size='huge' bordered circular color='orange'></Icon>
                         </Divider>
                         <Card centered>
-                            <Image src={this.props.user.photoURL} wrapped/>
+                            <Image src={currentUser.photoURL} wrapped />
                             <Card.Content>
                                 <Card.Header>
-                                    {this.props.user.firstName} {this.props.user.lastName}
-                            </Card.Header>
+                                    {currentUser.firstName} {currentUser.lastName}
+                                </Card.Header>
                                 <Card.Meta>
                                     <span>
-                                        @{this.props.user.userName}
-                                </span>
+                                        @{currentUser.userName}
+                                    </span>
                                 </Card.Meta>
                             </Card.Content>
                             <Card.Content extra>
                                 <Icon name='mail outline' />
-                                {this.props.user.email}
-                        </Card.Content>
+                                {currentUser.email}
+                            </Card.Content>
                         </Card>
                     </Segment>
                     <Segment padded='very' className='profile-container'>
                         <Divider horizontal> <Header as='h3'> Update Personal Information </Header></Divider>
                         <Segment basic padded>
-                            <Form size='small' onSubmit={event => this.props.handleSubmitUpdate(event)} warning={this.props.showresp}>
+                            <Form size='small' onSubmit={event => fetchUpdateCurrentUser(event, firstname, lastname)} warning={fetch !== 0}>
                                 <Segment>
-                                    <Form.Input control='Input' label='First Name' type='text' icon='image' value={this.props.firstname} onChange={event => this.props.handleFirstNameChange(event)}/>
-                                    <Form.Input control='Input' label='Last Name' type='text' icon='image' value={this.props.lastname} onChange={event => this.props.handleLastNameChange(event)}/>
-                                    <Button size='tiny' className='submit-update' onClick={event => this.props.handleSubmitUpdate(event)}>Submit</Button>
-                                    <Message warning>{this.props.resp}</Message>
+                                    <Form.Input control='Input' label='First Name' type='text' icon='image' value={firstname} onChange={event => handleFirstNameChange(event)} />
+                                    <Form.Input control='Input' label='Last Name' type='text' icon='image' value={lastname} onChange={event => handleLastNameChange(event)} />
+                                    <Button size='tiny' className='submit-update' onClick={event => fetchUpdateCurrentUser(event, firstname, lastname)}>Submit</Button>
+                                    <Message warning>{fetchError}</Message>
                                 </Segment>
                             </Form>
                         </Segment>

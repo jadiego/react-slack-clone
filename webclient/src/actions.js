@@ -288,11 +288,13 @@ export const fetchChannelMessages = (channelname, username, userid) => {
 
 export const fetchLinkToChannel = (channelid) => {
   return dispatch => {
+
     return fetch(`${apiRoot}channels/${channelid}`, {
       method: "LINK",
       mode: "cors",
       headers: new Headers({
-        "Authorization": localStorage.getItem(storageKey)
+        "Authorization": localStorage.getItem(storageKey),
+        "Link": channelid
       })
     })
       .then(handleResponse)
@@ -379,5 +381,31 @@ export const initiateWebSocketConnection = () => {
           dispatch({ type: 'MESSAGE NEW', data: JSON.parse(event.message) })
       }
     })
+  }
+}
+
+export const fetchUpdateCurrentUser = (event, fn, ln) => {
+  event.preventDefault()
+
+  return dispatch => {
+    dispatch({ type: 'FETCH START' })
+
+    fetch(`${apiRoot}users/me`, {
+      method: 'PATCH',
+      headers: {
+        "Content-Type": contentTypeJSONUTF8,
+        "Authorization": localStorage.getItem(storageKey)
+      },
+      body: JSON.stringify({
+        firstName: fn,
+        lastName: ln
+      })
+    })
+      .then(handleResponse)
+      .then(data => {
+        dispatch({ type: 'FETCH END', message: `${data} Please logout and login again to reflect changes.` })
+      })
+      .catch(error => dispatch({ type: 'FETCH END', message: error.message }))
+
   }
 }
