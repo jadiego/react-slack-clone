@@ -31,7 +31,7 @@ class Login extends Component {
         }
 
         if (!isEmpty(currentUser)) {
-            console.log("logged in, redirecting to home page")
+            console.log(`logged in, redirecting to ${from.pathname}`)
             return (
                 <Redirect to={from.pathname} />
             )

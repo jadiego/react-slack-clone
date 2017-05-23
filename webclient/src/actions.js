@@ -1,4 +1,4 @@
-import { find } from 'lodash';
+import { find, isEqual } from 'lodash';
 
 const headerContentType = "Content-Type"
 const charsetUTF8 = "charset=utf-8"
@@ -223,29 +223,66 @@ export const fetchUsers = () => {
   }
 }
 
-export const fetchChannelMessages = (channelname) => {
+export const fetchChannelMessages = (channelname, username, userid) => {
   return (dispatch, getState) => {
-    const { currentChannel, channels } = getState();
-    let co = find(channels, (c) => {
-      return c.name === channelname
-    });
+    const { currentChannel, channels, currentUser, messages } = getState();
+    //check first if the username parameter was given, if it was given that
+    //means that the channel we are looking for is a direct DM channel
+    if (username === undefined) {
+      var co = find(channels, (c) => {
+        return c.name === channelname
+      });
+    } else {
+      var co = find(channels, (c) => {
+        let channelname = [username, currentUser.userName].sort()
+        let grabbedchannel = c.name.split(":").sort()
+        return isEqual(channelname, grabbedchannel)
+      })
+    }
+    //co is the result of finding it whitin the current channels state.
+    //if its undefined, meaning it's not in the channels state, then we need to
+    //create it
+    if (co === undefined) {
+      //set the necessary parameters to create a private DM channel
+      let channelname = [username, currentUser.userName].sort().join(":")
+      let privatechan = true
+      let description = `Direct messsages between you and ${username}`
+      //special case:
+      //if the user prompt is the current user, then leave members list empty,
+      //server side will automatically add in creator
+      if (username === currentUser.userName) {
+        var members = []
+      } else {
+        var members = [userid, currentUser.id]
+      }
+      console.log("creating channel")
+      //create the channel and sets the channel
+      return dispatch(fetchCreateChannel(channelname, privatechan, description, members))
+    } else {
+      //set the current channel found within the channels state object
+      dispatch({ type: 'SET CURRENT CHANNEL', data: co })
 
-    dispatch({ type: 'SET CURRENT CHANNEL', data: co })
-    dispatch({ type: 'FETCH START' })
-    return fetch(`${apiRoot}channels/${co.id}`, {
-      mode: "cors",
-      headers: new Headers({
-        "Authorization": localStorage.getItem(storageKey)
-      })
-    })
-      .then(handleResponse)
-      .then(data => {
-        dispatch({ type: 'FETCH END', message: "" })
-        dispatch({ type: 'SET MESSAGES', data, channelid: co.id })
-      })
-      .catch(error => {
-        dispatch({ type: 'FETCH END', message: error.message })
-      })
+      //next we check if we already have the messages pulled form the database
+      //if 'messages[co.id]', or messages.<channel-id>, is undefined, then we
+      //don't have the messages yet. If it's defined, then we don't need to do anything
+      if (messages[co.id] === undefined) {
+        dispatch({ type: 'FETCH START' })
+        return fetch(`${apiRoot}channels/${co.id}`, {
+          mode: "cors",
+          headers: new Headers({
+            "Authorization": localStorage.getItem(storageKey)
+          })
+        })
+          .then(handleResponse)
+          .then(data => {
+            dispatch({ type: 'FETCH END', message: "" })
+            dispatch({ type: 'SET MESSAGES', data, channelid: co.id })
+          })
+          .catch(error => {
+            dispatch({ type: 'FETCH END', message: error.message })
+          })
+      }
+    }
   }
 }
 
@@ -326,6 +363,7 @@ export const fetchCreateChannel = (channelname, privatechan, description, member
         dispatch({ type: 'FETCH END', message: "" })
         dispatch({ type: 'CHANNEL NEW', data })
         dispatch({ type: 'SET CURRENT CHANNEL', data })
+        dispatch({ type: 'SET MESSAGES', data: [], channelid: data.id })
       })
       .catch(error => dispatch({ type: 'FETCH END', message: error.message }))
   }
@@ -340,6 +378,6 @@ export const initiateWebSocketConnection = () => {
         case newMessage:
           dispatch({ type: 'MESSAGE NEW', data: JSON.parse(event.message) })
       }
-  })
+    })
   }
 }

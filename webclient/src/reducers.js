@@ -64,7 +64,9 @@ let currentChannel = (state = {}, action) => {
 let messages = (state = {}, action) => {
     switch (action.type) {
         case "SET MESSAGES":
-            return {...state, ...state[action.channelid] = action.data}
+            let x = {...state}
+            x[action.channelid] = action.data
+            return x
         case "MESSAGE NEW":
             return {...state, ...state[action.data.channelid].push(action.data)}
         default:

@@ -27,7 +27,7 @@ class Signup extends Component {
         if (!isEmpty(currentUser)) {
             console.log("logged in, redirecting to home page")
             return (
-                <Redirect to='/messages' />
+                <Redirect to='/messages/general' />
             )
         }
 

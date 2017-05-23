@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Menu, Image, Segment, Sidebar, Icon } from 'semantic-ui-react';
 import './view.css';
 import logooutline from '../images/chat-outline.png';
-import { Route, NavLink, Link, Switch } from 'react-router-dom';
+import { Route, NavLink, Link, Switch, Redirect } from 'react-router-dom';
 
 import ProfilePopup from './ProfilePopupContainer';
 import MessagesContainer from '../messages/MessagesContainer';
@@ -66,7 +66,7 @@ class View extends Component {
                                     backgroundColor: "rgba(249, 92, 60, 1)",
                                     color: "white"
                                 }}
-                                onClick={() => directMessage(user)}
+                                onClick={() => fetchChannelMessages(null, user.userName, user.id)}
                             >
                                 <Image src={user.photoURL} inline shape='rounded' spaced width={30} />
                                 {user.userName}

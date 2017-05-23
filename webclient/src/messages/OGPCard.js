@@ -7,7 +7,7 @@ class OGPCard extends Component {
         ogp: [],
     }
 
-    componentWillMount() {
+    componentDidMount() {
         for (let i = 0; i < this.props.links.length; i++) {
             fetch(`${apiRoot}summary?url=${this.props.links[i].href}`, {
                 mode: "cors",
