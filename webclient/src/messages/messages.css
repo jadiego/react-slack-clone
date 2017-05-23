@@ -52,7 +52,7 @@
     background-color: rgb(245, 246, 248);
 }
 
-#channel-messages .message-item .comment-date-right {
+#channel-messages .message-item .comment-date-right, #channel-messages .message-item .edit-comment-container {
     opacity: 0;
     float: right;
 }
@@ -60,3 +60,9 @@
 #channel-messages .message-item:hover .comment-date-right  {
     opacity: 1;
 }
+
+#channel-messages .message-item:hover .edit-comment-container {
+    opacity: 1;
+    padding-left: 10px; 
+}
+
