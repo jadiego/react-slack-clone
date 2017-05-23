@@ -7,6 +7,7 @@ import { Route, NavLink, Link, Switch } from 'react-router-dom';
 import ProfilePopup from '../components/ProfilePopupContainer';
 import MessagesContainer from '../messages/MessagesContainer';
 import ProfileContainer from '../profile/ProfileContainer';
+import AddChannelPopUpModal from '../components/AddChannelPopUpModal'
 
 class View extends Component {
     render() {
@@ -27,8 +28,8 @@ class View extends Component {
                     <Sidebar as={Menu} animation='push' visible tabular vertical id='left'>
                         <ProfilePopup />
                         <Menu.Item header className='menu-header'>
-                            <Icon name='hashtag' color='orange'/>
-                            <Icon name='plus' />
+                            <Icon name='hashtag' color='orange' />
+                            <AddChannelPopUpModal />
                             Channels
                         </Menu.Item>
                         {channels.map(channel =>
@@ -51,7 +52,7 @@ class View extends Component {
                             )
                         )}
                         <Menu.Item header className='menu-header'>
-                            <Icon name='at' color='orange'/>
+                            <Icon name='at' color='orange' />
                             Direct messages
                         </Menu.Item>
                         {users.map(user =>
