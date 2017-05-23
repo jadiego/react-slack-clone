@@ -1,9 +1,12 @@
 import React, { Component } from 'react';
-import { Feed, Image } from 'semantic-ui-react';
+import { Feed, Image, Icon } from 'semantic-ui-react';
 import moment from "moment";
 import { find } from 'lodash';
-import OGPCard from './OGPCard'
-import * as linkify from 'linkifyjs';;
+import * as linkify from 'linkifyjs';
+
+import OGPCard from './OGPCard';
+import DeleteMessageModal from './DeleteMessageModal';
+import EditMessageModal from './EditMessageModal';
 
 import { connect } from 'react-redux';
 
@@ -12,7 +15,8 @@ class MessageComments extends Component {
         let {
             messages,
             users,
-            currentChannel
+            currentChannel,
+            currentUser
         } = this.props
 
         messages = messages[currentChannel.id]
@@ -27,6 +31,14 @@ class MessageComments extends Component {
                                 <Feed.Summary>
                                     {`${person.firstName} ${person.lastName}`}
                                     <Feed.Date>{moment(message.createdAt).fromNow()}</Feed.Date>
+                                    {
+                                        message.creatorid === currentUser.id && (
+                                            <div className='edit-comment-container'>
+                                                <EditMessageModal message={message}/>
+                                                <DeleteMessageModal message={message}/>
+                                            </div>
+                                        )
+                                    }
                                     <Feed.Date className='comment-date-right'>{moment(message.createdAt).format("LLL")}</Feed.Date>
                                 </Feed.Summary>
                                 {
@@ -52,7 +64,8 @@ const mapStateToProps = (state) => {
     return {
         messages: state.messages,
         users: state.users,
-        currentChannel: state.currentChannel
+        currentChannel: state.currentChannel,
+        currentUser: state.currentUser
     }
 }
 
