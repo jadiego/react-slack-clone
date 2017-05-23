@@ -1,4 +1,4 @@
-import { find, isEqual } from 'lodash';
+import { find, isEqual, includes } from 'lodash';
 
 const headerContentType = "Content-Type"
 const charsetUTF8 = "charset=utf-8"
@@ -371,26 +371,13 @@ export const fetchCreateChannel = (channelname, privatechan, description, member
   }
 }
 
-export const initiateWebSocketConnection = () => {
-  return dispatch => {
-    var websock = new WebSocket(`${apiWS}?auth=${localStorage.getItem(storageKey)}`)
-    websock.addEventListener("message", (wsevent) => {
-      var event = JSON.parse(wsevent.data)
-      switch (event.type) {
-        case newMessage:
-          dispatch({ type: 'MESSAGE NEW', data: JSON.parse(event.message) })
-      }
-    })
-  }
-}
-
 export const fetchUpdateCurrentUser = (event, fn, ln) => {
   event.preventDefault()
 
   return dispatch => {
     dispatch({ type: 'FETCH START' })
 
-    fetch(`${apiRoot}users/me`, {
+    return fetch(`${apiRoot}users/me`, {
       method: 'PATCH',
       headers: {
         "Content-Type": contentTypeJSONUTF8,
@@ -407,5 +394,48 @@ export const fetchUpdateCurrentUser = (event, fn, ln) => {
       })
       .catch(error => dispatch({ type: 'FETCH END', message: error.message }))
 
+  }
+}
+
+export const fetchDeleteMessage = (messageid) => {
+  return (dispatch, getState) => {
+    const { currentChannel } = getState()
+    dispatch({ type: 'FETCH START' })
+
+    return fetch(`${apiRoot}messages/${messageid}`, {
+      method: 'DELETE',
+      headers: {
+        "Authorization": localStorage.getItem(storageKey)
+      },
+    })
+      .then(handleResponse)
+      .then(data => {
+        dispatch({ type: 'FETCH END', message: "" })
+        dispatch({ type: 'MESSAGE DELETE', messageid, channelid: currentChannel.id })
+      })
+      .catch(error => dispatch({ type: 'FETCH END', message: error.message }))
+  }
+}
+
+export const initiateWebSocketConnection = () => {
+  return (dispatch, getState) => {
+    const { currentUser } = getState()
+    var websock = new WebSocket(`${apiWS}?auth=${localStorage.getItem(storageKey)}`)
+    websock.addEventListener("message", (wsevent) => {
+      var event = JSON.parse(wsevent.data)
+      switch (event.type) {
+        case newMessage:
+          dispatch({ type: 'MESSAGE NEW', data: JSON.parse(event.message) })
+          
+        case newChannel:
+          let ch = JSON.parse(event.message)
+          if ((includes(ch.members, currentUser.id) || !ch.private) && ch.creatorid !== currentUser.id) {
+            dispatch({ type: 'CHANNEL NEW', data: ch })
+          }
+          
+        case deletedMessage:
+          
+      }
+    })
   }
 }

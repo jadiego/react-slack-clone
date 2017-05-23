@@ -1,3 +1,4 @@
+import { remove } from 'lodash';
 import { combineReducers } from 'redux';
 
 let fetching = (state = 0, action) => {
@@ -25,7 +26,7 @@ let currentUser = (state = {}, action) => {
         case "SET CURRENT USER":
             return action.data;
         case "UPDATE USER":
-            return {...state, ...action.data}
+            return { ...state, ...action.data }
         default:
             return state
     }
@@ -66,11 +67,17 @@ let currentChannel = (state = {}, action) => {
 let messages = (state = {}, action) => {
     switch (action.type) {
         case "SET MESSAGES":
-            let x = {...state}
+            var x = { ...state }
             x[action.channelid] = action.data
             return x
         case "MESSAGE NEW":
-            return {...state, ...state[action.data.channelid].push(action.data)}
+            return { ...state, ...state[action.data.channelid].push(action.data) }
+        case "MESSAGE DELETE":
+            var x = { ...state }
+            var messages = x[action.channelid]
+            var newmessages = remove(messages, m => { return m.id !== action.messageid })
+            x[action.channelid] = newmessages
+            return x
         default:
             return state
     }
