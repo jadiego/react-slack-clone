@@ -158,10 +158,11 @@ export const fetchSignOut = () => {
   }
 }
 
+//doesnt do the whole fetch start, fetch end dispatch
+//because it doesn't need to be recorded.
 export const fetchCheckSession = () => {
 
   return dispatch => {
-    dispatch({ type: 'FETCH START' })
 
     return fetch(`${apiRoot}users/me`, {
       mode: "cors",
@@ -172,14 +173,12 @@ export const fetchCheckSession = () => {
       .then(handleResponse)
       .then(data => {
         let message = ""
-        dispatch({ type: 'FETCH END', message })
         dispatch({ type: 'SET CURRENT USER', data })
 
       })
       .catch(error => {
         localStorage.removeItem("auth")
         let message = error.message
-        dispatch({ type: 'FETCH END', message })
       })
   }
 }
