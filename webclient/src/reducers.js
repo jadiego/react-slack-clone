@@ -36,6 +36,8 @@ let users = (state = [], action) => {
     switch (action.type) {
         case "SET USERS":
             return action.data;
+        case "USER NEW":
+            return state.concat([action.data])
         default:
             return state
     }

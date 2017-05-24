@@ -65,6 +65,14 @@ func (ctx *Context) UsersHandler(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		//Notify client of new user created through websocket
+		n, err := u.ToNewUserEvent()
+		if err != nil {
+			http.Error(w, "error creating user event: "+err.Error(), http.StatusInternalServerError)
+			return
+		}
+		ctx.Notifier.Notify(n)
+
 		//Respond to the client with the models.User struct encoded as a JSON object
 		w.Header().Add(headerContentType, contentTypeJSONUTF8)
 		encoder := json.NewEncoder(w)
@@ -156,7 +164,7 @@ func (ctx *Context) UsersMeHanlder(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "error getting current state : "+err.Error(), http.StatusInternalServerError)
 		return
 	}
-	
+
 	switch r.Method {
 	case "GET":
 		//Respond to the client with the session

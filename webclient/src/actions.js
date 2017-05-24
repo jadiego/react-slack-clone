@@ -149,7 +149,7 @@ export const fetchSignOut = () => {
         localStorage.removeItem(storageKey)
         dispatch({ type: 'SET CURRENT USER', data: {} })
         dispatch({ type: 'FETCH END', message: data })
-
+        location.reload()
       })
       .catch(error => {
         dispatch({ type: 'FETCH END', message: error.message })
@@ -468,6 +468,12 @@ export const initiateWebSocketConnection = () => {
           var message = JSON.parse(event.message)
           if ((includes(currentChannel.members, currentUser.id))) {
             dispatch({ type: 'MESSAGE UPDATE', data: message })
+          }
+          break
+        case newUser:
+          var u = JSON.parse(event.message)
+          if (currentUser.id != u.id) {
+            dispatch({ type: 'USER NEW', data: u })
           }
           break
       }
