@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Feed, Image, Icon } from 'semantic-ui-react';
+import { Feed, Image, Icon, Popup } from 'semantic-ui-react';
 import moment from "moment";
 import { find } from 'lodash';
 import * as linkify from 'linkifyjs';
@@ -34,21 +34,25 @@ class MessageComments extends Component {
                                     {
                                         message.creatorid === currentUser.id && (
                                             <div className='edit-comment-container'>
-                                                <EditMessageModal message={message}/>
-                                                <DeleteMessageModal message={message}/>
+                                                <EditMessageModal message={message} />
+                                                <DeleteMessageModal message={message} />
                                             </div>
                                         )
                                     }
                                     <Feed.Date className='comment-date-right'>{moment(message.createdAt).format("LLL")}</Feed.Date>
                                 </Feed.Summary>
                                 {
-                                    linkify.find(message.body).length !== 0 ? (
-                                        <OGPCard body={message.body} links={linkify.find(message.body)} />
-                                    ) : (
-                                            <div className="text">
-                                                {message.body}
-                                            </div>
-                                        )
+                                    <div>
+                                        {message.body}
+                                        {(message.createdAt !== message.editedAt) && (
+                                                <Popup inverted content={moment(message.editedAt).format("LLL")} trigger={
+                                                    <span style={{ fontSize: '11px', color: 'grey' }}> (edited)</span>
+                                                } />
+                                            )}
+                                        {(linkify.find(message.body).length !== 0) && (
+                                                <OGPCard links={linkify.find(message.body)} />
+                                            )}
+                                    </div>
                                 }
                             </Feed.Content>
                         </Feed.Event>

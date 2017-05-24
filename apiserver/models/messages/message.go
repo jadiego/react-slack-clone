@@ -31,7 +31,8 @@ type NewMessage struct {
 
 //MessageUpdates represents updates a user could make to a message
 type MessageUpdates struct {
-	Body string `json:"body"`
+	Body     string    `json:"body"`
+	EditedAt time.Time `json:"editedAt"`
 }
 
 //Validate validates the new message
@@ -51,17 +52,18 @@ func (nm *NewMessage) Validate() error {
 
 //ToMessage converts the NewMessage to a Message
 func (nm *NewMessage) ToMessage() *Message {
+	time := time.Now()
 	m := &Message{
 		ChannelID: nm.ChannelID,
 		Body:      nm.Body,
-		CreatedAt: time.Now(),
-		EditedAt:  time.Now(),
+		CreatedAt: time,
+		EditedAt:  time,
 	}
 
 	return m
 }
 
-//ToNewMessageEvent converts the channel to a message event for
+//ToNewMessageEvent converts the message to a message event for
 //a websocket notification
 func (m *Message) ToNewMessageEvent() (*notifier.MessageEvent, error) {
 	jsonstring, err := json.Marshal(m)
@@ -72,7 +74,7 @@ func (m *Message) ToNewMessageEvent() (*notifier.MessageEvent, error) {
 	}, err
 }
 
-//ToUpdatedMessageEvent converts the channel to a message event for
+//ToUpdatedMessageEvent converts the message to a message event for
 //a websocket notification
 func (m *Message) ToUpdatedMessageEvent() (*notifier.MessageEvent, error) {
 	jsonstring, err := json.Marshal(m)
@@ -83,7 +85,7 @@ func (m *Message) ToUpdatedMessageEvent() (*notifier.MessageEvent, error) {
 	}, err
 }
 
-//ToDeletedMessageEvent converts the channel to a message event for
+//ToDeletedMessageEvent converts the message to a message event for
 //a websocket notification
 func (m *Message) ToDeletedMessageEvent() (*notifier.MessageEvent, error) {
 	jsonstring, err := json.Marshal(m)

@@ -363,7 +363,6 @@ export const fetchCreateChannel = (channelname, privatechan, description, member
       .then(handleResponse)
       .then(data => {
         dispatch({ type: 'FETCH END', message: "" })
-        dispatch({ type: 'CHANNEL NEW', data })
         dispatch({ type: 'SET CURRENT CHANNEL', data })
         dispatch({ type: 'SET MESSAGES', data: [], channelid: data.id })
       })
@@ -379,6 +378,7 @@ export const fetchUpdateCurrentUser = (event, fn, ln) => {
 
     return fetch(`${apiRoot}users/me`, {
       method: 'PATCH',
+      mode: "cors",
       headers: {
         "Content-Type": contentTypeJSONUTF8,
         "Authorization": localStorage.getItem(storageKey)
@@ -404,6 +404,7 @@ export const fetchDeleteMessage = (messageid) => {
 
     return fetch(`${apiRoot}messages/${messageid}`, {
       method: 'DELETE',
+      mode: "cors",
       headers: {
         "Authorization": localStorage.getItem(storageKey)
       },
@@ -411,7 +412,29 @@ export const fetchDeleteMessage = (messageid) => {
       .then(handleResponse)
       .then(data => {
         dispatch({ type: 'FETCH END', message: "" })
-        dispatch({ type: 'MESSAGE DELETE', messageid, channelid: currentChannel.id })
+      })
+      .catch(error => dispatch({ type: 'FETCH END', message: error.message }))
+  }
+}
+
+export const fetchEditMessage = (modal, messageid, body) => {
+  return (dispatch, getState) => {
+    const { currentChannel } = getState()
+    dispatch({ type: 'FETCH START' })
+
+    return fetch(`${apiRoot}messages/${messageid}`, {
+      method: 'PATCH',
+      headers: {
+        "Authorization": localStorage.getItem(storageKey),
+        "Content-Type": contentTypeJSONUTF8
+      },
+      body: JSON.stringify({
+        body: body
+      })
+    })
+      .then(handleResponse)
+      .then(data => {
+        dispatch({ type: 'FETCH END', message: "" })
       })
       .catch(error => dispatch({ type: 'FETCH END', message: error.message }))
   }
@@ -426,15 +449,27 @@ export const initiateWebSocketConnection = () => {
       switch (event.type) {
         case newMessage:
           dispatch({ type: 'MESSAGE NEW', data: JSON.parse(event.message) })
-          
+          break
         case newChannel:
-          let ch = JSON.parse(event.message)
-          if ((includes(ch.members, currentUser.id) || !ch.private) && ch.creatorid !== currentUser.id) {
+          var ch = JSON.parse(event.message)
+          if ((includes(ch.members, currentUser.id) || !ch.private)) {
             dispatch({ type: 'CHANNEL NEW', data: ch })
           }
-          
+          break
         case deletedMessage:
-          
+          var { currentChannel } = getState()
+          var message = JSON.parse(event.message)
+          if ((includes(currentChannel.members, currentUser.id))) {
+            dispatch({ type: 'MESSAGE DELETE', messageid: message.id, channelid: message.channelid })
+          }
+          break
+        case updatedMessage:
+          var { currentChannel } = getState()
+          var message = JSON.parse(event.message)
+          if ((includes(currentChannel.members, currentUser.id))) {
+            dispatch({ type: 'MESSAGE UPDATE', data: message })
+          }
+          break
       }
     })
   }

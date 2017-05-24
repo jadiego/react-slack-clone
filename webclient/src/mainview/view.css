@@ -27,7 +27,9 @@
 #messages-container #left{
     border-radius: 0px !important;
     background-color: #f2f2f2;
-    max-width: 280px
+    max-width: 280px;
+    overflow-x: hidden;
+    overflow-y: scroll;
 }
 
 #messages-container #left #profile{
@@ -42,8 +44,6 @@
 #messages-container #left #profile:hover{
     background-color: rgba(250, 251, 252, 0.3)
 }
-
-
 
 #messages-container #left #profile #edit-icon, .profile-menu-icon{
     float: right !important;
@@ -64,6 +64,9 @@
 #messages-container #left .channel-item {
     border-bottom: 1px solid #dedede;
     clear: both;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
     
 }
 

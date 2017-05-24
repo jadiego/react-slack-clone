@@ -128,7 +128,7 @@ func (ms *MongoStore) InsertMessage(id users.UserID, newmessage *NewMessage) (*M
 
 //UpdateMessage applies the MessageUpdates to the current message
 func (ms *MongoStore) UpdateMessage(updates *MessageUpdates, currentmessage *Message) (*Message, error) {
-	currentmessage.EditedAt = time.Now()
+	updates.EditedAt = time.Now()
 	col := ms.Session.DB(ms.DatabaseName).C(ms.MessagesCollectionName)
 	messageupdates := bson.M{"$set": updates}
 	err := col.UpdateId(currentmessage.ID, messageupdates)

@@ -26,12 +26,9 @@ class OGPCard extends Component {
     render() {
 
         let { ogp } = this.state
-        let { body } = this.props
-
 
         return (
             <div>
-                {body}
                 {
                     ogp.length !== 0 && (
                         ogp.map((link, i) => {

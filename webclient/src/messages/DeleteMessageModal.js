@@ -44,7 +44,7 @@ class DeleteMessageModal extends Component {
                 closeIcon='close'
                 basic
             >
-                <Modal.Header as='h3'> <Icon name='warning' color='red' />Delete Message</Modal.Header>
+                <Modal.Header as='h2'> <Icon name='trash' color='red' />Delete Message</Modal.Header>
                 <Modal.Content>
                     <p>Are you sure you want to delete this message? Once it's deleted, the content within the message including the text and images will be gone <strong>forever</strong>.</p>
                 </Modal.Content>

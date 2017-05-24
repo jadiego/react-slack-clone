@@ -32,24 +32,27 @@ class View extends Component {
                             <AddChannelPopUpModal />
                             Channels
                         </Menu.Item>
-                        {channels.map(channel =>
-                            !channel.name.includes(currentUser.userName) && (
-                                <Menu.Item
-                                    key={`key-${channel.id}`}
-                                    as={NavLink} to={{ pathname: `/messages/${channel.name}` }}
-                                    className='channel-item'
-                                    onClick={() => fetchChannelMessages(channel.name)}
-                                    activeClassName='active'
-                                    activeStyle={{
-                                        border: "none",
-                                        backgroundColor: "rgba(249, 92, 60, 0.8)",
-                                        color: "white"
-                                    }}
-                                >
-                                    <Image src='https://g.flockusercontent.com/default-group-1.png' inline shape='rounded' spaced width={30} />
-                                    {channel.name}
-                                </Menu.Item>
+                        {channels.map(channel => {
+                            return channel.name !== undefined && (
+                                !channel.name.includes(`:${currentUser.userName}`) && (
+                                    <Menu.Item
+                                        key={`key-${channel.id}`}
+                                        as={NavLink} to={{ pathname: `/messages/${channel.name}` }}
+                                        className='channel-item'
+                                        onClick={() => fetchChannelMessages(channel.name)}
+                                        activeClassName='active'
+                                        activeStyle={{
+                                            border: "none",
+                                            backgroundColor: "rgba(249, 92, 60, 0.8)",
+                                            color: "white"
+                                        }}
+                                        >
+                                        <Image src='https://g.flockusercontent.com/default-group-1.png' inline shape='rounded' spaced width={30} />
+                                        {channel.name}
+                                    </Menu.Item>
+                                )
                             )
+                        }
                         )}
                         <Menu.Item header className='menu-header'>
                             <Icon name='at' color='orange' />
@@ -67,7 +70,7 @@ class View extends Component {
                                     color: "white"
                                 }}
                                 onClick={() => fetchChannelMessages(null, user.userName, user.id)}
-                            >
+                                >
                                 <Image src={user.photoURL} inline shape='rounded' spaced width={30} />
                                 {user.userName}
                             </Menu.Item>

@@ -1,4 +1,4 @@
-import { remove } from 'lodash';
+import { remove, findIndex } from 'lodash';
 import { combineReducers } from 'redux';
 
 let fetching = (state = 0, action) => {
@@ -72,6 +72,13 @@ let messages = (state = {}, action) => {
             return x
         case "MESSAGE NEW":
             return { ...state, ...state[action.data.channelid].push(action.data) }
+        case "MESSAGE UPDATE":
+            var x = { ...state }
+            var messages = x[action.data.channelid]
+            var i = findIndex(messages, (m) => { return m.id === action.data.id })
+            messages[i] = action.data
+            x[action.data.channelid] = messages
+            return x
         case "MESSAGE DELETE":
             var x = { ...state }
             var messages = x[action.channelid]
