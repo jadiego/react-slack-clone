@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import View from './View';
-import { find } from 'lodash';
+import { find, includes } from 'lodash';
 
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
@@ -17,6 +17,11 @@ class ViewContainer extends Component {
                 if (this.props.match.params.channelname.includes("@")) {
                     return this.props.fetchChannelMessages(null, this.props.match.params.channelname.substring(1))
                 } else {
+                    let channels = this.props.channels
+                    let urlPath = this.props.match.params.channelname 
+                    if (find(channels, (c) => { return c.name === urlPath }) === undefined) {
+                        this.props.history.push("/messages/general")
+                    }
                     return this.props.fetchChannelMessages(this.props.match.params.channelname)
                 }
             })

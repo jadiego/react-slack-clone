@@ -1,16 +1,26 @@
 import React, { Component } from 'react';
-import { Segment, Header, Divider, Icon, Container, TextArea, Menu, Image } from 'semantic-ui-react';
-import MessageComments from './MessageComments'
+import { Segment, Header, Divider, Icon, Container, TextArea, Menu, Image, Form, Input, Card, Button } from 'semantic-ui-react';
+import MessageComments from './MessageComments';
 import { find } from 'lodash';
+import moment from "moment";
+import EditChannelModal from '../components/EditChannelModal';
+import DeleteChannelModal from '../components/DeleteChannelModal';
 
 class Messages extends Component {
     render() {
         let {
             currentChannel,
+            currentUser,
             users,
             newMessage,
             changeTextArea,
-            postMessage
+            postMessage,
+            activeMenu,
+            handleItemClick,
+            name,
+            description,
+            handleDescription,
+            handleName
         } = this.props
 
         //Set public icon depending if private or not
@@ -54,28 +64,77 @@ class Messages extends Component {
                 </Segment>
                 <Container fluid id='channel-container-right' as={Segment} basic>
                     <Container as={Segment} secondary basic fluid>
-                        <Header as='h4' textAlign='center' color='orange'><strong>CHANNEL MEMBERS</strong></Header>
-                        <Menu secondary pointing widths={8} icon='labeled'>
-                            <Menu.Item name='users' color='orange' icon={{ name: "users", color: "grey" }} active />
+                        <Header as='h4' textAlign='center' color='orange'><strong>CHANNEL INFORMATION</strong></Header>
+                        <Menu attached='top' icon tabular>
+                            <Menu.Item name='users' active={activeMenu === 'users'} onClick={handleItemClick}>
+                                <Icon name='users' />
+                            </Menu.Item>
+
+                            <Menu.Item name='info' active={activeMenu === 'info'} onClick={handleItemClick}>
+                                <Icon name='info' />
+                            </Menu.Item>
+
                         </Menu>
                     </Container>
                     <Container>
                         {
-                            currentChannel.members !== undefined && (
-                                currentChannel.members.map(member => {
-                                    let person = find(users, (u) => { return u.id === member })
-                                    return person !== undefined && (
-                                        <Menu.Item
-                                            key={`key-${member}`}
-                                            className='channel-item'
-                                            style={{ padding: 5 }}
-                                        >
-                                            <Image src={person.photoURL} inline shape='rounded' spaced width={30} />
-                                            {`${person.firstName} ${person.lastName} (@${person.userName})`}
-                                        </Menu.Item>
-                                    )
-                                })
-                            )
+                            activeMenu === "users" ? (
+                                <div>
+                                    <Header as='h5' textAlign='center' color='orange'><strong>MEMBERS</strong></Header>
+                                    {
+                                        currentChannel.members !== undefined && (
+                                            currentChannel.members.map(member => {
+                                                let person = find(users, (u) => { return u.id === member })
+                                                return person !== undefined && (
+                                                    <Menu.Item
+                                                        key={`key-${member}`}
+                                                        className='channel-item'
+                                                        style={{ padding: 5 }}
+                                                    >
+                                                        <Image src={person.photoURL} inline shape='rounded' spaced width={30} />
+                                                        {`${person.firstName} ${person.lastName} (@${person.userName})`}
+                                                    </Menu.Item>
+                                                )
+                                            })
+                                        )
+                                    }
+                                </div>
+                            ) : (
+                                    <div>
+                                        <Header as='h5' textAlign='center' color='orange'><strong>DETAILS</strong></Header>
+                                        <Segment padded basic>
+                                            <Divider horizontal>
+                                                <Icon name='hashtag' bordered circular color='orange' />
+                                            </Divider>
+                                            <Card centered style={{ textAlign: 'center' }}>
+                                                <Card.Content>
+                                                    <Card.Header>
+                                                        {currentChannel.name}
+                                                    </Card.Header>
+                                                </Card.Content>
+                                                <Card.Content>
+                                                    <Card.Description>
+                                                        {currentChannel.description}
+                                                    </Card.Description>
+                                                    <Card.Meta>
+                                                        <strong>Created: </strong>
+                                                        {moment(currentChannel.createdAt).format("LL")}
+                                                    </Card.Meta>
+                                                </Card.Content>
+                                                {
+                                                    currentChannel.creatorid === currentUser.id && (
+                                                        <Card.Content extra>
+                                                            <div className='ui two buttons'>
+                                                                <DeleteChannelModal channel={currentChannel}/>
+                                                                <EditChannelModal channel={currentChannel}/>
+                                                            </div>
+                                                        </Card.Content>
+                                                    )
+                                                }
+                                            </Card>
+                                        </Segment>
+                                    </div>
+                                )
                         }
                     </Container>
                 </Container>

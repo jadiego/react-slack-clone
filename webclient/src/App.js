@@ -14,7 +14,9 @@ import { connect } from 'react-redux';
 
 class App extends Component {
     componentDidMount() {
-        this.props.fetchCheckSession()
+        if (localStorage.length > 0 ) {
+            this.props.fetchCheckSession()
+        }
     }
     
     render() {

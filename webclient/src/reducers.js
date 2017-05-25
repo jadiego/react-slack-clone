@@ -49,6 +49,13 @@ let channels = (state = [], action) => {
             return action.data;
         case "CHANNEL NEW":
             return state.concat([action.data])
+        case "CHANNEL UPDATE":
+            let channels = state.concat([])
+            let i = findIndex(channels, (c) => { return c.id === action.data.id })
+            channels[i] = action.data
+            return channels
+        case "CHANNEL DELETE":
+            return remove(state, c => { return c.id !== action.channelid})
         default:
             return state
     }
@@ -61,6 +68,10 @@ let currentChannel = (state = {}, action) => {
                 return state
             }
             return action.data;
+        case "USER JOINING CHANNEL":
+            let x = {...state}
+            x.members.push(action.data.id)
+            return x
         default:
             return state
     }

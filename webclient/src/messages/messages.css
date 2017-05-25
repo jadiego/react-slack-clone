@@ -4,6 +4,8 @@
     bottom: 0;
     left: 0;
     right: 0;
+    padding-top: 0px;
+    margin-top: 0px;
 }
 
 #channel-textbox textarea.textbox {
@@ -26,8 +28,13 @@
     width: calc(100% - 350px);
 }
 
+#channel-container-left #channel-description {
+    padding-bottom: 0px;
+    margin-bottom: 0px;
+}
+
 #channel-container-left #channel-messages {
-    height: calc(100% - 231px);
+    height: calc(100% - 206px);
     overflow-y: scroll;
 }
 
@@ -42,6 +49,14 @@
 
 #channel-container-right div:first-child {
     padding-bottom: 0px;
+}
+
+#channel-container-right .active.item {
+    padding: .92857143em 1.14285714em;
+}
+
+#channel-container-right .item i::before{
+    color: #767676;
 }
 
 #channel-container-right .active.item i::before {
