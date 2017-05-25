@@ -497,6 +497,9 @@ export const initiateWebSocketConnection = () => {
           if ((includes(ch.members, currentUser.id) || !ch.private)) {
             dispatch({ type: 'CHANNEL NEW', data: ch })
           }
+          if (ch.creatorid === currentUser.id) {
+            dispatch({ type: 'SET CURRENT CHANNEL ', data: ch })
+          }
           break
         case deletedMessage:
           var { currentChannel } = getState()
@@ -516,6 +519,13 @@ export const initiateWebSocketConnection = () => {
           var ch = JSON.parse(event.message)
           if ((includes(ch.members, currentUser.id))) {
             dispatch({ type: 'CHANNEL DELETE', channelid: ch.id, channel: ch })
+          }
+          var { currentChannel } = getState()
+          if (currentChannel.id === ch.id) {
+            if (currentChannel.creatorid !== currentUser.id) {
+              window.alert("Warning! the creator deleted the channel just recently. We will go ahead and redirect you to the general channel. Apologies for the inconvenience.")
+            }
+            location.reload(`${location.origin}/messages/general`)
           }
           break
         case updatedChannel:

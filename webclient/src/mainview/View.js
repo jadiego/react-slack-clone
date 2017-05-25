@@ -34,7 +34,7 @@ class View extends Component {
                         </Menu.Item>
                         {channels.map(channel => {
                             return channel.name !== undefined && (
-                                !channel.name.includes(`:${currentUser.userName}`) && (
+                                (!channel.name.includes(`:${currentUser.userName}`) && !channel.name.includes(`${currentUser.userName}:`)) && (
                                     <Menu.Item
                                         key={`key-${channel.id}`}
                                         as={NavLink} to={{ pathname: `/messages/${channel.name}` }}
