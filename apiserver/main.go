@@ -31,6 +31,7 @@ const (
 	apiChannels         = apiRoot + "channels"
 	apiMessages         = apiRoot + "messages"
 	apiWebSocket        = apiRoot + "websocket"
+	apiChatBot          = apiRoot + "bot"
 	apiSpecificChannels = apiChannels + "/"
 	apiSpecificMessages = apiMessages + "/"
 	apiSessionsMine     = apiSessions + "/mine"
@@ -109,6 +110,14 @@ func main() {
 	//and the Let's Encrypt cert/key in production
 	tlsKeyPath := os.Getenv("TLSKEY")
 	tlsCertPath := os.Getenv("TLSCERT")
+	if len(tlsCertPath) == 0 || len(tlsKeyPath) == 0 {
+		log.Fatal("you must supply a value for TLS key and cert paths")
+	}
+
+	chatbotAddr := os.Getenv("CHATBOTADDR")
+	if len(chatbotAddr) == 0 {
+		log.Fatal("you must supply a value for CHATBOTADDR")
+	}
 
 	mux := http.NewServeMux()
 	muxLogged := http.NewServeMux()
@@ -130,6 +139,8 @@ func main() {
 
 	logger := log.New(os.Stdout, "", log.LstdFlags)
 	mux.Handle(apiRoot, middleware.Adapt(muxLogged, middleware.CORS("", "", "", ""), middleware.Notify(logger)))
+
+	mux.Handle(apiChatBot, ctx.GetServiceProxy(chatbotAddr, ctx.SessionKey, ctx.SessionStore))
 
 	//start your web server and use log.Fatal() to log
 	//any errors that occur if the server can't start

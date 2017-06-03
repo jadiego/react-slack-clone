@@ -2,6 +2,7 @@ package handlers
 
 const (
 	headerContentType = "Content-Type"
+	headerXUser       = "X-User"
 )
 
 const (
