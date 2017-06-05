@@ -11,10 +11,12 @@ class MongoStore {
    * constructs a new MongoStore
    * @param {mongodb.Collection} colChannels
    * @param {mongodb.Collection} colMessages
+   * @param {mongodb.Collection} colUsers
    */
-  constructor(colChannels, colMessages) {
+  constructor(colChannels, colMessages, colUsers) {
     this.ChannelCol = colChannels;
     this.MessagesCol = colMessages;
+    this.UsersCol = colUsers;
   }
 
   /**
@@ -28,8 +30,19 @@ class MongoStore {
   }
 
   /**
-   * grabs the most recent message of the user
+   * grabs the single user from the store
    * @param {string} id
+   */
+  async getUser(id) {
+    let query = { "_id": id };
+    let user = await this.UsersCol.findOne(query);
+    return user;
+  }
+
+  /**
+   * grabs the most recent message of the user
+   * @param {string} userid
+   * @param {string} channelid
    */
   async getLastMessage(userid, channelid) {
     if (channelid === undefined) {
@@ -54,6 +67,19 @@ class MongoStore {
     }
     let count = await this.MessagesCol.count(query);
     return count;
+  }
+
+  async mostMessages(channelid) {
+    let matchQuery = { $match: { channel_id: channelid } };
+    let groupQuery = {
+      $group: { _id: "$creator_id", count: { $sum: 1 } }
+    };
+    let sortQuery = { $sort: { count: -1 } };
+    let query = [matchQuery, groupQuery, sortQuery]
+
+    let cursor = await this.MessagesCol.aggregate(query);
+    let results = await cursor.toArray();
+    return results;
   }
 }
 

@@ -33,6 +33,12 @@ module.exports = function (store) {
             case "count":
               handle.countMessages(res, data, store, user);
               break;
+            case "most":
+              handle.mostMessages(res, data, store, user);
+              break;
+            case "member":
+              handlememberMessages(res, data, store, user);
+              break;
             default:
               res.send("Sorry, I'm not sure how to answer that. Please try again.");
           }

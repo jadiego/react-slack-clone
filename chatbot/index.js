@@ -29,7 +29,8 @@ mongodb.MongoClient.connect(`mongodb://${mongoAddr}/chat`)
   .then(db => {
     let colChannels = db.collection('channels');
     let colMessages = db.collection('messages');
-    let store = new MessageStore(colChannels, colMessages)
+    let colUsers = db.collection('users');
+    let store = new MessageStore(colChannels, colMessages, colUsers);
     let handlers = require('./handlers/messages.js');
     app.use(handlers(store))
 

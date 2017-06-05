@@ -2,6 +2,17 @@
 
 const moment = require("moment");
 
+const mostMessages = async function (res, data, store, user) {
+  let channelname = grabChannelFromData(data);
+  let channel = await store.getChannel(channelname);
+  ifChannelExists(channel, res, async function () {
+    let users = await store.mostMessages(channel["_id"]);
+
+    let user = await store.getUser(users[0]["_id"]);
+    res.send(`For the ${channel.name} channel, ${user.firstname} ${user.lastname} made the most posts.`);
+  })
+}
+
 const lateMessage = async function (res, data, store, user) {
   let channelname = grabChannelFromData(data);
   if (channelname) {
@@ -55,11 +66,12 @@ const ifChannelExists = function (channel, res, callback) {
   if (channel) {
     callback();
   } else {
-    res.send(`That channel doesn't exist. Try another channel.`);
+    res.send(`Sorry I don't quite understand what you meant. Please ask again.`);
   }
 }
 
 module.exports = {
   lateMessage,
-  countMessages
+  countMessages,
+  mostMessages
 }
