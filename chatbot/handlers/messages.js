@@ -24,6 +24,7 @@ module.exports = function (store) {
 
       witaiClient.message(q)
         .then(data => {
+          res.setHeader("Content-Type", "text/plain")
           //console.log(JSON.stringify(data, undefined, 2));
           switch (data.entities.intent[0].value) {
             case "late-post":

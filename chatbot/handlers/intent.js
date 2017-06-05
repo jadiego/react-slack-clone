@@ -34,7 +34,7 @@ const countMessages = async function (res, data, store, user) {
       res.send(`On ${moment(date).format("LL")}, you posted ${count} messages in the ${channel.name} channel.`);
     } else {
       let count = await store.countMessages(user.id, channel["_id"]);
-      res.send(`You posted ${count} messages in the ${channel.name} channel.`);
+      res.send(`Overall, you posted ${count} messages in the ${channel.name} channel.`);
     }
   })
 }
