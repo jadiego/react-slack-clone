@@ -13,6 +13,19 @@ const mostMessages = async function (res, data, store, user) {
   })
 }
 
+const memberMessages = async function (res, data, store, user) {
+  let channelname = grabChannelFromData(data);
+  let channel = await store.getChannel(channelname);
+  ifChannelExists(channel, res, async function () {
+    let members = await store.getUsers(channel.members);
+    let membersnames = ""
+    members.map(m => {
+      membersnames = membersnames + `${m.firstname} ${m.lastname},`
+    })
+    res.send(`${membersnames} are the members of the ${channelname} channel.`);
+  })
+}
+
 const lateMessage = async function (res, data, store, user) {
   let channelname = grabChannelFromData(data);
   if (channelname) {
@@ -73,5 +86,6 @@ const ifChannelExists = function (channel, res, callback) {
 module.exports = {
   lateMessage,
   countMessages,
-  mostMessages
+  mostMessages,
+  memberMessages
 }

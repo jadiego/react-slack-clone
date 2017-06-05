@@ -37,7 +37,7 @@ module.exports = function (store) {
               handle.mostMessages(res, data, store, user);
               break;
             case "member":
-              handlememberMessages(res, data, store, user);
+              handle.memberMessages(res, data, store, user);
               break;
             default:
               res.send("Sorry, I'm not sure how to answer that. Please try again.");

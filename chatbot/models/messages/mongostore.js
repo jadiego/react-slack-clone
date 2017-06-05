@@ -40,6 +40,17 @@ class MongoStore {
   }
 
   /**
+   * grabs the single user from the store
+   * @param {array} memberids
+   */
+  async getUsers(memberids) {
+    let query = { _id: { $in: memberids } };
+    let cursor = await this.UsersCol.find(query);
+    let members = cursor.toArray();
+    return members;
+  }
+
+  /**
    * grabs the most recent message of the user
    * @param {string} userid
    * @param {string} channelid
