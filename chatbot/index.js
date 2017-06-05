@@ -41,3 +41,4 @@ mongodb.MongoClient.connect(`mongodb://${mongoAddr}/chat`)
   .catch(err => {
     console.error(err);
   })
+  
