@@ -5,4 +5,3 @@ COPY package.json /app
 RUN npm install
 COPY . /app
 EXPOSE CMD ["node", "index.js"]
-
