@@ -313,7 +313,7 @@ export const changeTextArea = (event) => {
   }
 }
 
-export const postMessage = (event) => {
+export const postMessage = (event, messagepage) => {
 
   return (dispatch, getState) => {
     if (event.keyCode === 13 && event.shiftKey === false) {
@@ -321,7 +321,6 @@ export const postMessage = (event) => {
       const { currentChannel, newMessage } = getState()
 
       dispatch({ type: 'FETCH START' })
-
       return fetch(`${apiRoot}messages`, {
         method: "POST",
         mode: "cors",
@@ -339,9 +338,50 @@ export const postMessage = (event) => {
           dispatch({ type: 'FETCH END', message: "" })
           dispatch({ type: 'UPDATE NEW MESSAGE', body: "" })
         })
+        .then(resp => {
+          if (newMessage.includes("@chatbot")) {
+            queryChatBot(dispatch, currentChannel, newMessage)
+          }
+        })
         .catch(error => dispatch({ type: 'FETCH END', message: error.message }))
     }
   }
+}
+
+export const queryChatBot = (dispatch, currentChannel, newMessage) => {
+  dispatch({ type: 'FETCH START' })
+  return fetch(`${apiRoot}bot?q=${newMessage.split("@chatbot ")[1]}`, {
+    method: "POST",
+    mode: "cors",
+    headers: new Headers({
+      "Authorization": localStorage.getItem(storageKey)
+    }),
+  })
+    .then(handleResponse)
+    .then(data => {
+      dispatch({ type: 'FETCH END', message: "" })
+      return data
+    })
+    .then(chatbotanswer => {
+      dispatch({ type: 'FETCH START' })
+      return fetch(`${apiRoot}messages`, {
+        method: "POST",
+        mode: "cors",
+        headers: new Headers({
+          "Content-Type": contentTypeJSONUTF8,
+          "Authorization": localStorage.getItem(storageKey)
+        }),
+        body: JSON.stringify({
+          channelid: currentChannel.id,
+          body: chatbotanswer
+        })
+      })
+        .then(handleResponse)
+        .then(data => {
+          dispatch({ type: 'FETCH END', message: "" })
+        })
+    })
+    .catch(error => dispatch({ type: 'FETCH END', message: error.message }))
 }
 
 export const fetchCreateChannel = (channelname, privatechan, description, members) => {
