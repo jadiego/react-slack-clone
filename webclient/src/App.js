@@ -1,45 +1,22 @@
 import React, { Component } from 'react';
 import { Container } from 'semantic-ui-react';
-import { BrowserRouter, Route, Redirect } from 'react-router-dom';
+import { BrowserRouter, Route } from 'react-router-dom';
 import { isEmpty } from 'lodash';
-import 'whatwg-fetch';
-
-import Login from './login/LoginContainer';
-import Signup from './login/SignupContainer';
-import View from './mainview/ViewContainer';
 
 import { bindActionCreators } from 'redux';
-import { fetchCheckSession } from './actions';
+import { fetchCheckSession } from './redux/actions';
 import { connect } from 'react-redux';
 
-class App extends Component {
-    componentDidMount() {
-        if (localStorage.length > 0 ) {
-            this.props.fetchCheckSession()
-        }
-    }
-    
-    render() {
-        const AuthRoute = ({ component: Component, ...rest }) => (
-            <Route {...rest} render={props => (
-                !isEmpty(this.props.currentUser) && localStorage.getItem("auth") ? (
-                    <Component {...props} />
-                ) : (
-                        <Redirect to={{
-                            pathname: '/login',
-                            state: { from: props.location }
-                        }} />
-                    )
-            )} />
-        )
+import Messages from './components/messages';
 
+import './styles/app.css';
+
+class App extends Component {
+    render() {
         return (
             <BrowserRouter forceRefresh={!('pushState' in window.history)} >
                 <Container fluid id='app'>
-                    <Route exact path="/login" component={Login} />
-                    <Route exact path="/" component={Signup} />
-                    <AuthRoute path="/messages/:channelname" component={View} />
-                    <AuthRoute exact path="/profile" component={View} />
+                    <Route path='/' component={Messages}/>
                 </Container>
             </BrowserRouter>
         )

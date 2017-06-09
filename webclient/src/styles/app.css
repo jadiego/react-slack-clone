@@ -1,0 +1,19 @@
+body, html {
+  height: 100%;
+  overflow: hidden;
+  cursor: default; }
+
+body {
+  width: 100%;
+  font-size: 14px;
+  letter-spacing: .4px;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: antialiased;
+  font-family: "Avenir", Helvetica, Arial, sans-serif !important;
+  color: #2c3e50 !important; }
+
+#root, #app {
+  height: 100%; }
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "Avenir", Helvetica, Arial, sans-serif !important; }

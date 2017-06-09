@@ -3,13 +3,11 @@ import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
-import 'whatwg-fetch';
 
 
 import App from './App';
 import 'semantic-ui-css/semantic.min.css';
-import './index.css';
-import rootReducer from './reducers';
+import rootReducer from './redux/reducers';
 
 //store setup for redux devtools
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
