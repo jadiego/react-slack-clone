@@ -3,9 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.16.2",
     "linkifyjs": "^2.1.4",
     "lodash": "^4.17.4",
     "moment": "^2.18.1",
+    "nprogress": "^0.2.0",
     "prop-types": "^15.5.8",
     "react": "^15.4.2",
     "react-dom": "^15.4.2",
@@ -20,6 +22,7 @@
   },
   "devDependencies": {
     "node-sass-chokidar": "0.0.2",
+    "npm-run-all": "^4.0.2",
     "react-scripts": "0.9.5"
   },
   "scripts": {
