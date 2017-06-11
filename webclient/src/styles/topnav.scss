@@ -1,4 +1,9 @@
+@import '_shared';
+
 #top-navbar-container {
   margin-left: 92px;
+  margin-top: 0;
+  margin-bottom: 0;
   height: 47px;
+  background-color: $color-secondary;
 }

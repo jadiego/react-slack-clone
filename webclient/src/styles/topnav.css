@@ -1,3 +1,11 @@
+.uppercase {
+  text-transform: uppercase !important;
+  font-weight: 300 !important;
+  letter-spacing: 1.5px; }
+
 #top-navbar-container {
   margin-left: 92px;
-  height: 47px; }
+  margin-top: 0;
+  margin-bottom: 0;
+  height: 47px;
+  background-color: #efede0; }

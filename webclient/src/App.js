@@ -1,10 +1,8 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route } from 'react-router-dom';
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
 import { isEmpty } from 'lodash';
 import { Container, Sidebar, Segment, Button, Menu, Image, Icon, Header } from 'semantic-ui-react';
 
-import { bindActionCreators } from 'redux';
-import { fetchCheckSession } from './redux/actions';
 import { connect } from 'react-redux';
 
 import Messages from './components/messages';
@@ -26,7 +24,8 @@ class App extends Component {
                         <SubSidebar/>
                         <Sidebar.Pusher>
                             <Container fluid>
-                                <Route path='/' component={Messages} />
+                                <Route path='/' render={() => <Redirect to='/messages/general'/>} />
+                                <Route path='/messages/:channelid' component={Messages} />
                             </Container>
                         </Sidebar.Pusher>
                     </Sidebar.Pushable>
@@ -42,10 +41,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        fetchCheckSession,
-    }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(App)
+export default connect(mapStateToProps)(App)

@@ -1,41 +1,89 @@
 import React, { Component } from 'react';
 import { Sidebar, Button, Menu, Icon } from 'semantic-ui-react';
+import { isEmpty } from 'lodash';
 
+import { bindActionCreators } from 'redux';
+import { getUsers } from '../redux/actions';
 import { connect } from 'react-redux';
 
 class SubSidebar extends Component {
+
+    componentWillMount() {
+        this.props.getUsers()
+    }
+
+
     render() {
-        const { sidebar } = this.props;
-        
-        return (
-            <Sidebar as={Menu}
+        const { sidebar, currentUser } = this.props;
+        if (isEmpty(currentUser)) {
+            return <Sidebar as={Menu}
                 animation='slide along'
                 width='wide'
                 visible={sidebar.visible}
                 icon='labeled'
                 vertical
                 id='sidebar-container'>
-                <Menu.Item name='home'>
-                    <Icon name='home' />
-                    Home
-                </Menu.Item>
-                <Menu.Item name='gamepad'>
-                    <Icon name='gamepad' />
-                    Games
-                </Menu.Item>
-                <Menu.Item name='camera'>
-                    <Icon name='camera' />
-                    Channels
-                </Menu.Item>
+                not logged in
             </Sidebar>
-        );
+        } else {
+            if (sidebar.activeMenu === 'channels') {
+                return (
+                    <Sidebar as={Menu}
+                        animation='slide along'
+                        width='wide'
+                        visible={sidebar.visible}
+                        icon='labeled'
+                        vertical
+                        id='sidebar-container'>
+                        <Menu.Item name='home'>
+                            <Icon name='home' />
+                            Home
+                        </Menu.Item>
+                        <Menu.Item name='gamepad'>
+                            <Icon name='gamepad' />
+                            Games
+                        </Menu.Item>
+                        <Menu.Item name='camera'>
+                            <Icon name='camera' />
+                            Channels
+                        </Menu.Item>
+                    </Sidebar>
+                )
+            } else {
+                return (
+                    <Sidebar as={Menu}
+                        animation='slide along'
+                        width='wide'
+                        visible={sidebar.visible}
+                        icon='labeled'
+                        vertical
+                        id='sidebar-container'>
+                        <Menu.Item name='home'>
+                            <Icon name='home' />
+                            Home
+                        </Menu.Item>
+                        <Menu.Item name='gamepad'>
+                            <Icon name='gamepad' />
+                            Games
+                        </Menu.Item>
+                    </Sidebar>
+                )
+            }
+        }
     }
 }
 
 const mapStateToProps = (state) => {
     return {
         sidebar: state.sidebar,
+        currentUser: state.currentUser,
     }
 }
 
-export default connect(mapStateToProps)(SubSidebar);
+const mapDispatchToProps = (dispatch) => {
+    return bindActionCreators({
+        getUsers,
+    }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(SubSidebar);

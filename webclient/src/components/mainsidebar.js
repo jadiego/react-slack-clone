@@ -12,23 +12,29 @@ class MainSidebar extends Component {
     dispatch({ type: "UPDATE VISIBLE SIDEBAR", payload: !sidebar.visible });
   }
 
+  open = (e) => {
+    const { sidebar, dispatch } = this.props;
+    dispatch({ type: "UPDATE VISIBLE SIDEBAR", payload: true });
+  }
+
   render() {
+    const { sidebar } = this.props;
+
     return (
-      <Menu vertical fixed='left' icon='labeled' id='main-sidebar-container'>
+      <Menu vertical fixed='left' icon='labeled' id='main-sidebar-container' pointing>
         <Menu.Item>
           <Image src={logo} id='sidebar-logo' />
         </Menu.Item>
-
-        <Menu.Item name='channels'>
+        <Menu.Item name='channels' active={sidebar.activeMenu === 'channels' && sidebar.visible} onClick={this.open}>
           <Icon name='hashtag' />
           Channels
         </Menu.Item>
-        <Menu.Item name='users'>
+        <Menu.Item name='users' active={sidebar.activeMenu === 'users' && sidebar.visible} onClick={this.open}>
           <Icon name='users' />
-          users
+          Users
         </Menu.Item>
         <Menu.Item className='bottom-menu-item' onClick={this.toggle}>
-          <Icon name='columns' color='grey' />
+          <Icon name='columns' />
         </Menu.Item>
       </Menu>
     );

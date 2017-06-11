@@ -1,12 +1,12 @@
 import { remove, findIndex } from 'lodash';
 import { combineReducers } from 'redux';
 
-let fetching = (state = 0, action) => {
+let fetching = (state = { fetch: "", count: 0 }, action) => {
     switch (action.type) {
         case "FETCH START":
-            return state + 1;
+            return { count: state.count + 1, fetch: action.payload }
         case "FETCH END":
-            return state - 1;
+            return { count: state.count - 1, fetch: action.payload }
         default:
             return state
     }
@@ -15,7 +15,7 @@ let fetching = (state = 0, action) => {
 let fetchError = (state = "", action) => {
     switch (action.type) {
         case "FETCH END":
-            return action.message
+            return action.payload
         default:
             return state
     }
@@ -35,7 +35,7 @@ let currentUser = (state = {}, action) => {
 let users = (state = [], action) => {
     switch (action.type) {
         case "SET USERS":
-            return action.data;
+            return action.payload;
         case "USER NEW":
             return state.concat([action.data])
         default:

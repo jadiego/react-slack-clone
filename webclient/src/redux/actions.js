@@ -1,4 +1,5 @@
 import { find, isEqual, includes } from 'lodash';
+import axios from 'axios';
 
 const headerContentType = "Content-Type"
 const charsetUTF8 = "charset=utf-8"
@@ -20,10 +21,15 @@ const userLeftChannel = "user left channel"
 
 export var apiRoot = "https://api.chat.jadiego.me/v1/";
 var apiWS = "wss://api.chat.jadiego.me/v1/websocket"
-if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
-  apiRoot = "https://localhost:4000/v1/"
-  apiWS = "wss://localhost:4000/v1/websocket"
-};
+// if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+//   apiRoot = "https://localhost:4000/v1/"
+//   apiWS = "wss://localhost:4000/v1/websocket"
+// };
+
+//config axios
+axios.defaults.baseURL = apiRoot;
+axios.defaults.headers.common['Authorization'] = localStorage.getItem(storageKey);
+
 
 //Handler for fetch calls that either calls handleJSONResponse or handleTextresponse
 //depending on the response from fetch call
@@ -205,21 +211,23 @@ export const fetchChannels = () => {
   }
 }
 
-export const fetchUsers = () => {
+//get an array of all signed-up users from the api server.
+export const getUsers = () => {
   return dispatch => {
-    dispatch({ type: 'FETCH START' })
-
-    return fetch(`${apiRoot}users`, {
-      mode: "cors",
+    dispatch({ type: 'FETCH START', payload: 'get users' })
+    return axios({
+      url: 'users',
+      method: 'get'
     })
-      .then(handleResponse)
       .then(data => {
-        dispatch({ type: 'FETCH END', message: "" })
-        dispatch({ type: 'SET USERS', data })
+        dispatch({ type: 'FETCH END', payload: '' })
+        dispatch({ type: 'SET USERS', payload: data.data })
+        console.log(data);
+        return data;
       })
       .catch(error => {
-        dispatch({ type: 'FETCH END', message: error.message })
-      })
+        console.log(error);
+      });
   }
 }
 

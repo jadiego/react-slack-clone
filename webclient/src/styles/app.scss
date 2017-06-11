@@ -1,5 +1,4 @@
-$font-stack: 'Avenir', Helvetica, Arial, sans-serif;
-$text-black: #2c3e50;
+@import '_shared';
 
 body, html {
     height: 100%;
@@ -19,7 +18,7 @@ body {
 
 #root, #app {
   height: 100%;
-  padding-top: 1px;
+  padding-top: 0.1px;
 }
 
 h1, h2, h3, h4, h5, h6 {
@@ -33,6 +32,26 @@ h1, h2, h3, h4, h5, h6 {
   #main-sidebar-container {
     border-top: 0;
     width: 94px;
+    background-color: $color-primary;
+    font-family: $font-stack;
+
+    .active.item:after {
+      background-color: $background-black;
+      border-top: 0;
+      border-right: 0;
+    }
+
+    .item {
+      @extend .uppercase;
+      color: rgb(255, 255, 255);
+      letter-spacing: 0.9px;
+      padding: .92857143em 0.5em;
+      
+      
+      i.icon {
+        color:rgba(255,255,255,0.35);
+      }
+    }
 
     div.item:nth-child(3) {
       border-bottom-color: rgba(34, 36, 38, 0.14902);
@@ -57,6 +76,8 @@ h1, h2, h3, h4, h5, h6 {
   border-radius: 0;
 
     #sidebar-container {
+      background-color: $background-black;
+      border-left: 0;
       border-top: 0;
     }
   }
