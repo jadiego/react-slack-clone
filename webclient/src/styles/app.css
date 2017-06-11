@@ -1,19 +1,29 @@
-.uppercase, .primary-button, .secondary-button, #app #main-sidebar-container .item {
+.uppercase, .blue-button, .primary-button, .secondary-button, .default-button, .modal-header, #app #main-sidebar-container .item {
   text-transform: uppercase !important;
-  font-weight: 300 !important;
+  font-weight: 300;
   letter-spacing: 1.5px; }
 
 .clear-black-background, #app #pushable-container #sidebar-container .clear-black-background {
   background-color: rgba(0, 0, 0, 0.4); }
 
+.blue-button {
+  background-color: #61afff !important; }
+
 .primary-button {
-  background-color: #0a9b94; }
+  background-color: #0a9b94 !important; }
 
 .secondary-button {
-  background-color: #f9c75f; }
+  background-color: #f9c75f !important; }
 
-.secondary-button:hover, .primary-button:hover {
-  filter: opacity(80%); }
+.default-button {
+  background-color: #cacbcd !important; }
+
+.secondary-button:hover, .primary-button:hover,
+.default-button:hover, .blue-button:hover {
+  filter: opacity(80%) !important; }
+
+.modal-header {
+  font-weight: normal !important; }
 
 body, html {
   height: 100%;
@@ -35,6 +45,13 @@ body {
 
 h1, h2, h3, h4, h5, h6 {
   font-family: "Avenir", Helvetica, Arial, sans-serif !important; }
+
+a {
+  color: #0a9b94 !important;
+  font-size: 1em; }
+
+a:hover {
+  filter: opacity(80%) !important; }
 
 #app {
   width: 100% !important;

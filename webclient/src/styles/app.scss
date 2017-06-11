@@ -25,6 +25,15 @@ h1, h2, h3, h4, h5, h6 {
   font-family: $font-stack !important;
 }
 
+a {
+  color: $color-primary !important;
+  font-size: 1em;
+}
+
+a:hover {
+  filter: opacity(80%) !important;
+}
+
 #app {
   width: 100% !important;
   margin: 0 !important;

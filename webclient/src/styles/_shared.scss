@@ -4,10 +4,13 @@ $background-black: #555555;
 $color-primary: #0a9b94;
 $color-secondary: #efede0;
 $color-third: rgb(249, 199, 95);
+$color-grey: #cacbcd;
+$color-blue: rgb(97, 175, 255);
+$color-brown: rgb(152, 150, 139);
 
 .uppercase {
   text-transform: uppercase !important;
-  font-weight: 300 !important;
+  font-weight: 300;
   letter-spacing: 1.5px;
 }
 
@@ -15,16 +18,32 @@ $color-third: rgb(249, 199, 95);
   background-color: rgba(0,0,0, 0.4);
 }
 
+.blue-button {
+  @extend .uppercase;
+  background-color: $color-blue !important;
+}
+
 .primary-button {
   @extend .uppercase;
-  background-color: $color-primary;
+  background-color: $color-primary !important;
 }
 
 .secondary-button {
   @extend .uppercase;
-  background-color: $color-third;
+  background-color: $color-third !important;
 }
 
-.secondary-button:hover, .primary-button:hover {
-  filter: opacity(80%);
+.default-button {
+  @extend .uppercase;
+  background-color: $color-grey !important;
+}
+
+.secondary-button:hover, .primary-button:hover, 
+.default-button:hover, .blue-button:hover {
+  filter: opacity(80%) !important;
+}
+
+.modal-header {
+  @extend .uppercase;
+  font-weight: normal !important;
 }

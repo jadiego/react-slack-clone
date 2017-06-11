@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
-import { Container, TextArea, Form, Button, Divider } from 'semantic-ui-react';
+import { Container, TextArea, Form } from 'semantic-ui-react';
 import { isEmpty } from 'lodash';
 
 import { bindActionCreators } from 'redux';
 import { getUsers } from '../redux/actions';
 import { connect } from 'react-redux';
+
+import LoginModal from './loginmodal'
 
 import '../styles/messages.css';
 
@@ -18,7 +20,7 @@ class Messages extends Component {
           <Form>
             {
               (isEmpty(currentUser) && localStorage.getItem("auth") === null) ? (
-                <Button>sign in to start chatting</Button>
+                <LoginModal />
               ) : (
                   <TextArea placeholder='chat' autoHeight />
                 )

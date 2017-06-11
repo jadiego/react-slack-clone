@@ -14,7 +14,6 @@ import './styles/app.css';
 
 class App extends Component {
     render() {
-        
         return (
             <BrowserRouter forceRefresh={!('pushState' in window.history)} >
                 <Container fluid id='app'>
