@@ -1,11 +1,38 @@
-.uppercase {
+.uppercase, .primary-button, .secondary-button, #top-navbar-container .navbar-title span {
   text-transform: uppercase !important;
   font-weight: 300 !important;
   letter-spacing: 1.5px; }
+
+.clear-black-background {
+  background-color: rgba(0, 0, 0, 0.4); }
+
+.primary-button {
+  background-color: #0a9b94; }
+
+.secondary-button {
+  background-color: #f9c75f; }
+
+.secondary-button:hover, .primary-button:hover {
+  filter: opacity(80%); }
 
 #top-navbar-container {
   margin-left: 92px;
   margin-top: 0;
   margin-bottom: 0;
   height: 47px;
+  padding: 0;
   background-color: #efede0; }
+  #top-navbar-container .navbar-title {
+    height: inherit;
+    color: rgba(0, 0, 0, 0.3);
+    padding: 0.3em 0.5em; }
+    #top-navbar-container .navbar-title span {
+      letter-spacing: 3px;
+      font-size: 1.3em;
+      vertical-align: middle; }
+    #top-navbar-container .navbar-title img {
+      margin-top: 0;
+      height: 100%; }
+
+path {
+  fill: rgba(0, 0, 0, 0.3); }

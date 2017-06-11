@@ -1,0 +1,24 @@
+@import '_shared';
+
+#messages-container {
+  .text-input-container {
+    border-top: solid 2px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.3em 0.5em;
+
+    form {
+      button {
+        @extend .secondary-button;
+      }
+
+      textarea {
+        border-left: 0;
+        border-right: 0;
+        border-bottom: 0;
+      }
+    }
+  }
+}

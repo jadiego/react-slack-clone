@@ -24,8 +24,8 @@ class App extends Component {
                         <SubSidebar/>
                         <Sidebar.Pusher>
                             <Container fluid>
-                                <Route path='/' render={() => <Redirect to='/messages/general'/>} />
-                                <Route path='/messages/:channelid' component={Messages} />
+                                <Route exact path='/' render={() => <Redirect to='/messages/general'/>} />
+                                <Route exact path='/messages/:channelid' component={Messages} />
                             </Container>
                         </Sidebar.Pusher>
                     </Sidebar.Pushable>

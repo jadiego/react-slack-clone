@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Menu, Icon, Image } from 'semantic-ui-react';
+import { Link } from 'react-router-dom';
 
 import logo from '../assets/circlelogo.svg';
 
@@ -12,9 +13,10 @@ class MainSidebar extends Component {
     dispatch({ type: "UPDATE VISIBLE SIDEBAR", payload: !sidebar.visible });
   }
 
-  open = (e) => {
+  open = (e, activeMenu) => {
     const { sidebar, dispatch } = this.props;
     dispatch({ type: "UPDATE VISIBLE SIDEBAR", payload: true });
+    dispatch({ type: "UPDATE ACTIVE SIDEBAR", payload: activeMenu });
   }
 
   render() {
@@ -22,14 +24,14 @@ class MainSidebar extends Component {
 
     return (
       <Menu vertical fixed='left' icon='labeled' id='main-sidebar-container' pointing>
-        <Menu.Item>
+        <Menu.Item as={Link} to='/messages/general'>
           <Image src={logo} id='sidebar-logo' />
         </Menu.Item>
-        <Menu.Item name='channels' active={sidebar.activeMenu === 'channels' && sidebar.visible} onClick={this.open}>
+        <Menu.Item name='channels' active={sidebar.activeMenu === 'channels' && sidebar.visible} onClick={(event) => this.open(event, 'channels')}>
           <Icon name='hashtag' />
           Channels
         </Menu.Item>
-        <Menu.Item name='users' active={sidebar.activeMenu === 'users' && sidebar.visible} onClick={this.open}>
+        <Menu.Item name='users' active={sidebar.activeMenu === 'users' && sidebar.visible} onClick={(event) =>this.open(event, 'users')}>
           <Icon name='users' />
           Users
         </Menu.Item>

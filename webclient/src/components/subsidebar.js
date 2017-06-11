@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Sidebar, Button, Menu, Icon } from 'semantic-ui-react';
+import { Sidebar, Button, Menu, Icon, Header, Segment } from 'semantic-ui-react';
 import { isEmpty } from 'lodash';
 
 import { bindActionCreators } from 'redux';
@@ -12,7 +12,6 @@ class SubSidebar extends Component {
         this.props.getUsers()
     }
 
-
     render() {
         const { sidebar, currentUser } = this.props;
         if (isEmpty(currentUser)) {
@@ -23,7 +22,12 @@ class SubSidebar extends Component {
                 icon='labeled'
                 vertical
                 id='sidebar-container'>
-                not logged in
+                <Segment basic padded>
+                    <Icon name='warning' circular size='huge'/>
+                    <Segment padded className='clear-black-background'>
+                        Login to start chatting with friends and explore the sub-communities
+                    </Segment>
+                </Segment>
             </Sidebar>
         } else {
             if (sidebar.activeMenu === 'channels') {

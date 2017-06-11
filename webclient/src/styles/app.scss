@@ -46,7 +46,8 @@ h1, h2, h3, h4, h5, h6 {
       color: rgb(255, 255, 255);
       letter-spacing: 0.9px;
       padding: .92857143em 0.5em;
-      
+      border: 0;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
       
       i.icon {
         color:rgba(255,255,255,0.35);
@@ -54,9 +55,7 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     div.item:nth-child(3) {
-      border-bottom-color: rgba(34, 36, 38, 0.14902);
-      border-bottom-style: solid;
-      border-bottom-width: 1px;
+      border-bottom: 1px solid rgba(0,0,0,0.05);
     }
     
     .bottom-menu-item{
@@ -72,13 +71,18 @@ h1, h2, h3, h4, h5, h6 {
   border: 0;
   margin-left: 92px !important;
   margin: 0;
-  height: calc(100% - 47px) !important;
+  height: calc(100% - 44px) !important;
   border-radius: 0;
 
     #sidebar-container {
       background-color: $background-black;
       border-left: 0;
       border-top: 0;
+      color: rgb(255, 255, 255);
+
+      .clear-black-background {
+        @extend .clear-black-background;
+      }
     }
   }
 }

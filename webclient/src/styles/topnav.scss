@@ -5,5 +5,28 @@
   margin-top: 0;
   margin-bottom: 0;
   height: 47px;
+  padding: 0;
   background-color: $color-secondary;
+
+  .navbar-title {
+    height: inherit;
+    color: rgba(0, 0, 0, 0.3);
+    padding: 0.3em 0.5em;
+
+    span {
+      @extend .uppercase;
+      letter-spacing: 3px;
+      font-size: 1.3em;
+      vertical-align: middle;
+    }
+
+    img {
+      margin-top: 0;
+      height: 100%;
+    }
+  }
+}
+
+path {
+  fill: rgba(0, 0, 0, 0.3);
 }

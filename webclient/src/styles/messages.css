@@ -1,0 +1,28 @@
+.uppercase, .primary-button, .secondary-button, #messages-container .text-input-container form button {
+  text-transform: uppercase !important;
+  font-weight: 300 !important;
+  letter-spacing: 1.5px; }
+
+.clear-black-background {
+  background-color: rgba(0, 0, 0, 0.4); }
+
+.primary-button {
+  background-color: #0a9b94; }
+
+.secondary-button, #messages-container .text-input-container form button {
+  background-color: #f9c75f; }
+
+.secondary-button:hover, #messages-container .text-input-container form button:hover, .primary-button:hover {
+  filter: opacity(80%); }
+
+#messages-container .text-input-container {
+  border-top: solid 2px rgba(0, 0, 0, 0.1);
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.3em 0.5em; }
+  #messages-container .text-input-container form textarea {
+    border-left: 0;
+    border-right: 0;
+    border-bottom: 0; }

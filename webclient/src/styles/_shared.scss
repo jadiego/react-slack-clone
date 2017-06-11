@@ -3,9 +3,28 @@ $text-black: #2c3e50;
 $background-black: #555555;
 $color-primary: #0a9b94;
 $color-secondary: #efede0;
+$color-third: rgb(249, 199, 95);
 
 .uppercase {
   text-transform: uppercase !important;
   font-weight: 300 !important;
   letter-spacing: 1.5px;
+}
+
+.clear-black-background {
+  background-color: rgba(0,0,0, 0.4);
+}
+
+.primary-button {
+  @extend .uppercase;
+  background-color: $color-primary;
+}
+
+.secondary-button {
+  @extend .uppercase;
+  background-color: $color-third;
+}
+
+.secondary-button:hover, .primary-button:hover {
+  filter: opacity(80%);
 }
