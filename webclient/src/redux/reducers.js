@@ -55,7 +55,7 @@ let channels = (state = [], action) => {
             channels[i] = action.data
             return channels
         case "CHANNEL DELETE":
-            return remove(state, c => { return c.id !== action.channelid})
+            return remove(state, c => { return c.id !== action.channelid })
         default:
             return state
     }
@@ -69,7 +69,7 @@ let currentChannel = (state = {}, action) => {
             }
             return action.data;
         case "USER JOINING CHANNEL":
-            let x = {...state}
+            let x = { ...state }
             x.members.push(action.data.id)
             return x
         default:
@@ -103,6 +103,17 @@ let messages = (state = {}, action) => {
     }
 }
 
+let sidebar = (state = { activeMenu: "channels", visible: true }, action) => {
+    switch (action.type) {
+        case "UPDATE ACTIVE SIDEBAR":
+            return { ...state, activeMenu: action.payload }
+        case "UPDATE VISIBLE SIDEBAR":
+            return { ...state, visible: action.payload }
+        default:
+            return state
+    }
+}
+
 let newMessage = (state = "", action) => {
     switch (action.type) {
         case "UPDATE NEW MESSAGE":
@@ -121,6 +132,7 @@ const rootReducer = combineReducers({
     currentChannel,
     messages,
     newMessage,
+    sidebar,
 })
 
 export default rootReducer

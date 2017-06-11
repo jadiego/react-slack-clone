@@ -13,7 +13,33 @@ body {
   color: #2c3e50 !important; }
 
 #root, #app {
-  height: 100%; }
+  height: 100%;
+  padding-top: 1px; }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: "Avenir", Helvetica, Arial, sans-serif !important; }
+
+#app {
+  width: 100% !important;
+  margin: 0 !important; }
+  #app #main-sidebar-container {
+    border-top: 0;
+    width: 94px; }
+    #app #main-sidebar-container div.item:nth-child(3) {
+      border-bottom-color: rgba(34, 36, 38, 0.14902);
+      border-bottom-style: solid;
+      border-bottom-width: 1px; }
+    #app #main-sidebar-container .bottom-menu-item {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0; }
+  #app #pushable-container {
+    box-shadow: none;
+    border: 0;
+    margin-left: 92px !important;
+    margin: 0;
+    height: calc(100% - 47px) !important;
+    border-radius: 0; }
+    #app #pushable-container #sidebar-container {
+      border-top: 0; }

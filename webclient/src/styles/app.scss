@@ -19,8 +19,45 @@ body {
 
 #root, #app {
   height: 100%;
+  padding-top: 1px;
 }
 
 h1, h2, h3, h4, h5, h6 {
   font-family: $font-stack !important;
+}
+
+#app {
+  width: 100% !important;
+  margin: 0 !important;
+
+  #main-sidebar-container {
+    border-top: 0;
+    width: 94px;
+
+    div.item:nth-child(3) {
+      border-bottom-color: rgba(34, 36, 38, 0.14902);
+      border-bottom-style: solid;
+      border-bottom-width: 1px;
+    }
+    
+    .bottom-menu-item{
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+    }
+  }
+
+  #pushable-container {
+  box-shadow: none;
+  border: 0;
+  margin-left: 92px !important;
+  margin: 0;
+  height: calc(100% - 47px) !important;
+  border-radius: 0;
+
+    #sidebar-container {
+      border-top: 0;
+    }
+  }
 }
