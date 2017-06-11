@@ -7,6 +7,7 @@ import thunk from 'redux-thunk';
 
 import App from './App';
 import 'semantic-ui-css/semantic.min.css';
+import 'nprogress/nprogress.css';
 import rootReducer from './redux/reducers';
 
 //store setup for redux devtools

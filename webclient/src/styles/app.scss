@@ -52,7 +52,7 @@ a:hover {
 
     .item {
       @extend .uppercase;
-      color: rgb(255, 255, 255);
+      color: rgb(255, 255, 255) !important;
       letter-spacing: 0.9px;
       padding: .92857143em 0.5em;
       border: 0;

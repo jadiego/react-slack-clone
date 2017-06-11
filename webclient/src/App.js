@@ -22,10 +22,8 @@ class App extends Component {
                     <Sidebar.Pushable as={Segment} id='pushable-container'>
                         <SubSidebar/>
                         <Sidebar.Pusher>
-                            <Container fluid>
-                                <Route exact path='/' render={() => <Redirect to='/messages/general'/>} />
-                                <Route exact path='/messages/:channelid' component={Messages} />
-                            </Container>
+                            <Route exact path='/' render={() => <Redirect to='/messages/general'/>} />
+                            <Route exact path='/messages/:channelname' component={Messages} />
                         </Sidebar.Pusher>
                     </Sidebar.Pushable>
                 </Container>

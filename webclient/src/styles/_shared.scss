@@ -6,6 +6,7 @@ $color-secondary: #efede0;
 $color-third: rgb(249, 199, 95);
 $color-grey: #cacbcd;
 $color-blue: rgb(97, 175, 255);
+$color-green: #1c8;
 $color-brown: rgb(152, 150, 139);
 
 .uppercase {
@@ -21,6 +22,11 @@ $color-brown: rgb(152, 150, 139);
 .blue-button {
   @extend .uppercase;
   background-color: $color-blue !important;
+}
+
+.green-button {
+  @extend .uppercase;
+  background-color: $color-green !important;
 }
 
 .primary-button {
@@ -39,7 +45,8 @@ $color-brown: rgb(152, 150, 139);
 }
 
 .secondary-button:hover, .primary-button:hover, 
-.default-button:hover, .blue-button:hover {
+.default-button:hover, .blue-button:hover,
+.green-button:hover {
   filter: opacity(80%) !important;
 }
 

@@ -4,9 +4,9 @@ import { combineReducers } from 'redux';
 let fetching = (state = { fetch: "", count: 0 }, action) => {
     switch (action.type) {
         case "FETCH START":
-            return { count: state.count + 1, fetch: action.payload }
+            return { count: state.count + 1, fetch: action.payload.fetch }
         case "FETCH END":
-            return { count: state.count - 1, fetch: action.payload }
+            return { count: state.count - 1, fetch: action.payload.fetch }
         default:
             return state
     }
@@ -15,7 +15,7 @@ let fetching = (state = { fetch: "", count: 0 }, action) => {
 let fetchError = (state = "", action) => {
     switch (action.type) {
         case "FETCH END":
-            return action.payload
+            return action.payload.data
         default:
             return state
     }
@@ -24,9 +24,9 @@ let fetchError = (state = "", action) => {
 let currentUser = (state = {}, action) => {
     switch (action.type) {
         case "SET CURRENT USER":
-            return action.data;
+            return action.payload;
         case "UPDATE USER":
-            return { ...state, ...action.data }
+            return { ...state, ...action.payload }
         default:
             return state
     }

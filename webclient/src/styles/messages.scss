@@ -1,6 +1,19 @@
 @import '_shared';
 
 #messages-container {
+  .channel-name {
+    @extend .uppercase;
+    font-weight: bold;
+    font-size: 2em;
+    color: rgb(140, 148, 161);
+    padding-bottom: 10px;
+    border-bottom: 3px solid rgba(0,0,0,0.1);
+
+    .world {
+      color: rgb(208, 208, 208);
+    }
+  }
+
   .text-input-container {
     border-top: solid 2px rgba(0, 0, 0, 0.1);
     position: fixed;

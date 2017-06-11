@@ -1,4 +1,4 @@
-.uppercase, .blue-button, .primary-button, .modal .submit-button, .secondary-button, .default-button, .modal .exit-button, .modal-header, .modal .modal-content-container form#signin .form-title, .modal .modal-content-container form#signup .form-title {
+.uppercase, .blue-button, .green-button, .modal .submit-button, .primary-button, .secondary-button, .default-button, .modal .exit-button, .modal-header, .modal .modal-content-container form#signin .form-title, .modal .modal-content-container form#signup .form-title {
   text-transform: uppercase !important;
   font-weight: 300;
   letter-spacing: 1.5px; }
@@ -9,7 +9,10 @@
 .blue-button {
   background-color: #61afff !important; }
 
-.primary-button, .modal .submit-button {
+.green-button, .modal .submit-button {
+  background-color: #1c8 !important; }
+
+.primary-button {
   background-color: #0a9b94 !important; }
 
 .secondary-button {
@@ -18,9 +21,11 @@
 .default-button, .modal .exit-button {
   background-color: #cacbcd !important; }
 
-.secondary-button:hover, .primary-button:hover, .modal .submit-button:hover,
+.secondary-button:hover, .primary-button:hover,
 .default-button:hover,
-.modal .exit-button:hover, .blue-button:hover {
+.modal .exit-button:hover, .blue-button:hover,
+.green-button:hover,
+.modal .submit-button:hover {
   filter: opacity(80%) !important; }
 
 .modal-header {

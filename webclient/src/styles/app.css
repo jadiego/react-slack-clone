@@ -1,4 +1,4 @@
-.uppercase, .blue-button, .primary-button, .secondary-button, .default-button, .modal-header, #app #main-sidebar-container .item {
+.uppercase, .blue-button, .green-button, .primary-button, .secondary-button, .default-button, .modal-header, #app #main-sidebar-container .item {
   text-transform: uppercase !important;
   font-weight: 300;
   letter-spacing: 1.5px; }
@@ -8,6 +8,9 @@
 
 .blue-button {
   background-color: #61afff !important; }
+
+.green-button {
+  background-color: #1c8 !important; }
 
 .primary-button {
   background-color: #0a9b94 !important; }
@@ -19,7 +22,8 @@
   background-color: #cacbcd !important; }
 
 .secondary-button:hover, .primary-button:hover,
-.default-button:hover, .blue-button:hover {
+.default-button:hover, .blue-button:hover,
+.green-button:hover {
   filter: opacity(80%) !important; }
 
 .modal-header {
@@ -66,7 +70,7 @@ a:hover {
       border-top: 0;
       border-right: 0; }
     #app #main-sidebar-container .item {
-      color: white;
+      color: white !important;
       letter-spacing: 0.9px;
       padding: .92857143em 0.5em;
       border: 0;

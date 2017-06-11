@@ -1,4 +1,4 @@
-.uppercase, .blue-button, .primary-button, .secondary-button, .default-button, .modal-header, #top-navbar-container .navbar-title span {
+.uppercase, .blue-button, .green-button, .primary-button, .secondary-button, .default-button, .modal-header, #top-navbar-container .navbar-title span {
   text-transform: uppercase !important;
   font-weight: 300;
   letter-spacing: 1.5px; }
@@ -8,6 +8,9 @@
 
 .blue-button {
   background-color: #61afff !important; }
+
+.green-button {
+  background-color: #1c8 !important; }
 
 .primary-button {
   background-color: #0a9b94 !important; }
@@ -19,7 +22,8 @@
   background-color: #cacbcd !important; }
 
 .secondary-button:hover, .primary-button:hover,
-.default-button:hover, .blue-button:hover {
+.default-button:hover, .blue-button:hover,
+.green-button:hover {
   filter: opacity(80%) !important; }
 
 .modal-header {

@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Segment, Modal, Button, Form, Message, Header, Image } from 'semantic-ui-react';
+import { Segment, Modal, Button, Form, Message, Header, Image, Label } from 'semantic-ui-react';
 import logo from '../assets/circlelogo.svg';
 
 import '../styles/modal.css';
 
 import { bindActionCreators } from 'redux';
-import { fetchAuthenticate } from '../redux/actions';
+import { fetchAuthenticate, fetchSignUp } from '../redux/actions';
 import { connect } from 'react-redux';
 
 class LoginModal extends Component {
@@ -21,6 +21,16 @@ class LoginModal extends Component {
     password2: "",
   }
 
+  submit = (e) => {
+    e.preventDefault();
+    const { email, password, username, firstname, lastname, password1, password2 } = this.state;
+    if (e.target.id === 'signin') {
+      this.props.fetchAuthenticate(this, email, password);
+    } else {
+      this.props.fetchSignUp(this, email, username, firstname, lastname, password1, password2);
+    }
+  }
+
   handleChange = (e) => this.setState({ [e.target.name]: e.target.value })
 
   hideModal = (e) => this.setState({ visible: false })
@@ -30,9 +40,15 @@ class LoginModal extends Component {
     this.setState({ visible: true })
   }
 
-  showSignup = (e) => this.setState({ mode: "signup" })
+  showSignup = (e) => {
+    e.preventDefault()
+    this.setState({ mode: "signup" })
+  }
 
-  showLogin = (e) => this.setState({ mode: "signin" })
+  showLogin = (e) => {
+    e.preventDefault()
+    this.setState({ mode: "signin" })
+  }
 
   render() {
     const { mode, visible, email, password, firstname, lastname, username, password1, password2 } = this.state;
@@ -45,13 +61,20 @@ class LoginModal extends Component {
         onClose={this.hideModal}
         closeOnEscape={false}
         closeOnRootNodeClick={true}
+        closeIcon={<Label color='grey' floating>X</Label>}
         size='small'>
-        <Modal.Header as='h2' className="modal-header">Sign In</Modal.Header>
+        {
+          (mode === 'signin') ? (
+            <Modal.Header as='h2' className="modal-header">Sign In</Modal.Header>
+          ) : (
+            <Modal.Header as='h2' className="modal-header">Sign Up</Modal.Header>
+          )
+        }
         <Modal.Content className='modal-content-container'>
           <Segment basic padded>
             {
               (mode === 'signin') ? (
-                <Form id='signin' onSubmit={this.login}>
+                <Form id='signin' onSubmit={this.submit} loading={fetching.count !== 0} warning={fetchError.length > 0}>
                   <Header className="form-title" textAlign='center' as='h1'>
                     <Image src={logo} alt='logo' />
                     Howl
@@ -63,14 +86,15 @@ class LoginModal extends Component {
                   <Form.Field>
                     <input placeholder='Password' required type='password' name='password' value={password} onChange={this.handleChange} />
                   </Form.Field>
+                  <Button type='submit' fluid className='submit-button' style={{opacity:0}}>submit</Button>
                   <p style={{ textAlign: 'center' }}>
                     Don't have an account?
                   <br />
-                    <a href="#" onClick={this.showSignup}>Sign Up</a>
+                    <a href="" onClick={this.showSignup}>Sign Up</a>
                   </p>
                 </Form>
               ) : (
-                  <Form id='signup' onSubmit={this.login}>
+                  <Form id='signup' onSubmit={this.submit}>
                     <Header className="form-title" textAlign='center' as='h1'>
                       <Image src={logo} alt='logo' />
                       Howl
@@ -94,10 +118,11 @@ class LoginModal extends Component {
                     <Form.Field required>
                         <input placeholder='Confirm Password' type='password' name='password2' value={password2} onChange={this.handleChange} />
                     </Form.Field>
+                    <Button type='submit' fluid className='submit-button' style={{opacity:0}}>submit</Button>
                     <p style={{ textAlign: 'center' }}>
                       Already have an account?
                     <br />
-                      <a href="#" onClick={this.showLogin}>Sign In</a>
+                      <a href="" onClick={this.showLogin}>Sign In</a>
                     </p>
                   </Form>
                 )
@@ -108,7 +133,7 @@ class LoginModal extends Component {
           <Button className='exit-button' onClick={this.hideModal}>
             exit
             </Button>
-          <Button className='submit-button' onClick={this.delete}>
+          <Button className='submit-button' onClick={this.submit}>
             submit
             </Button>
         </Modal.Actions>

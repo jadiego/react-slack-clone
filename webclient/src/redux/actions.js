@@ -1,5 +1,6 @@
 import { find, isEqual, includes } from 'lodash';
 import axios from 'axios';
+import NProgress from 'nprogress';
 
 const headerContentType = "Content-Type"
 const charsetUTF8 = "charset=utf-8"
@@ -108,34 +109,32 @@ export const fetchSignUp = (event, e, u, fn, ln, p1, p2) => {
   }
 }
 
-export const fetchAuthenticate = (event, email, password) => {
-  event.preventDefault()
-
+export const fetchAuthenticate = (modal, email, password) => {
+  NProgress.start();
   return dispatch => {
-    dispatch({ type: 'FETCH START' })
-
-    return fetch(`${apiRoot}sessions`, {
-      method: "POST",
-      mode: "cors",
-      headers: new Headers({
-        "Content-Type": contentTypeJSONUTF8
-      }),
-      body: JSON.stringify({
-        email: email,
-        password: password
-      })
+    dispatch({ type: 'FETCH START', payload: { fetch: 'sign in' } })
+    return axios({
+      url: 'sessions',
+      method: 'post',
+      data: {
+        email,
+        password,
+      }
     })
-      .then(resp => {
-        localStorage.setItem(storageKey, resp.headers.get("Authorization"))
-        return handleResponse(resp)
-      })
       .then(data => {
-        dispatch({ type: 'FETCH END', message: "" })
-        dispatch({ type: 'SET CURRENT USER', data })
+        NProgress.done();
+        modal.setState({ visible: false })
+        localStorage.setItem(storageKey, data.headers.authorization)
+        dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
+        dispatch({ type: 'SET CURRENT USER', payload: data.data })
+        return data;
       })
       .catch(error => {
-        dispatch({ type: 'FETCH END', message: error.message })
-      })
+        NProgress.done();
+        if (error.response) {
+          dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'sign in' } })
+        }
+      });
   }
 }
 
@@ -214,19 +213,20 @@ export const fetchChannels = () => {
 //get an array of all signed-up users from the api server.
 export const getUsers = () => {
   return dispatch => {
-    dispatch({ type: 'FETCH START', payload: 'get users' })
+    dispatch({ type: 'FETCH START', payload: { fetch: 'get users' } })
     return axios({
       url: 'users',
       method: 'get'
     })
       .then(data => {
-        dispatch({ type: 'FETCH END', payload: '' })
+        dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
         dispatch({ type: 'SET USERS', payload: data.data })
-        console.log(data);
         return data;
       })
       .catch(error => {
-        console.log(error);
+        if (error.response) {
+          dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'get users' } })
+        }
       });
   }
 }
