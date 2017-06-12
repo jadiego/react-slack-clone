@@ -59,9 +59,9 @@ class LoginModal extends Component {
         dimmer="inverted"
         open={visible}
         onClose={this.hideModal}
-        closeOnEscape={false}
-        closeOnRootNodeClick={true}
-        closeIcon={<Label color='grey' floating>X</Label>}
+        closeOnEscape={true}
+        closeOnRootNodeClick={false}
+        closeIcon={<Label color='grey' floating style={{cursor:'pointer'}}>X</Label>}
         size='small'>
         {
           (mode === 'signin') ? (
@@ -94,7 +94,7 @@ class LoginModal extends Component {
                   </p>
                 </Form>
               ) : (
-                  <Form id='signup' onSubmit={this.submit}>
+                  <Form id='signup' onSubmit={this.submit} loading={fetching.count !== 0} warning={fetchError.length > 0}>
                     <Header className="form-title" textAlign='center' as='h1'>
                       <Image src={logo} alt='logo' />
                       Howl
@@ -152,6 +152,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     fetchAuthenticate,
+    fetchSignUp,
   }, dispatch)
 }
 

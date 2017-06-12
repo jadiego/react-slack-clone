@@ -74,38 +74,37 @@ export const handleTextResponse = (response) => {
     })
 }
 
-export const fetchSignUp = (event, e, u, fn, ln, p1, p2) => {
-  event.preventDefault()
-
+export const fetchSignUp = (modal, e, u, fn, ln, p1, p2) => {
+  NProgress.start();
   return dispatch => {
-    dispatch({ type: 'FETCH START' })
-
-    return fetch(`${apiRoot}users`, {
-      method: "POST",
-      mode: "cors",
-      headers: new Headers({
-        "Content-Type": contentTypeJSONUTF8
-      }),
-      body: JSON.stringify({
+    dispatch({ type: 'FETCH START', payload: { fetch: 'sign up' } })
+    return axios({
+      url: 'users',
+      method: 'post',
+      data: {
         firstName: fn,
         lastName: ln,
         userName: u,
         password: p1,
         passwordConf: p2,
         email: e
-      })
+      },
+      headers: localStorage.getItem(storageKey)
     })
       .then(resp => {
-        localStorage.setItem(storageKey, resp.headers.get("Authorization"))
-        return handleResponse(resp)
-      })
-      .then(data => {
-        dispatch({ type: 'SET CURRENT USER', data })
-        dispatch({ type: 'FETCH END', message: "" })
+        NProgress.done();
+        modal.setState({ visible: false })
+        localStorage.setItem(storageKey, resp.headers.authorization)
+        dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
+        dispatch({ type: 'SET CURRENT USER', payload: resp.data })
+        return resp;
       })
       .catch(error => {
-        dispatch({ type: 'FETCH END', message: error.message })
-      })
+        NProgress.done();
+        if (error.response) {
+          dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'sign up' } })
+        }
+      });
   }
 }
 
@@ -139,26 +138,26 @@ export const fetchAuthenticate = (modal, email, password) => {
 }
 
 export const fetchSignOut = () => {
+  NProgress.start();
   return dispatch => {
-    dispatch({ type: 'FETCH START' })
-
-    return fetch(`${apiRoot}sessions/mine`, {
-      method: "DELETE",
-      mode: "cors",
-      headers: new Headers({
-        "Authorization": localStorage.getItem(storageKey)
-      })
+    dispatch({ type: 'FETCH START', payload: { fetch: 'sign out' } })
+    return axios({
+      url: 'sessions/mine',
+      method: 'delete',
+      headers: localStorage.getItem(storageKey)
     })
-      .then(handleResponse)
-      .then(data => {
+      .then(resp => {
+        NProgress.done();
         localStorage.removeItem(storageKey)
-        dispatch({ type: 'SET CURRENT USER', data: {} })
-        dispatch({ type: 'FETCH END', message: data })
-        location.reload()
+        dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
+        dispatch({ type: 'SET CURRENT USER', payload: resp.data })
+        return resp;
       })
       .catch(error => {
-        dispatch({ type: 'FETCH END', message: error.message })
-
+        NProgress.done();
+        if (error.response) {
+          dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'sign out' } })
+        }
       })
   }
 }
@@ -166,25 +165,27 @@ export const fetchSignOut = () => {
 //doesnt do the whole fetch start, fetch end dispatch
 //because it doesn't need to be recorded.
 export const fetchCheckSession = () => {
-
+  NProgress.start();
   return dispatch => {
-    dispatch({ type: 'FETCH START' })
-
-    return fetch(`${apiRoot}users/me`, {
-      mode: "cors",
-      headers: new Headers({
-        "Authorization": localStorage.getItem(storageKey)
-      })
+    dispatch({ type: 'FETCH START', payload: { fetch: 'check session' } })
+    return axios({
+      url: 'users/me',
+      method: 'get',
+      headers: localStorage.getItem(storageKey)
     })
-      .then(handleResponse)
-      .then(data => {
-        dispatch({ type: 'FETCH END', message: "" })
-        dispatch({ type: 'SET CURRENT USER', data })
-
+      .then(resp => {
+        NProgress.done();
+        localStorage.removeItem(storageKey)
+        dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
+        dispatch({ type: 'SET CURRENT USER', payload: resp.data })
+        return resp;
       })
       .catch(error => {
-        localStorage.removeItem("auth")
-        dispatch({ type: 'FETCH END', message: error.message })
+        NProgress.done();
+        if (error.response) {
+          localStorage.clear()
+          dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'check session' } })
+        }
       })
   }
 }
@@ -218,10 +219,10 @@ export const getUsers = () => {
       url: 'users',
       method: 'get'
     })
-      .then(data => {
+      .then(resp => {
         dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
-        dispatch({ type: 'SET USERS', payload: data.data })
-        return data;
+        dispatch({ type: 'SET USERS', payload: resp.data })
+        return resp;
       })
       .catch(error => {
         if (error.response) {
