@@ -25,6 +25,14 @@
       height: 100%;
     }
 
+    .profile-image {
+      height: 100%;
+      margin: 0;
+      padding: 2px;
+      cursor: pointer;
+      float: right;
+    }
+
     .signout-button {
       @extend .primary-button;
     }

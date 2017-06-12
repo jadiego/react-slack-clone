@@ -1,11 +1,11 @@
 import React, { Component } from 'react';
-import { Segment, Modal, Button, Form, Message, Header, Image, Label } from 'semantic-ui-react';
+import { Segment, Modal, Button, Form, Message, Header, Image, Label, Icon } from 'semantic-ui-react';
 import logo from '../assets/circlelogo.svg';
 
 import '../styles/modal.css';
 
 import { bindActionCreators } from 'redux';
-import { fetchAuthenticate, fetchSignUp } from '../redux/actions';
+import { signin, signup } from '../redux/actions';
 import { connect } from 'react-redux';
 
 class LoginModal extends Component {
@@ -25,9 +25,9 @@ class LoginModal extends Component {
     e.preventDefault();
     const { email, password, username, firstname, lastname, password1, password2 } = this.state;
     if (e.target.id === 'signin') {
-      this.props.fetchAuthenticate(this, email, password);
+      this.props.signin(this, email, password);
     } else {
-      this.props.fetchSignUp(this, email, username, firstname, lastname, password1, password2);
+      this.props.signup(this, email, username, firstname, lastname, password1, password2);
     }
   }
 
@@ -74,7 +74,7 @@ class LoginModal extends Component {
           <Segment basic padded>
             {
               (mode === 'signin') ? (
-                <Form id='signin' onSubmit={this.submit} loading={fetching.count !== 0} warning={fetchError.length > 0}>
+                <Form id='signin' onSubmit={this.submit} loading={fetching.count !== 0} warning={fetchError.length > 0 && fetching.fetch === 'sign in'}>
                   <Header className="form-title" textAlign='center' as='h1'>
                     <Image src={logo} alt='logo' />
                     Howl
@@ -90,11 +90,11 @@ class LoginModal extends Component {
                   <p style={{ textAlign: 'center' }}>
                     Don't have an account?
                   <br />
-                    <a href="" onClick={this.showSignup}>Sign Up</a>
+                    <a onClick={this.showSignup}>Sign Up</a>
                   </p>
                 </Form>
               ) : (
-                  <Form id='signup' onSubmit={this.submit} loading={fetching.count !== 0} warning={fetchError.length > 0}>
+                  <Form id='signup' onSubmit={this.submit} loading={fetching.count !== 0} warning={fetchError.length > 0 && fetching.fetch === 'sign up'}>
                     <Header className="form-title" textAlign='center' as='h1'>
                       <Image src={logo} alt='logo' />
                       Howl
@@ -122,7 +122,7 @@ class LoginModal extends Component {
                     <p style={{ textAlign: 'center' }}>
                       Already have an account?
                     <br />
-                      <a href="" onClick={this.showLogin}>Sign In</a>
+                      <a onClick={this.showLogin}>Sign In</a>
                     </p>
                   </Form>
                 )
@@ -151,8 +151,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    fetchAuthenticate,
-    fetchSignUp,
+    signin,
+    signup,
   }, dispatch)
 }
 

@@ -1,19 +1,14 @@
 import React, { Component } from 'react';
-import { Sidebar, Button, Menu, Icon, Header, Segment } from 'semantic-ui-react';
+import { Sidebar, Menu, Icon, Segment, Button } from 'semantic-ui-react';
+import { NavLink } from 'react-router-dom';
 import { isEmpty } from 'lodash';
 
-import { bindActionCreators } from 'redux';
-import { getUsers } from '../redux/actions';
 import { connect } from 'react-redux';
 
 class SubSidebar extends Component {
 
-    componentWillMount() {
-        this.props.getUsers()
-    }
-
     render() {
-        const { sidebar, currentUser } = this.props;
+        const { sidebar, currentUser, channels, users } = this.props;
         if (isEmpty(currentUser)) {
             return <Sidebar as={Menu}
                 animation='slide along'
@@ -23,7 +18,7 @@ class SubSidebar extends Component {
                 vertical
                 id='sidebar-container'>
                 <Segment basic padded>
-                    <Icon name='warning' circular size='huge'/>
+                    <Icon name='warning' circular size='huge' />
                     <Segment padded className='clear-black-background'>
                         Login to start chatting with friends and explore the sub-communities
                     </Segment>
@@ -36,20 +31,31 @@ class SubSidebar extends Component {
                         animation='slide along'
                         width='wide'
                         visible={sidebar.visible}
-                        icon='labeled'
                         vertical
                         id='sidebar-container'>
-                        <Menu.Item name='home'>
-                            <Icon name='home' />
-                            Home
-                        </Menu.Item>
-                        <Menu.Item name='gamepad'>
-                            <Icon name='gamepad' />
-                            Games
-                        </Menu.Item>
-                        <Menu.Item name='camera'>
-                            <Icon name='camera' />
-                            Channels
+                        {
+                            channels.map(channel => {
+                                return (!channel.name.includes(":")) && (
+                                    <Menu.Item
+                                        key={`key-${channel.id}`}
+                                        as={NavLink} to={{ pathname: `/messages/${channel.name}` }}
+                                        className='channel-item'
+                                        activeClassName='active'
+                                    >
+                                        {channel.name}
+                                        {
+                                            (channel.private) ? (
+                                                <Icon name='lock'/>
+                                            ) : (
+                                                <Icon name='world'/>
+                                            )
+                                        }
+                                    </Menu.Item>
+                                )
+                            })
+                        }
+                        <Menu.Item className='bottom-menu-item'>
+                            <Button>add channel</Button>
                         </Menu.Item>
                     </Sidebar>
                 )
@@ -62,14 +68,20 @@ class SubSidebar extends Component {
                         icon='labeled'
                         vertical
                         id='sidebar-container'>
-                        <Menu.Item name='home'>
-                            <Icon name='home' />
-                            Home
-                        </Menu.Item>
-                        <Menu.Item name='gamepad'>
-                            <Icon name='gamepad' />
-                            Games
-                        </Menu.Item>
+                        {
+                            channels.map(channel => {
+                                return (channel.name.includes(":")) && (
+                                    <Menu.Item
+                                        key={`key-${channel.id}`}
+                                        as={NavLink} to={{ pathname: `/messages/${channel.name}` }}
+                                        className='channel-item'
+                                        activeClassName='active'
+                                    >
+                                        {channel.name}
+                                    </Menu.Item>
+                                )
+                            })
+                        }
                     </Sidebar>
                 )
             }
@@ -81,13 +93,9 @@ const mapStateToProps = (state) => {
     return {
         sidebar: state.sidebar,
         currentUser: state.currentUser,
+        channels: state.channels,
+        users: state.users,
     }
 }
 
-const mapDispatchToProps = (dispatch) => {
-    return bindActionCreators({
-        getUsers,
-    }, dispatch)
-}
-
-export default connect(mapStateToProps, mapDispatchToProps)(SubSidebar);
+export default connect(mapStateToProps)(SubSidebar);

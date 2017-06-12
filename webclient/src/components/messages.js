@@ -1,23 +1,14 @@
 import React, { Component } from 'react';
-import { Segment, TextArea, Form, Header, Breadcrumb, Icon } from 'semantic-ui-react';
+import { Segment, TextArea, Form, Header, Breadcrumb, Icon, Image } from 'semantic-ui-react';
 import { isEmpty } from 'lodash';
+import LoginModal from './loginmodal';
+import paragraph from '../assets/paragraph.png';
 
-import { bindActionCreators } from 'redux';
-import { fetchChannels, fetchChannelMessages } from '../redux/actions';
 import { connect } from 'react-redux';
-
-import LoginModal from './loginmodal'
 
 import '../styles/messages.css';
 
 class Messages extends Component {
-  componentWillMount() {
-    const { currentUser } = this.props;
-    if(!isEmpty(currentUser)) {
-      this.props.fetchChannels()
-    }
-  }
-
   render() {
     const { currentUser, currentChannel, match } = this.props;
     return (
@@ -31,10 +22,21 @@ class Messages extends Component {
             ]} size='big'/>
           </Header.Content>
         </Header>
+        <Segment basic>
+          {
+            (isEmpty(currentUser)) && (
+              <div>
+                <Image src={paragraph} />
+                <br />
+                <Image src={paragraph} />
+              </div>
+            )
+          }
+        </Segment>
         <div className='text-input-container'>
           <Form>
             {
-              (localStorage.getItem("auth") === null) ? (
+              (isEmpty(currentUser)) ? (
                 <LoginModal />
               ) : (
                   <TextArea placeholder='chat' autoHeight />
@@ -54,11 +56,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({
-    fetchChannelMessages,
-    fetchChannels,
-  }, dispatch)
-}
-
-export default connect()(Messages);
+export default connect(mapStateToProps)(Messages);

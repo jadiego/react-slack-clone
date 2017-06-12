@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom';
-import { isEmpty } from 'lodash';
-import { Container, Sidebar, Segment, Button, Menu, Image, Icon, Header } from 'semantic-ui-react';
+import { BrowserRouter, Route, Redirect } from 'react-router-dom';
+import { Container, Sidebar, Segment } from 'semantic-ui-react';
+import { isEmpty, isEqual } from 'lodash';
 
 import { bindActionCreators } from 'redux';
-import { fetchCheckSession } from './redux/actions';
+import { checkSession, getUsers, getChannels } from './redux/actions';
 import { connect } from 'react-redux';
 
 import Messages from './components/messages';
@@ -17,10 +17,15 @@ import './styles/app.css';
 class App extends Component {
     componentWillMount() {
         if (localStorage.getItem("auth")) {
-            this.props.fetchCheckSession();
+            this.props.checkSession()
+                .then(resp => {
+                    if (!isEmpty(resp)) {
+                        this.props.getUsers()
+                        this.props.getChannels()
+                    }
+                })
         }
     }
-    
 
     render() {
         return (
@@ -29,9 +34,10 @@ class App extends Component {
                     <MainSidebar />
                     <TopNavbar />
                     <Sidebar.Pushable as={Segment} id='pushable-container'>
-                        <SubSidebar/>
+                        <SubSidebar />
                         <Sidebar.Pusher>
-                            <Route exact path='/' render={() => <Redirect to='/messages/general'/>} />
+                            <Route exact path='/' render={() => <Redirect to='/messages/general' />} />
+                            <Route exact path='/messages' render={() => <Redirect to='/messages/general' />} />
                             <Route exact path='/messages/:channelname' component={Messages} />
                         </Sidebar.Pusher>
                     </Sidebar.Pushable>
@@ -48,9 +54,11 @@ const mapStateToProps = (state) => {
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return bindActionCreators({
-    fetchCheckSession,
-  }, dispatch)
+    return bindActionCreators({
+        checkSession,
+        getUsers,
+        getChannels
+    }, dispatch)
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -14,7 +14,7 @@ class MainSidebar extends Component {
   }
 
   open = (e, activeMenu) => {
-    const { sidebar, dispatch } = this.props;
+    const { dispatch } = this.props;
     dispatch({ type: "UPDATE VISIBLE SIDEBAR", payload: true });
     dispatch({ type: "UPDATE ACTIVE SIDEBAR", payload: activeMenu });
   }

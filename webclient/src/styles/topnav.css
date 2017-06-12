@@ -47,6 +47,12 @@
     #top-navbar-container .navbar-title img {
       margin-top: 0;
       height: 100%; }
+    #top-navbar-container .navbar-title .profile-image {
+      height: 100%;
+      margin: 0;
+      padding: 2px;
+      cursor: pointer;
+      float: right; }
 
 path {
   fill: rgba(0, 0, 0, 0.3); }

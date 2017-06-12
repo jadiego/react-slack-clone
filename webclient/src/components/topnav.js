@@ -4,7 +4,7 @@ import logo from '../assets/circlelogo.svg';
 import { isEmpty } from 'lodash';
 
 import { bindActionCreators } from 'redux';
-import { fetchSignOut } from '../redux/actions';
+import { signout } from '../redux/actions';
 import { connect } from 'react-redux';
 
 import '../styles/topnav.css';
@@ -13,21 +13,20 @@ class TopNav extends Component {
   
   signout = (e) => {
     e.preventDefault();
-    this.props.fetchSignOut()
+    this.props.signout()
   }
 
   render() {
     const { currentUser } = this.props;
-    console.log(isEmpty(currentUser), localStorage.getItem("auth"))
     return (
       <Segment basic id='top-navbar-container'>
         <Header className='navbar-title'>
           <Image src={logo} />
           <span>howl</span>
 
-          {(!isEmpty(currentUser) && localStorage.getItem("auth")) && (
+          {(!isEmpty(currentUser)) && (
             <Popup
-              trigger={<Image src={currentUser.photoUrl} />}
+              trigger={<Image src={currentUser.photoURL} shape='rounded' wrapped className='profile-image'/>}
               content={<Button className='signout-button' onClick={this.signout}>Sign out</Button>}
               basic
               on='click'
@@ -47,7 +46,7 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    fetchSignOut
+    signout
   }, dispatch)
 }
 

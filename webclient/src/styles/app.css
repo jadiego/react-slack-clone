@@ -96,3 +96,8 @@ a:hover {
       border-left: 0;
       border-top: 0;
       color: white; }
+      #app #pushable-container #sidebar-container .channel-item {
+        border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+        color: inherit !important; }
+      #app #pushable-container #sidebar-container .channel-item.active {
+        background-color: #333; }
