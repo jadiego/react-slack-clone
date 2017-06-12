@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { Sidebar, Menu, Icon, Segment, Button } from 'semantic-ui-react';
-import { NavLink } from 'react-router-dom';
-import { isEmpty } from 'lodash';
+import { Sidebar, Menu, Icon, Segment, Button, Image } from 'semantic-ui-react';
+import { NavLink, withRouter } from 'react-router-dom';
+import { isEmpty, find } from 'lodash';
 
 import { connect } from 'react-redux';
 
-class SubSidebar extends Component {
 
+
+class SubSidebar extends Component {
     render() {
         const { sidebar, currentUser, channels, users } = this.props;
         if (isEmpty(currentUser)) {
@@ -32,28 +33,24 @@ class SubSidebar extends Component {
                         width='wide'
                         visible={sidebar.visible}
                         vertical
-                        id='sidebar-container'>
-                        {
-                            channels.map(channel => {
-                                return (!channel.name.includes(":")) && (
-                                    <Menu.Item
-                                        key={`key-${channel.id}`}
-                                        as={NavLink} to={{ pathname: `/messages/${channel.name}` }}
-                                        className='channel-item'
-                                        activeClassName='active'
-                                    >
-                                        {channel.name}
-                                        {
-                                            (channel.private) ? (
-                                                <Icon name='lock' />
-                                            ) : (
-                                                    <Icon name='world' />
-                                                )
-                                        }
-                                    </Menu.Item>
-                                )
-                            })
-                        }
+                        id='sidebar-container'
+                    >
+                        {channels.map(channel => {
+                            return (!channel.name.includes(":")) && (
+                                <Menu.Item
+                                    key={`key-${channel.id}`}
+                                    as={NavLink} to={{ pathname: `/messages/${channel.name}` }}
+                                    className='channel-item'
+                                >
+                                    {(channel.private) ? (
+                                        <Icon name='lock' />
+                                    ) : (
+                                            <Icon name='world' />
+                                        )}
+                                    {channel.name}
+                                </Menu.Item>
+                            )
+                        })}
                         <Menu.Item className='bottom-menu-item'>
                             <Button animated='vertical' fluid inverted>
                                 <Button.Content hidden>add channel</Button.Content>
@@ -70,23 +67,19 @@ class SubSidebar extends Component {
                         animation='slide along'
                         width='wide'
                         visible={sidebar.visible}
-                        icon='labeled'
                         vertical
-                        id='sidebar-container'>
-                        {
-                            channels.map(channel => {
-                                return (channel.name.includes(":")) && (
-                                    <Menu.Item
-                                        key={`key-${channel.id}`}
-                                        as={NavLink} to={{ pathname: `/messages/${channel.name}` }}
-                                        className='channel-item'
-                                        activeClassName='active'
-                                    >
-                                        {channel.name}
-                                    </Menu.Item>
-                                )
-                            })
-                        }
+                        id='sidebar-container'
+                    >
+                        {users.map(user =>
+                            <Menu.Item
+                                key={`key-${user.id}`}
+                                as={NavLink} to={{ pathname: `/messages/${[currentUser.userName, user.userName].sort().join(':')}` }}
+                                className='channel-item'
+                            >
+                                <Image src={user.photoURL} inline shape='rounded' spaced width={30} />
+                                {user.userName}
+                            </Menu.Item>
+                        )}
                     </Sidebar>
                 )
             }
@@ -103,4 +96,4 @@ const mapStateToProps = (state) => {
     }
 }
 
-export default connect(mapStateToProps)(SubSidebar);
+export default withRouter(connect(mapStateToProps)(SubSidebar));
