@@ -44,9 +44,14 @@ $color-brown: rgb(152, 150, 139);
   background-color: $color-grey !important;
 }
 
+.clear-button {
+  @extend .uppercase;
+  background-color: rgba(0,0,0, 0.4);
+}
+
 .secondary-button:hover, .primary-button:hover, 
 .default-button:hover, .blue-button:hover,
-.green-button:hover {
+.green-button:hover, .clear-button:hover {
   filter: opacity(80%) !important;
 }
 

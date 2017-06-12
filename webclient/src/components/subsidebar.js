@@ -45,17 +45,22 @@ class SubSidebar extends Component {
                                         {channel.name}
                                         {
                                             (channel.private) ? (
-                                                <Icon name='lock'/>
+                                                <Icon name='lock' />
                                             ) : (
-                                                <Icon name='world'/>
-                                            )
+                                                    <Icon name='world' />
+                                                )
                                         }
                                     </Menu.Item>
                                 )
                             })
                         }
                         <Menu.Item className='bottom-menu-item'>
-                            <Button>add channel</Button>
+                            <Button animated='vertical' fluid inverted>
+                                <Button.Content hidden>add channel</Button.Content>
+                                <Button.Content visible>
+                                    <Icon name='plus' />
+                                </Button.Content>
+                            </Button>
                         </Menu.Item>
                     </Sidebar>
                 )

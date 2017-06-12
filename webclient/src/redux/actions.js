@@ -16,6 +16,11 @@ const storageKey = "auth"
 
 export var apiRoot = "https://api.chat.jadiego.me/v1/";
 var apiWS = "wss://api.chat.jadiego.me/v1/websocket"
+if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
+  apiRoot = "https://localhost:4000/v1/"
+  apiWS = "wss://localhost:4000/v1/websocket"
+};
+
 
 const getSessionKey = () => {
   return localStorage.getItem(storageKey);

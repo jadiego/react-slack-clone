@@ -1,4 +1,4 @@
-.uppercase, .blue-button, .green-button, .modal .submit-button, .primary-button, .secondary-button, .default-button, .modal .exit-button, .modal-header, .modal .modal-content-container form#signin .form-title, .modal .modal-content-container form#signup .form-title {
+.uppercase, .blue-button, .green-button, .modal .submit-button, .primary-button, .secondary-button, .default-button, .modal .exit-button, .clear-button, .modal-header, .modal .modal-content-container form#signin .form-title, .modal .modal-content-container form#signup .form-title {
   text-transform: uppercase !important;
   font-weight: 300;
   letter-spacing: 1.5px; }
@@ -21,11 +21,14 @@
 .default-button, .modal .exit-button {
   background-color: #cacbcd !important; }
 
+.clear-button {
+  background-color: rgba(0, 0, 0, 0.4); }
+
 .secondary-button:hover, .primary-button:hover,
 .default-button:hover,
 .modal .exit-button:hover, .blue-button:hover,
 .green-button:hover,
-.modal .submit-button:hover {
+.modal .submit-button:hover, .clear-button:hover {
   filter: opacity(80%) !important; }
 
 .modal-header {

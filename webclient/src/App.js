@@ -21,7 +21,9 @@ class App extends Component {
                 .then(resp => {
                     if (!isEmpty(resp)) {
                         this.props.getUsers()
-                        this.props.getChannels()
+                            .then(resp => {
+                                this.props.getChannels()
+                            })
                     }
                 })
         }
