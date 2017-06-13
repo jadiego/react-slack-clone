@@ -1,4 +1,4 @@
-// import { find, isEqual, includes } from 'lodash';
+import { find, isEqual, includes } from 'lodash';
 import axios from 'axios';
 import NProgress from 'nprogress';
 
@@ -22,7 +22,7 @@ if (window.location.hostname === "localhost" || window.location.hostname === "12
 };
 
 
-const getSessionKey = () => {
+export const getSessionKey = () => {
   return localStorage.getItem(storageKey);
 }
 
@@ -37,7 +37,7 @@ const removeSessionKey = () => {
 //config axios
 axios.defaults.baseURL = apiRoot;
 axios.interceptors.request.use(config => {
-  config.headers = {'Authorization': getSessionKey()}
+  config.headers = { 'Authorization': getSessionKey() }
   return config;
 })
 
@@ -71,6 +71,7 @@ export const signup = (modal, e, u, fn, ln, p1, p2) => {
         if (error.response) {
           dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'sign up' } })
         }
+        return error;
       });
   }
 }
@@ -100,6 +101,7 @@ export const signin = (modal, email, password) => {
         if (error.response) {
           dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'sign in' } })
         }
+        return error;
       });
   }
 }
@@ -124,6 +126,7 @@ export const signout = () => {
         if (error.response) {
           dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'sign out' } })
         }
+        return error;
       })
   }
 }
@@ -148,12 +151,14 @@ export const checkSession = () => {
           removeSessionKey()
           dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'check session' } })
         }
+        return error;
       })
   }
 }
 
 //get an array of all signed-up users from the api server.
 export const getUsers = () => {
+  NProgress.start();
   return dispatch => {
     dispatch({ type: 'FETCH START', payload: { fetch: 'get users' } })
     return axios({
@@ -161,19 +166,23 @@ export const getUsers = () => {
       method: 'get'
     })
       .then(resp => {
+        NProgress.done();
         dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
         dispatch({ type: 'SET USERS', payload: resp.data })
         return resp;
       })
       .catch(error => {
+        NProgress.done();
         if (error.response) {
           dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'get users' } })
         }
+        return error;
       });
   }
 }
 
 export const getChannels = () => {
+  NProgress.start();
   return dispatch => {
     dispatch({ type: 'FETCH START', payload: { fetch: 'get channels' } })
     return axios({
@@ -181,14 +190,50 @@ export const getChannels = () => {
       method: 'get'
     })
       .then(resp => {
+        NProgress.done();
         dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
         dispatch({ type: 'SET CHANNELS', payload: resp.data })
         return resp;
       })
       .catch(error => {
+        NProgress.done();
         if (error.response) {
           dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'get channels' } })
         }
+      });
+  }
+}
+
+export const setCurrentChannel = (channelname) => {
+  return (dispatch, getState) => {
+    const { channels } = getState();
+    let channel = find(channels, ch => ch.name === channelname);
+    dispatch({ type: 'SET CURRENT CHANNEL', payload: channel });
+    return channel;
+  }
+}
+
+export const getChannelMessages = () => {
+  NProgress.start();
+  return (dispatch, getState) => {
+    const { currentChannel } = getState();
+    dispatch({ type: 'FETCH START', payload: { fetch: 'get channel messages' } })
+    return axios({
+      url: `channels/${currentChannel.id}`,
+      method: 'get'
+    })
+      .then(resp => {
+        NProgress.done();
+        dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
+        dispatch({ type: 'SET MESSAGES', payload: { messages: resp.data, channelid: currentChannel.id } })
+        return resp;
+      })
+      .catch(error => {
+        NProgress.done();
+        if (error.response) {
+          dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'get channel messages' } })
+        }
+        return error;
       });
   }
 }

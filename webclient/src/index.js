@@ -4,7 +4,7 @@ import { Provider } from 'react-redux';
 import { createStore, applyMiddleware, compose } from 'redux';
 import thunk from 'redux-thunk';
 
-import App from './App';
+import Router from './Router';
 import 'semantic-ui-css/semantic.min.css';
 import 'nprogress/nprogress.css';
 import rootReducer from './redux/reducers';
@@ -17,7 +17,7 @@ const store = createStore(rootReducer, composeEnhancers(
 
 ReactDOM.render(
     <Provider store={store}>
-        <App />
+        <Router />
     </Provider>,
     document.getElementById('root')
 );

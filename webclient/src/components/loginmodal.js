@@ -1,12 +1,13 @@
 import React, { Component } from 'react';
-import { Segment, Modal, Button, Form, Message, Header, Image, Label, Icon } from 'semantic-ui-react';
+import { Segment, Modal, Button, Form, Message, Header, Image, Label } from 'semantic-ui-react';
+import { withRouter } from 'react-router-dom';
 import logo from '../assets/circlelogo.svg';
 import { isEmpty } from 'lodash';
 
 import '../styles/modal.css';
 
 import { bindActionCreators } from 'redux';
-import { signin, signup, getUsers, getChannels } from '../redux/actions';
+import { signin, signup, getUsers, getChannels, setCurrentChannel, getChannelMessages } from '../redux/actions';
 import { connect } from 'react-redux';
 
 class LoginModal extends Component {
@@ -30,9 +31,9 @@ class LoginModal extends Component {
         .then(resp => {
           if (!isEmpty(resp)) {
             this.props.getUsers()
-              .then(resp => {
-                this.props.getChannels()
-              })
+              .then(resp => this.props.getChannels())
+              .then(resp => this.props.setCurrentChannel(this.props.location.pathname.split("/")[2]))
+              .then(resp => this.props.getChannelMessages())
           }
         })
     } else {
@@ -40,9 +41,9 @@ class LoginModal extends Component {
         .then(resp => {
           if (!isEmpty(resp)) {
             this.props.getUsers()
-              .then(resp => {
-                this.props.getChannels()
-              })
+              .then(resp => this.props.getChannels())
+              .then(resp => this.props.setCurrentChannel(this.props.location.pathname.split("/")[2]))
+              .then(resp => this.props.getChannelMessages())
           }
         })
     }
@@ -80,70 +81,66 @@ class LoginModal extends Component {
         closeOnRootNodeClick={false}
         closeIcon={<Label color='grey' floating style={{ cursor: 'pointer' }}>X</Label>}
         size='small'>
-        {
-          (mode === 'signin') ? (
-            <Modal.Header as='h2' className="modal-header">Sign In</Modal.Header>
-          ) : (
-              <Modal.Header as='h2' className="modal-header">Sign Up</Modal.Header>
-            )
-        }
+        {(mode === 'signin') ? (
+          <Modal.Header as='h2' className="modal-header">Sign In</Modal.Header>
+        ) : (
+            <Modal.Header as='h2' className="modal-header">Sign Up</Modal.Header>
+          )}
         <Modal.Content className='modal-content-container'>
           <Segment basic padded>
-            {
-              (mode === 'signin') ? (
-                <Form id='signin' onSubmit={this.submit} loading={fetching.count !== 0} warning={fetchError.length > 0 && fetching.fetch === 'sign in'}>
+            {(mode === 'signin') ? (
+              <Form id='signin' onSubmit={this.submit} loading={fetching.count !== 0} warning={fetchError.length > 0 && fetching.fetch === 'sign in'}>
+                <Header className="form-title" textAlign='center' as='h1'>
+                  <Image src={logo} alt='logo' />
+                  Howl
+                </Header>
+                <Message warning>{fetchError}</Message>
+                <Form.Field>
+                  <input placeholder='Email' required type='email' name='email' value={email} onChange={this.handleChange} />
+                </Form.Field>
+                <Form.Field>
+                  <input placeholder='Password' required type='password' name='password' value={password} onChange={this.handleChange} />
+                </Form.Field>
+                <Button type='submit' fluid className='submit-button' style={{ opacity: 0 }}>submit</Button>
+                <p style={{ textAlign: 'center' }}>
+                  Don't have an account?
+                  <br />
+                  <a onClick={this.showSignup}>Sign Up</a>
+                </p>
+              </Form>
+            ) : (
+                <Form id='signup' onSubmit={this.submit} loading={fetching.count !== 0} warning={fetchError.length > 0 && fetching.fetch === 'sign up'}>
                   <Header className="form-title" textAlign='center' as='h1'>
                     <Image src={logo} alt='logo' />
                     Howl
-                </Header>
+                    </Header>
                   <Message warning>{fetchError}</Message>
-                  <Form.Field>
-                    <input placeholder='Email' required type='email' name='email' value={email} onChange={this.handleChange} />
+                  <Form.Field required>
+                    <input placeholder='Email address' type='email' name='email' value={email} onChange={this.handleChange} />
+                  </Form.Field>
+                  <Form.Field required>
+                    <input placeholder='Username' type='text' name='username' value={username} onChange={this.handleChange} />
                   </Form.Field>
                   <Form.Field>
-                    <input placeholder='Password' required type='password' name='password' value={password} onChange={this.handleChange} />
+                    <input placeholder='First Name' type='text' name='firstname' value={firstname} onChange={this.handleChange} />
+                  </Form.Field>
+                  <Form.Field>
+                    <input placeholder='Last Name' type='text' name='lastname' value={lastname} onChange={this.handleChange} />
+                  </Form.Field>
+                  <Form.Field required>
+                    <input placeholder='Password' type='password' name='password1' value={password1} onChange={this.handleChange} />
+                  </Form.Field>
+                  <Form.Field required>
+                    <input placeholder='Confirm Password' type='password' name='password2' value={password2} onChange={this.handleChange} />
                   </Form.Field>
                   <Button type='submit' fluid className='submit-button' style={{ opacity: 0 }}>submit</Button>
                   <p style={{ textAlign: 'center' }}>
-                    Don't have an account?
-                  <br />
-                    <a onClick={this.showSignup}>Sign Up</a>
+                    Already have an account?
+                    <br />
+                    <a onClick={this.showLogin}>Sign In</a>
                   </p>
                 </Form>
-              ) : (
-                  <Form id='signup' onSubmit={this.submit} loading={fetching.count !== 0} warning={fetchError.length > 0 && fetching.fetch === 'sign up'}>
-                    <Header className="form-title" textAlign='center' as='h1'>
-                      <Image src={logo} alt='logo' />
-                      Howl
-                    </Header>
-                    <Message warning>{fetchError}</Message>
-                    <Form.Field required>
-                      <input placeholder='Email address' type='email' name='email' value={email} onChange={this.handleChange} />
-                    </Form.Field>
-                    <Form.Field required>
-                      <input placeholder='Username' type='text' name='username' value={username} onChange={this.handleChange} />
-                    </Form.Field>
-                    <Form.Field>
-                      <input placeholder='First Name' type='text' name='firstname' value={firstname} onChange={this.handleChange} />
-                    </Form.Field>
-                    <Form.Field>
-                      <input placeholder='Last Name' type='text' name='lastname' value={lastname} onChange={this.handleChange} />
-                    </Form.Field>
-                    <Form.Field required>
-                      <input placeholder='Password' type='password' name='password1' value={password1} onChange={this.handleChange} />
-                    </Form.Field>
-                    <Form.Field required>
-                      <input placeholder='Confirm Password' type='password' name='password2' value={password2} onChange={this.handleChange} />
-                    </Form.Field>
-                    <Button type='submit' fluid className='submit-button' style={{ opacity: 0 }}>submit</Button>
-                    <p style={{ textAlign: 'center' }}>
-                      Already have an account?
-                    <br />
-                      <a onClick={this.showLogin}>Sign In</a>
-                    </p>
-                  </Form>
-                )
-            }
+              )}
           </Segment>
         </Modal.Content>
         <Modal.Actions>
@@ -171,8 +168,10 @@ const mapDispatchToProps = (dispatch) => {
     signin,
     signup,
     getChannels,
-    getUsers
+    getUsers,
+    setCurrentChannel,
+    getChannelMessages
   }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(LoginModal);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(LoginModal));

@@ -70,16 +70,22 @@ class SubSidebar extends Component {
                         vertical
                         id='sidebar-container'
                     >
-                        {users.map(user =>
-                            <Menu.Item
-                                key={`key-${user.id}`}
-                                as={NavLink} to={{ pathname: `/messages/${[currentUser.userName, user.userName].sort().join(':')}` }}
-                                className='channel-item'
-                            >
-                                <Image src={user.photoURL} inline shape='rounded' spaced width={30} />
-                                {user.userName}
-                            </Menu.Item>
-                        )}
+                        {channels.map(channel => {
+                            return (channel.name.includes(":")) && (
+                                <Menu.Item
+                                    key={`key-${channel.id}`}
+                                    as={NavLink} to={{ pathname: `/messages/${channel.name}` }}
+                                    className='channel-item'
+                                >
+                                    {(channel.private) ? (
+                                        <Icon name='lock' />
+                                    ) : (
+                                            <Icon name='world' />
+                                        )}
+                                    {find(channel.name.split(':'), n => n !== currentUser.userName || currentUser.userName)}
+                                </Menu.Item>
+                            )
+                        })}
                     </Sidebar>
                 )
             }
