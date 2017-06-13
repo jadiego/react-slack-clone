@@ -4,17 +4,23 @@ import { isEmpty, isEqual, find } from 'lodash';
 import LoginModal from './loginmodal';
 import paragraph from '../assets/paragraph.png';
 
+import { bindActionCreators } from 'redux';
+import { setCurrentChannel, getChannelMessages } from '../redux/actions';
 import { connect } from 'react-redux';
 
 import '../styles/messages.css';
 
+const getChannelFromURL = (props) => {
+  return props.location.pathname.split("/")[2];
+}
+
 class Messages extends Component {
-  shouldComponentUpdate(nextProps) {
-    console.log(this.props, nextProps)
-    // if (this.props.match.params.channelid === nextProps.match.params.channelid && !isEmpty(this.props.currentUser)) {
-    //   return false
-    // }
-    return !isEqual(this.props, nextProps)
+  componentWillUpdate(nextProps) {
+    //console.log(`going from ${getChannelFromURL(this.props)} to ${getChannelFromURL(nextProps)}`)
+    if (getChannelFromURL(this.props) !== getChannelFromURL(nextProps)) {
+      this.props.setCurrentChannel(getChannelFromURL(nextProps))
+      this.props.getChannelMessages()
+    }
   }
 
   render() {
@@ -31,7 +37,7 @@ class Messages extends Component {
                 <span>
                   <Breadcrumb.Section>dm</Breadcrumb.Section>
                   <Breadcrumb.Divider />
-                  <Breadcrumb.Section>{find(currentChannel.name.split(':'), n => n !== currentUser.userName)}</Breadcrumb.Section>
+                  <Breadcrumb.Section>{find(currentChannel.name.split(':'), n => n !== currentUser.userName || currentUser.userName)}</Breadcrumb.Section>
                 </span>
               ) : (
                   <Breadcrumb.Section>{currentChannel.name}</Breadcrumb.Section>
@@ -73,4 +79,11 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps)(Messages);
+const mapDispatchToProps = (dispatch) => {
+  return bindActionCreators({
+    getChannelMessages,
+    setCurrentChannel
+  }, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(Messages);
