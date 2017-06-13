@@ -1,6 +1,8 @@
 @import '_shared';
 
 #messages-container {
+  height: 100%;
+
   .channel-name {
     @extend .uppercase;
     font-weight: bold;
@@ -12,6 +14,11 @@
     .world {
       color: rgb(208, 208, 208);
     }
+  }
+
+  .messages-list-container {
+    overflow-y: scroll;
+    height: 100%;
   }
 
   .text-input-container {

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Segment, TextArea, Form, Header, Breadcrumb, Icon, Image } from 'semantic-ui-react';
+import { Segment, TextArea, Form, Header, Breadcrumb, Icon, Image, Container } from 'semantic-ui-react';
 import { isEmpty, isEqual, find } from 'lodash';
 import LoginModal from './loginmodal';
+import MessagesList from './messageslist';
 import paragraph from '../assets/paragraph.png';
 
 import { bindActionCreators } from 'redux';
@@ -28,7 +29,11 @@ class Messages extends Component {
     return (
       <Segment basic id='messages-container'>
         <Header as='h1' className='channel-name'>
-          <Icon name='world' size='tiny' />
+          {currentChannel.private ? (
+            <Icon name='lock' size='tiny' />
+          ) : (
+            <Icon name='world' size='tiny' />
+          )}
           <Header.Content>
             <Breadcrumb size='big'>
               <Breadcrumb.Section>messages</Breadcrumb.Section>
@@ -45,17 +50,17 @@ class Messages extends Component {
             </Breadcrumb>
           </Header.Content>
         </Header>
-        <Segment basic>
-          {
-            (isEmpty(currentUser)) && (
+        <Container fluid className='messages-list-container'>
+          {(isEmpty(currentUser)) ? (
               <div>
                 <Image src={paragraph} />
                 <br />
                 <Image src={paragraph} />
               </div>
-            )
-          }
-        </Segment>
+            ) : (
+              <MessagesList />
+            )}
+        </Container>
         <div className='text-input-container'>
           <Form>
             {
@@ -82,7 +87,7 @@ const mapStateToProps = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
     getChannelMessages,
-    setCurrentChannel
+    setCurrentChannel,
   }, dispatch)
 }
 

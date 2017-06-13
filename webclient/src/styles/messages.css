@@ -32,21 +32,25 @@
 .modal-header {
   font-weight: normal !important; }
 
-#messages-container .channel-name {
-  font-weight: bold;
-  font-size: 2em;
-  color: #8c94a1;
-  padding-bottom: 10px;
-  border-bottom: 3px solid rgba(0, 0, 0, 0.1); }
-  #messages-container .channel-name .world {
-    color: #d0d0d0; }
-
-#messages-container .text-input-container {
-  border-top: solid 2px rgba(0, 0, 0, 0.1);
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 0.3em 0.5em; }
-  #messages-container .text-input-container form textarea {
-    border: 0; }
+#messages-container {
+  height: 100%; }
+  #messages-container .channel-name {
+    font-weight: bold;
+    font-size: 2em;
+    color: #8c94a1;
+    padding-bottom: 10px;
+    border-bottom: 3px solid rgba(0, 0, 0, 0.1); }
+    #messages-container .channel-name .world {
+      color: #d0d0d0; }
+  #messages-container .messages-list-container {
+    overflow-y: scroll;
+    height: 100%; }
+  #messages-container .text-input-container {
+    border-top: solid 2px rgba(0, 0, 0, 0.1);
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 0.3em 0.5em; }
+    #messages-container .text-input-container form textarea {
+      border: 0; }

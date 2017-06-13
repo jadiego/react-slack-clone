@@ -93,7 +93,11 @@ a:hover {
     margin-left: 92px !important;
     margin: 0;
     height: calc(100% - 44px) !important;
-    border-radius: 0; }
+    border-radius: 0;
+    overflow-y: hidden; }
+    #app #pushable-container .pusher {
+      overflow-y: hidden !important;
+      height: 100% !important; }
     #app #pushable-container #sidebar-container {
       background-color: #555555;
       border-left: 0;

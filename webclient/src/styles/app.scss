@@ -82,6 +82,12 @@ a:hover {
   margin: 0;
   height: calc(100% - 44px) !important;
   border-radius: 0;
+  overflow-y: hidden;
+
+    .pusher {
+      overflow-y: hidden !important;
+      height: 100% !important;
+    }
 
     #sidebar-container {
       background-color: $background-black;
