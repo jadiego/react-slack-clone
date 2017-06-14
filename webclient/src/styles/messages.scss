@@ -39,6 +39,8 @@
       overflow-y: scroll;
 
       .items {
+        margin-bottom: 5px;
+        
         .comment-date {
           color: $color-primary;
           font-size: 1.1em;

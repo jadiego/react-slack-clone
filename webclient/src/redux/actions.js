@@ -237,3 +237,29 @@ export const getChannelMessages = () => {
       });
   }
 }
+
+export const postMessage = (body) => {
+  return (dispatch, getState) => {
+    const { currentChannel } = getState();
+    dispatch({ type: 'FETCH START', payload: { fetch: 'post new message' } })
+    return axios({
+      url: `messages`,
+      method: 'post',
+      data: {
+        channelid: currentChannel.id,
+        body,
+      }
+    })
+      .then(resp => {
+        dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
+        dispatch({ type: 'MESSAGE NEW', payload: resp.data })
+        return resp;
+      })
+      .catch(error => {
+        if (error.response) {
+          dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'post new message' } })
+        }
+        return error;
+      });
+  }
+}

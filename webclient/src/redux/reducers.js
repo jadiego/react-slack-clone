@@ -84,7 +84,7 @@ let messages = (state = {}, action) => {
             x[action.payload.channelid] = action.payload.messages;
             return x;
         case "MESSAGE NEW":
-            return { ...state, ...state[action.data.channelid].push(action.data) };
+            return { ...state, ...state[action.payload.channelid].push(action.payload) };
         case "MESSAGE UPDATE":
             var x = { ...state };
             var messages = x[action.data.channelid];

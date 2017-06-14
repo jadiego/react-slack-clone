@@ -62,27 +62,29 @@
       display: flex;
       flex: 1;
       overflow-y: scroll; }
-      #messages-container #column-messages-container .messages-list-container .items .comment-date {
-        color: #0a9b94;
-        font-size: 1.1em; }
-      #messages-container #column-messages-container .messages-list-container .items .item {
-        margin: 0 0 3px 0; }
-        #messages-container #column-messages-container .messages-list-container .items .item .comment-time {
-          color: #8c94a1;
-          font-size: 0.8em;
-          opacity: 0; }
-        #messages-container #column-messages-container .messages-list-container .items .item .comment-username {
-          color: #8c94a1; }
-          #messages-container #column-messages-container .messages-list-container .items .item .comment-username .breadcrumb {
-            font-size: 13px; }
-        #messages-container #column-messages-container .messages-list-container .items .item .content {
-          padding-left: 0.5em; }
-          #messages-container #column-messages-container .messages-list-container .items .item .content .description {
-            margin-top: 0; }
-      #messages-container #column-messages-container .messages-list-container .items .item:hover {
-        background-color: rgba(0, 0, 0, 0.03); }
-        #messages-container #column-messages-container .messages-list-container .items .item:hover .comment-time {
-          opacity: 1; }
+      #messages-container #column-messages-container .messages-list-container .items {
+        margin-bottom: 5px; }
+        #messages-container #column-messages-container .messages-list-container .items .comment-date {
+          color: #0a9b94;
+          font-size: 1.1em; }
+        #messages-container #column-messages-container .messages-list-container .items .item {
+          margin: 0 0 3px 0; }
+          #messages-container #column-messages-container .messages-list-container .items .item .comment-time {
+            color: #8c94a1;
+            font-size: 0.8em;
+            opacity: 0; }
+          #messages-container #column-messages-container .messages-list-container .items .item .comment-username {
+            color: #8c94a1; }
+            #messages-container #column-messages-container .messages-list-container .items .item .comment-username .breadcrumb {
+              font-size: 13px; }
+          #messages-container #column-messages-container .messages-list-container .items .item .content {
+            padding-left: 0.5em; }
+            #messages-container #column-messages-container .messages-list-container .items .item .content .description {
+              margin-top: 0; }
+        #messages-container #column-messages-container .messages-list-container .items .item:hover {
+          background-color: rgba(0, 0, 0, 0.03); }
+          #messages-container #column-messages-container .messages-list-container .items .item:hover .comment-time {
+            opacity: 1; }
     #messages-container #column-messages-container .text-input-container {
       margin-top: 5px;
       border-top: solid 2.5px rgba(0, 0, 0, 0.1);

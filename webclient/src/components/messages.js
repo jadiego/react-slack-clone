@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import ReactDOM from 'react-dom';
-import { Segment, TextArea, Form, Header, Breadcrumb, Icon, Image, Container } from 'semantic-ui-react';
+import { Segment, Form, Header, Breadcrumb, Icon, Image, Container } from 'semantic-ui-react';
 import { isEmpty, isEqual, find } from 'lodash';
 import LoginModal from './loginmodal';
 import MessagesList from './messageslist';
+import NewMessageForm from './newmessageform';
 import paragraph from '../assets/paragraph.png';
 
 import { bindActionCreators } from 'redux';
@@ -18,7 +19,6 @@ const getChannelFromURL = (props) => {
 
 class Messages extends Component {
   componentWillUpdate(nextProps) {
-    //console.log(`going from ${getChannelFromURL(this.props)} to ${getChannelFromURL(nextProps)}`)
     if (getChannelFromURL(this.props) !== getChannelFromURL(nextProps)) {
       this.props.setCurrentChannel(getChannelFromURL(nextProps))
       this.props.getChannelMessages()
@@ -58,13 +58,11 @@ class Messages extends Component {
         <div id='column-messages-container'>
           <div className='text-input-container'>
             <Form>
-              {
-                (isEmpty(currentUser)) ? (
+              {(isEmpty(currentUser)) ? (
                   <LoginModal />
                 ) : (
-                    <TextArea placeholder='chat' autoHeight />
-                  )
-              }
+                    <NewMessageForm messagesEndRef={this.messagesEnd}/>
+                  )}
             </Form>
           </div>
           <Container fluid className='messages-list-container'>
