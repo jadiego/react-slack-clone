@@ -39,8 +39,19 @@
       overflow-y: scroll;
 
       .items {
+        .comment-date {
+          color: $color-primary;
+          font-size: 1.1em;
+        }
+
         .item {
           margin: 0 0 3px 0;
+
+          .comment-time {
+            color: $text-grey;
+            font-size: 0.8em;
+            opacity: 0;
+          }
 
           .comment-username {
             color: $text-grey;
@@ -60,6 +71,10 @@
 
         .item:hover {
           background-color: rgba(0, 0, 0, 0.03);
+
+          .comment-time {
+            opacity: 1;
+          }
         }
       }
     }
