@@ -1,0 +1,52 @@
+.uppercase, .blue-button, .green-button, .modal .submit-button, .primary-button, .secondary-button, .default-button, .modal .exit-button, .clear-button, .modal-header, .modal .modal-content-container form#signin .form-title, .modal .modal-content-container form#signup .form-title {
+  text-transform: uppercase !important;
+  font-weight: 300;
+  letter-spacing: 1.5px; }
+
+.clear-black-background {
+  background-color: rgba(0, 0, 0, 0.4); }
+
+.blue-button {
+  background-color: #61afff !important; }
+
+.green-button, .modal .submit-button {
+  background-color: #1c8 !important; }
+
+.primary-button {
+  background-color: #0a9b94 !important; }
+
+.secondary-button {
+  background-color: #f9d55f !important; }
+
+.default-button, .modal .exit-button {
+  background-color: #cacbcd !important; }
+
+.clear-button {
+  background-color: rgba(0, 0, 0, 0.4); }
+
+.secondary-button:hover, .primary-button:hover,
+.default-button:hover,
+.modal .exit-button:hover, .blue-button:hover,
+.green-button:hover,
+.modal .submit-button:hover, .clear-button:hover {
+  filter: opacity(80%) !important; }
+
+.modal-header {
+  font-weight: normal !important; }
+
+.modal .modal-header {
+  text-align: center; }
+
+.modal .modal-content-container form#signin .form-title, .modal .modal-content-container form#signup .form-title {
+  font-weight: bolder;
+  color: #98968b;
+  letter-spacing: 3px;
+  font-size: 2em; }
+  .modal .modal-content-container form#signin .form-title img, .modal .modal-content-container form#signup .form-title img {
+    margin-top: 0; }
+
+.modal .exit-button {
+  float: left; }
+
+.modal .submit-button {
+  color: white !important; }

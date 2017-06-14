@@ -1,0 +1,94 @@
+.uppercase, .blue-button, .green-button, .primary-button, .secondary-button, #messages-container #column-messages-container .text-input-container form button, .default-button, .clear-button, .modal-header, #messages-container .channel-name {
+  text-transform: uppercase !important;
+  font-weight: 300;
+  letter-spacing: 1.5px; }
+
+.clear-black-background {
+  background-color: rgba(0, 0, 0, 0.4); }
+
+.blue-button {
+  background-color: #61afff !important; }
+
+.green-button {
+  background-color: #1c8 !important; }
+
+.primary-button {
+  background-color: #0a9b94 !important; }
+
+.secondary-button, #messages-container #column-messages-container .text-input-container form button {
+  background-color: #f9d55f !important; }
+
+.default-button {
+  background-color: #cacbcd !important; }
+
+.clear-button {
+  background-color: rgba(0, 0, 0, 0.4); }
+
+.secondary-button:hover, #messages-container #column-messages-container .text-input-container form button:hover, .primary-button:hover,
+.default-button:hover, .blue-button:hover,
+.green-button:hover, .clear-button:hover {
+  filter: opacity(80%) !important; }
+
+.modal-header {
+  font-weight: normal !important; }
+
+#messages-container {
+  height: 100%;
+  overflow: hidden;
+  display: flex;
+  display: -webkit-flex;
+  position: relative;
+  flex-direction: column;
+  flex-grow: 1;
+  -webkit-box-flex: 1; }
+  #messages-container .channel-name {
+    font-weight: bold;
+    font-size: 2em;
+    color: #8c94a1;
+    padding-bottom: 5px;
+    margin: 0 20px 5px 20px;
+    border-bottom: 3px solid rgba(0, 0, 0, 0.1); }
+    #messages-container .channel-name .world {
+      color: #d0d0d0; }
+  #messages-container #column-messages-container {
+    display: flex;
+    display: -webkit-flex;
+    flex: 1;
+    flex-direction: column;
+    height: 100%;
+    overflow-y: hidden; }
+    #messages-container #column-messages-container .messages-list-container {
+      padding: 0 20px;
+      display: flex;
+      flex: 1;
+      overflow-y: scroll; }
+      #messages-container #column-messages-container .messages-list-container .items .comment-date {
+        color: #0a9b94;
+        font-size: 1.1em; }
+      #messages-container #column-messages-container .messages-list-container .items .item {
+        margin: 0 0 3px 0; }
+        #messages-container #column-messages-container .messages-list-container .items .item .comment-time {
+          color: #8c94a1;
+          font-size: 0.8em;
+          opacity: 0; }
+        #messages-container #column-messages-container .messages-list-container .items .item .comment-username {
+          color: #8c94a1; }
+          #messages-container #column-messages-container .messages-list-container .items .item .comment-username .breadcrumb {
+            font-size: 13px; }
+        #messages-container #column-messages-container .messages-list-container .items .item .content {
+          padding-left: 0.5em; }
+          #messages-container #column-messages-container .messages-list-container .items .item .content .description {
+            margin-top: 0; }
+      #messages-container #column-messages-container .messages-list-container .items .item:hover {
+        background-color: rgba(0, 0, 0, 0.03); }
+        #messages-container #column-messages-container .messages-list-container .items .item:hover .comment-time {
+          opacity: 1; }
+    #messages-container #column-messages-container .text-input-container {
+      margin-top: 5px;
+      border-top: solid 2.5px rgba(0, 0, 0, 0.1);
+      padding: 0.3em 0.5em;
+      background: white;
+      order: 1;
+      flex-shrink: 0; }
+      #messages-container #column-messages-container .text-input-container form textarea {
+        border: 0; }

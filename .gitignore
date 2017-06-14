@@ -1,4 +1,21 @@
+# for linux go build
+apiserver/apiserver
+
+# React web client ignore files
+/webclient/node_modules
+/webclient/coverage
+/webclient/build
+
+# misc
 .DS_Store
 node_modules
 .idea
 .vscode
+tls
+*.env
+*.sh
+
+/webclient/.env
+/webclient/npm-debug.log*
+/webclient/yarn-debug.log*
+/webclient/yarn-error.log*

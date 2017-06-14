@@ -1,0 +1,44 @@
+@import '_shared';
+
+#top-navbar-container {
+  margin-left: 92px;
+  margin-top: 0;
+  margin-bottom: 0;
+  height: 47px;
+  padding: 0;
+  background-color: $color-secondary;
+
+  .navbar-title {
+    height: inherit;
+    color: rgba(0, 0, 0, 0.3);
+    padding: 0.3em 0.5em;
+
+    span {
+      @extend .uppercase;
+      letter-spacing: 3px;
+      font-size: 1.3em;
+      vertical-align: middle;
+    }
+
+    img {
+      margin-top: 0;
+      height: 100%;
+    }
+
+    .profile-image {
+      height: 100%;
+      margin: 0;
+      padding: 2px;
+      cursor: pointer;
+      float: right;
+    }
+
+    .signout-button {
+      @extend .primary-button;
+    }
+  }
+}
+
+path {
+  fill: rgba(0, 0, 0, 0.3);
+}

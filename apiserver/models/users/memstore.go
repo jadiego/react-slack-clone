@@ -23,7 +23,7 @@ func NewMemStore() *MemStore {
 
 //GetAll returns all users
 func (mus *MemStore) GetAll() ([]*User, error) {
-	users := []*User{}
+	users := make([]*User, len(mus.entries))
 	copy(users, mus.entries)
 	return users, nil
 }

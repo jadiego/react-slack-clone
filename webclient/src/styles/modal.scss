@@ -1,0 +1,33 @@
+@import '_shared';
+
+.modal {
+  .modal-header {
+    text-align: center;
+  }
+
+  .modal-content-container {
+    form#signin, form#signup {
+      .form-title {
+        font-weight: bolder;
+        color: $color-brown;
+        letter-spacing: 3px;
+        font-size: 2em;
+        @extend .uppercase;
+
+        img {
+          margin-top: 0;
+        }
+      }
+    }
+  }
+  
+  .exit-button {
+    float: left;
+    @extend .default-button;
+  }
+
+  .submit-button {
+    color: white !important;
+    @extend .green-button;
+  }
+}
