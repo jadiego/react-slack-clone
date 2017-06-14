@@ -30,7 +30,6 @@ class SubSidebar extends Component {
                 return (
                     <Sidebar as={Menu}
                         animation='slide along'
-                        width='wide'
                         visible={sidebar.visible}
                         vertical
                         id='sidebar-container'
@@ -65,7 +64,6 @@ class SubSidebar extends Component {
                 return (
                     <Sidebar as={Menu}
                         animation='slide along'
-                        width='wide'
                         visible={sidebar.visible}
                         vertical
                         id='sidebar-container'

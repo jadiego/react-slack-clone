@@ -27,13 +27,13 @@ class Messages extends Component {
   render() {
     const { currentUser, currentChannel } = this.props;
     return (
-      <Segment basic id='messages-container'>
+      <div id='messages-container'>
         <Header as='h1' className='channel-name'>
           {currentChannel.private ? (
             <Icon name='lock' size='tiny' />
           ) : (
-            <Icon name='world' size='tiny' />
-          )}
+              <Icon name='world' size='tiny' />
+            )}
           <Header.Content>
             <Breadcrumb size='big'>
               <Breadcrumb.Section>messages</Breadcrumb.Section>
@@ -50,29 +50,31 @@ class Messages extends Component {
             </Breadcrumb>
           </Header.Content>
         </Header>
-        <Container fluid className='messages-list-container'>
-          {(isEmpty(currentUser)) ? (
+        <div id='column-messages-container'>
+          <div className='text-input-container'>
+            <Form>
+              {
+                (isEmpty(currentUser)) ? (
+                  <LoginModal />
+                ) : (
+                    <TextArea placeholder='chat' autoHeight />
+                  )
+              }
+            </Form>
+          </div>
+          <Container fluid className='messages-list-container'>
+            {(isEmpty(currentUser)) ? (
               <div>
                 <Image src={paragraph} />
                 <br />
                 <Image src={paragraph} />
               </div>
             ) : (
-              <MessagesList />
-            )}
-        </Container>
-        <div className='text-input-container'>
-          <Form>
-            {
-              (isEmpty(currentUser)) ? (
-                <LoginModal />
-              ) : (
-                  <TextArea placeholder='chat' autoHeight />
-                )
-            }
-          </Form>
+                <MessagesList />
+              )}
+          </Container>
         </div>
-      </Segment>
+      </div>
     );
   }
 }

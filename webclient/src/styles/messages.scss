@@ -2,13 +2,21 @@
 
 #messages-container {
   height: 100%;
+  overflow: hidden;
+  display: flex;
+  display: -webkit-flex;
+  position: relative;
+  flex-direction: column;
+  flex-grow: 1;
+  -webkit-box-flex: 1;
 
   .channel-name {
     @extend .uppercase;
     font-weight: bold;
     font-size: 2em;
-    color: rgb(140, 148, 161);
-    padding-bottom: 10px;
+    color: $text-grey;
+    padding-bottom: 5px;
+    margin: 0 20px 5px 20px;
     border-bottom: 3px solid rgba(0,0,0,0.1);
 
     .world {
@@ -16,26 +24,62 @@
     }
   }
 
-  .messages-list-container {
-    overflow-y: scroll;
+  #column-messages-container{
+    display: flex;
+    display: -webkit-flex;
+    flex: 1;
+    flex-direction: column;
     height: 100%;
-  }
+    overflow-y: hidden;
+    
+    .messages-list-container {
+      padding: 0 20px;
+      display: flex;
+      flex: 1;
+      overflow-y: scroll;
 
-  .text-input-container {
-    border-top: solid 2px rgba(0, 0, 0, 0.1);
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: 0.3em 0.5em;
+      .items {
+        .item {
+          margin: 0 0 3px 0;
 
-    form {
-      button {
-        @extend .secondary-button;
+          .comment-username {
+            color: $text-grey;
+
+            .breadcrumb {
+              font-size: 13px;
+            }
+          }
+          .content {
+            padding-left: 0.5em;
+
+            .description {
+              margin-top: 0;
+            }
+          }
+        }
+
+        .item:hover {
+          background-color: rgba(0, 0, 0, 0.03);
+        }
       }
+    }
 
-      textarea {
-        border: 0;
+    .text-input-container {
+      margin-top: 5px;
+      border-top: solid 2.5px rgba(0, 0, 0, 0.1);
+      padding: 0.3em 0.5em;
+      background: white;
+      order: 1;
+      flex-shrink: 0;
+
+      form {
+        button {
+          @extend .secondary-button;
+        }
+
+        textarea {
+          border: 0;
+        }
       }
     }
   }
