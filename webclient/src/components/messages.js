@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ReactDOM from 'react-dom';
 import { Segment, TextArea, Form, Header, Breadcrumb, Icon, Image, Container } from 'semantic-ui-react';
 import { isEmpty, isEqual, find } from 'lodash';
 import LoginModal from './loginmodal';
@@ -21,6 +22,10 @@ class Messages extends Component {
     if (getChannelFromURL(this.props) !== getChannelFromURL(nextProps)) {
       this.props.setCurrentChannel(getChannelFromURL(nextProps))
       this.props.getChannelMessages()
+        .then(resp => {
+          const node = ReactDOM.findDOMNode(this.messagesEnd);
+          node.scrollIntoView({ behavior: "smooth" });
+        })
     }
   }
 
@@ -70,7 +75,11 @@ class Messages extends Component {
                 <Image src={paragraph} />
               </div>
             ) : (
-                <MessagesList />
+                <div>
+                  <MessagesList />
+                  <div style={{ float: "left", clear: "both" }}
+                    ref={(el) => { this.messagesEnd = el; }}></div>
+                </div>
               )}
           </Container>
         </div>

@@ -20,13 +20,13 @@ class MessagesList extends Component {
       <Container fluid className='items'>
         {myMessages !== undefined && (myMessages.map((m, i, a) => {
           let u = find(users, u => u.id === m.creatorid);
-          return <Item.Group style={{margin:0}}>
+          return <Item.Group style={{margin:0}} key={m.id}>
             {(a[i - 1] !== undefined) ? (
               (moment(m.createdAt).dayOfYear() !== moment(a[i - 1].createdAt).dayOfYear()) && <Divider horizontal className='comment-date'>{moment(m.createdAt).format('LL')}</Divider>
             ) : (
                 <Divider horizontal className='comment-date'>{moment(m.createdAt).format('LL')}</Divider>
               )}
-            <Item key={m.id}>
+            <Item>
               {(a[i - 1] !== undefined) ? (
                 (m.creatorid !== a[i - 1].creatorid
                   || differenceBetweenTwoDates(m.createdAt, a[i - 1].createdAt, 'minutes', 8)) ? (

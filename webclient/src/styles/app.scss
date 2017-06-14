@@ -103,6 +103,11 @@ a:hover {
         background-color: #333;
       }
 
+      .channel-item:active, .channel-item:hover {
+        background-color: rgba(0, 0, 0, 0.2);
+      }
+      
+
       .bottom-menu-item{
         position: absolute;
         bottom: 0;

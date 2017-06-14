@@ -2,7 +2,7 @@ import { find, isEqual, includes } from 'lodash';
 import axios from 'axios';
 import NProgress from 'nprogress';
 
-const storageKey = "auth"
+const storageKey = "auth";
 
 // const newChannel = "new channel"
 // const newUser = "new user"
