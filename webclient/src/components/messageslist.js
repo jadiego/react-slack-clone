@@ -13,7 +13,7 @@ const differenceBetweenTwoDates = (date1, date2, format, limit) => {
 
 class MessagesList extends Component {
   render() {
-    const { messages, currentChannel, users } = this.props;
+    const { messages, currentChannel, users, currentUser } = this.props;
     const myMessages = messages[currentChannel.id];
 
     return (
@@ -40,7 +40,7 @@ class MessagesList extends Component {
                 (m.creatorid !== a[i - 1].creatorid
                   || differenceBetweenTwoDates(m.createdAt, a[i - 1].createdAt, 'minutes', 8)) ? (
                     <Item.Content>
-                      <Label floating><Icon name='trash'/><Icon name='pencil'/></Label>
+                      {(m.creatorid === currentUser.id) && (<Label floating><Icon name='trash'/><Icon name='pencil'/></Label>)}
                       <Item.Header className='comment-username'>
                         <Breadcrumb>
                           <Breadcrumb.Section>{u.userName}</Breadcrumb.Section>
@@ -54,13 +54,13 @@ class MessagesList extends Component {
                     </Item.Content>
                   ) : (
                     <Item.Content>
-                      <Label floating><Icon name='trash'/><Icon name='pencil'/></Label>
+                      {(m.creatorid === currentUser.id) && (<Label floating><Icon name='trash'/><Icon name='pencil'/></Label>)}
                       <Item.Description>{m.body}</Item.Description>
                     </Item.Content>
                   )
               ) : (
                   <Item.Content>
-                    <Label floating><Icon name='trash'/><Icon name='pencil'/></Label>
+                    {(m.creatorid === currentUser.id) && (<Label floating><Icon name='trash'/><Icon name='pencil'/></Label>)}
                     <Item.Header className='comment-username'>
                       <Breadcrumb>
                         <Breadcrumb.Section>{u.userName}</Breadcrumb.Section>
