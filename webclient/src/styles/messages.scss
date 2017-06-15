@@ -23,6 +23,7 @@
         font-weight: bold;
         font-size: 0.8em;
         color: $text-grey;
+        white-space: nowrap;
       }
 
       .sub.header {
@@ -99,6 +100,8 @@
       background: white;
       order: 1;
       flex-shrink: 0;
+      max-height: 150px;
+      overflow-y: scroll;
 
       form {
         button {

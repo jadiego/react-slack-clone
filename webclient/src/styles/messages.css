@@ -1,4 +1,4 @@
-.uppercase, .blue-button, .green-button, .primary-button, .secondary-button, #messages-container #column-messages-container .text-input-container form button, .default-button, .clear-button, .modal-header, #messages-container .channel-name .content .breadcrumb {
+.uppercase, .blue-button, .green-button, .red-button, .primary-button, .secondary-button, #messages-container #column-messages-container .text-input-container form button, .default-button, .clear-button, .modal-header, #messages-container .channel-name .content .breadcrumb {
   text-transform: uppercase !important;
   font-weight: 300;
   letter-spacing: 1.5px; }
@@ -10,7 +10,10 @@
   background-color: #61afff !important; }
 
 .green-button {
-  background-color: #1c8 !important; }
+  background-color: #67AB94 !important; }
+
+.red-button {
+  background-color: #ff455a !important; }
 
 .primary-button {
   background-color: #4A4A63 !important; }
@@ -26,7 +29,7 @@
 
 .secondary-button:hover, #messages-container #column-messages-container .text-input-container form button:hover, .primary-button:hover,
 .default-button:hover, .blue-button:hover,
-.green-button:hover, .clear-button:hover {
+.green-button:hover, .clear-button:hover, .red-button:hover {
   filter: opacity(80%) !important; }
 
 .modal-header {
@@ -50,7 +53,8 @@
     #messages-container .channel-name .content .breadcrumb {
       font-weight: bold;
       font-size: 0.8em;
-      color: #8c94a1; }
+      color: #8c94a1;
+      white-space: nowrap; }
     #messages-container .channel-name .content .sub.header {
       font-size: 0.5em; }
     #messages-container .channel-name .world {
@@ -96,6 +100,8 @@
       padding: 0.3em 0.5em;
       background: white;
       order: 1;
-      flex-shrink: 0; }
+      flex-shrink: 0;
+      max-height: 150px;
+      overflow-y: scroll; }
       #messages-container #column-messages-container .text-input-container form textarea {
         border: 0; }

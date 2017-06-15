@@ -1,4 +1,4 @@
-.uppercase, .blue-button, .green-button, .primary-button, .secondary-button, .default-button, .clear-button, .modal-header, #app #main-sidebar-container .item, #app #pushable-container #sidebar-container .bottom-menu-item button {
+.uppercase, .blue-button, .green-button, .red-button, .primary-button, .secondary-button, .default-button, .clear-button, .modal-header, #app #main-sidebar-container .item, #app #pushable-container #sidebar-container .bottom-menu-item button {
   text-transform: uppercase !important;
   font-weight: 300;
   letter-spacing: 1.5px; }
@@ -10,7 +10,10 @@
   background-color: #61afff !important; }
 
 .green-button {
-  background-color: #1c8 !important; }
+  background-color: #67AB94 !important; }
+
+.red-button {
+  background-color: #ff455a !important; }
 
 .primary-button {
   background-color: #4A4A63 !important; }
@@ -26,7 +29,7 @@
 
 .secondary-button:hover, .primary-button:hover,
 .default-button:hover, .blue-button:hover,
-.green-button:hover, .clear-button:hover {
+.green-button:hover, .clear-button:hover, .red-button:hover {
   filter: opacity(80%) !important; }
 
 .modal-header {
@@ -68,8 +71,13 @@ a:hover {
     width: 94px;
     background-color: #4A4A63;
     font-family: "Avenir", Helvetica, Arial, sans-serif; }
+    #app #main-sidebar-container .main-logo .main-title {
+      letter-spacing: 3px;
+      font-weight: 500;
+      padding-top: 5px;
+      font-size: 1.5em; }
     #app #main-sidebar-container .active.item:after {
-      background-color: #555555;
+      background-color: #3A4346;
       border-top: 0;
       border-right: 0; }
     #app #main-sidebar-container .item {
@@ -98,13 +106,16 @@ a:hover {
       height: 100%;
       overflow: hidden; }
     #app #pushable-container #sidebar-container {
-      background-color: #555555;
+      background-color: #3A4346;
       border-left: 0;
       border-top: 0;
       color: white; }
       #app #pushable-container #sidebar-container .channel-item {
         border-bottom: 1px solid rgba(0, 0, 0, 0.15);
-        color: inherit !important; }
+        color: inherit !important;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow-x: hidden; }
         #app #pushable-container #sidebar-container .channel-item .icon.channel-settings-icon::before {
           padding: 5px;
           color: white;

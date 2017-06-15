@@ -26,9 +26,6 @@ class TopNav extends Component {
     return (
       <Segment basic id='top-navbar-container'>
         <Header className='navbar-title'>
-          <Image src={logo} />
-          <span>howl</span>
-
           {(!isEmpty(currentUser)) && (
             <Popup
               trigger={<Image src={currentUser.photoURL} shape='rounded' wrapped className='profile-image'/>}

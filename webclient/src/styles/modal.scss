@@ -48,7 +48,7 @@
       }
     }
   }
-  
+
   .exit-button {
     float: left;
     @extend .default-button;
@@ -57,5 +57,10 @@
   .submit-button {
     color: white !important;
     @extend .green-button;
+  }
+
+  .warning-button {
+    color: white !important;
+    @extend .red-button;
   }
 }

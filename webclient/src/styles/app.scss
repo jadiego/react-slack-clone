@@ -44,6 +44,15 @@ a:hover {
     background-color: $color-primary;
     font-family: $font-stack;
 
+    .main-logo {
+      .main-title {
+        letter-spacing: 3px;
+        font-weight: 500;
+        padding-top: 5px;
+        font-size: 1.5em;
+      }
+    }
+
     .active.item:after {
       background-color: $background-black;
       border-top: 0;
@@ -97,6 +106,9 @@ a:hover {
       .channel-item {
         border-bottom: 1px solid rgba(0,0,0,0.15);
         color: inherit !important;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow-x: hidden;
 
         .icon.channel-settings-icon::before {
           padding: 5px;
