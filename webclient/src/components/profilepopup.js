@@ -28,17 +28,15 @@ class ProfilePopup extends Component {
     return (
       <Popup
         trigger={
-          <Card id='profile' as='div'>
+          <Card as='div' id='profile'>
             <Card.Content>
-              <Card.Description>
-                <strong>Profile</strong>
-              </Card.Description>
-              <div>
-                <Icon name='settings' id='edit-icon' color='orange' />
-                <Image floated='left' size='mini' src={currentUser.photoURL} />
-                <Card.Header>@{currentUser.userName}</Card.Header>
-                <Card.Meta>{currentUser.firstName} {currentUser.lastName}</Card.Meta>
-              </div>
+              <Image spaced='right' size='mini' src={currentUser.photoURL} />
+              <Card.Header>
+                {currentUser.userName}
+              </Card.Header>
+              <Card.Meta>
+                {`${currentUser.firstName} ${currentUser.lastName}`}
+              </Card.Meta>
             </Card.Content>
           </Card>
         }

@@ -11,25 +11,53 @@
   .navbar-title {
     height: inherit;
     color: rgba(0, 0, 0, 0.3);
-    padding: 0.3em 0.5em;
 
-    span {
-      @extend .uppercase;
-      letter-spacing: 3px;
-      font-size: 1.3em;
-      vertical-align: middle;
-    }
-
-    img {
-      margin-top: 0;
-      height: 100%;
-    }
-
-    .profile-image {
-      height: 100%;
-      margin: 0;
-      padding: 2px;
+    #profile {
       cursor: pointer;
+      width: 260px;
+      margin: 0;
+      height: 100%;
+      border: 0;
+      background-color: $color-fourth;
+      border-radius: 0;
+      display: inline-block;
+
+      .content {
+        padding: 6px 7px 8px 6px;
+        height: 100%;
+        width: 100%;
+
+        .header {
+          line-height: 1;
+          letter-spacing: 0.8px;
+          font-size: 1.25em;
+          margin: 0;
+          color: rgba(255, 255, 255, 0.9);
+        }
+        .meta {
+          font-size: 0.95em;
+          color: rgba(255, 255, 255, 0.8);
+          line-height: 1;
+          font-weight: normal;
+        }
+
+        img {
+          height: 100% !important;
+          float: left;
+        }
+      }
+    }
+
+    .search {
+      height: 100%;
+      display: inline-flex;
+      right: 0;
+      padding-right: 30px;
+      position: absolute;
+
+      .input {
+        margin: 12px 8px 8px 8px;
+      }
     }
 
     .signout-button {
