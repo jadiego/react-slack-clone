@@ -29,7 +29,7 @@ class LoginModal extends Component {
     if (e.target.id === 'signin') {
       this.props.signin(this, email, password)
         .then(resp => {
-          if (!isEmpty(resp)) {
+          if (resp.response === undefined) {
             this.props.getUsers()
               .then(resp => this.props.getChannels())
               .then(resp => this.props.setCurrentChannel(this.props.location.pathname.split("/")[2]))
@@ -39,7 +39,7 @@ class LoginModal extends Component {
     } else {
       this.props.signup(this, email, username, firstname, lastname, password1, password2)
         .then(resp => {
-          if (!isEmpty(resp)) {
+          if (resp.response === undefined) {
             this.props.getUsers()
               .then(resp => this.props.getChannels())
               .then(resp => this.props.setCurrentChannel(this.props.location.pathname.split("/")[2]))
@@ -101,7 +101,7 @@ class LoginModal extends Component {
                 <Form.Field>
                   <input placeholder='Password' required type='password' name='password' value={password} onChange={this.handleChange} />
                 </Form.Field>
-                <Button type='submit' fluid className='submit-button' style={{ opacity: 0 }}>submit</Button>
+                <Button type='submit' fluid className='submit-button' style={{ display: 'none' }}>submit</Button>
                 <p style={{ textAlign: 'center' }}>
                   Don't have an account?
                   <br />
@@ -133,7 +133,7 @@ class LoginModal extends Component {
                   <Form.Field required>
                     <input placeholder='Confirm Password' type='password' name='password2' value={password2} onChange={this.handleChange} />
                   </Form.Field>
-                  <Button type='submit' fluid className='submit-button' style={{ opacity: 0 }}>submit</Button>
+                  <Button type='submit' fluid className='submit-button' style={{ display: 'none' }}>submit</Button>
                   <p style={{ textAlign: 'center' }}>
                     Already have an account?
                     <br />
@@ -144,10 +144,10 @@ class LoginModal extends Component {
           </Segment>
         </Modal.Content>
         <Modal.Actions>
-          <Button className='exit-button' onClick={this.hideModal}>
+          <Button className='exit-button' onClick={this.hideModal} disabled={fetching.count !== 0}>
             exit
             </Button>
-          <Button className='submit-button' onClick={this.submit}>
+          <Button className='submit-button' onClick={this.submit} disabled={fetching.count !== 0}>
             submit
             </Button>
         </Modal.Actions>
