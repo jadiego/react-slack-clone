@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Segment, Container, Item, Image, Breadcrumb, Divider } from 'semantic-ui-react';
+import { Segment, Container, Item, Image, Breadcrumb, Divider, Label, Icon } from 'semantic-ui-react';
 import { find } from 'lodash';
 import moment from "moment";
 
@@ -20,7 +20,7 @@ class MessagesList extends Component {
       <Container fluid className='items'>
         {myMessages !== undefined && (myMessages.map((m, i, a) => {
           let u = find(users, u => u.id === m.creatorid);
-          return <Item.Group style={{margin:0}} key={m.id}>
+          return <Item.Group style={{ margin: 0 }} key={m.id}>
             {(a[i - 1] !== undefined) ? (
               (moment(m.createdAt).dayOfYear() !== moment(a[i - 1].createdAt).dayOfYear()) && <Divider horizontal className='comment-date'>{moment(m.createdAt).format('LL')}</Divider>
             ) : (
@@ -40,6 +40,7 @@ class MessagesList extends Component {
                 (m.creatorid !== a[i - 1].creatorid
                   || differenceBetweenTwoDates(m.createdAt, a[i - 1].createdAt, 'minutes', 8)) ? (
                     <Item.Content>
+                      <Label floating><Icon name='trash'/><Icon name='pencil'/></Label>
                       <Item.Header className='comment-username'>
                         <Breadcrumb>
                           <Breadcrumb.Section>{u.userName}</Breadcrumb.Section>
@@ -47,15 +48,19 @@ class MessagesList extends Component {
                           <Breadcrumb.Section>{moment(m.createdAt).format('LT')}</Breadcrumb.Section>
                         </Breadcrumb>
                       </Item.Header>
-                      <Item.Description>{m.body}</Item.Description>
+                      <Item.Description>
+                        {m.body}
+                      </Item.Description>
                     </Item.Content>
                   ) : (
                     <Item.Content>
+                      <Label floating><Icon name='trash'/><Icon name='pencil'/></Label>
                       <Item.Description>{m.body}</Item.Description>
                     </Item.Content>
                   )
               ) : (
                   <Item.Content>
+                    <Label floating><Icon name='trash'/><Icon name='pencil'/></Label>
                     <Item.Header className='comment-username'>
                       <Breadcrumb>
                         <Breadcrumb.Section>{u.userName}</Breadcrumb.Section>

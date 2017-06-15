@@ -22,7 +22,7 @@
   background-color: #f9d55f !important; }
 
 .default-button {
-  background-color: #cacbcd !important; }
+  background-color: #EDEFF4 !important; }
 
 .clear-button {
   background-color: rgba(0, 0, 0, 0.4); }
@@ -87,11 +87,34 @@
             #messages-container #column-messages-container .messages-list-container .items .item .comment-username .breadcrumb {
               font-size: 13px; }
           #messages-container #column-messages-container .messages-list-container .items .item .content {
-            padding-left: 0.5em; }
+            padding-left: 0.5em;
+            position: relative; }
+            #messages-container #column-messages-container .messages-list-container .items .item .content .label {
+              padding: 0;
+              right: 1%;
+              left: initial;
+              background-color: #EDEFF4;
+              border-color: rgba(0, 0, 0, 0.1);
+              box-sizing: content-box;
+              opacity: 0; }
+              #messages-container #column-messages-container .messages-list-container .items .item .content .label .icon {
+                margin: 0;
+                padding: 5px;
+                cursor: pointer; }
+              #messages-container #column-messages-container .messages-list-container .items .item .content .label .icon.trash {
+                border-right: solid 1px rgba(0, 0, 0, 0.1); }
+              #messages-container #column-messages-container .messages-list-container .items .item .content .label .icon::before {
+                padding: 4px; }
+              #messages-container #column-messages-container .messages-list-container .items .item .content .label .icon.trash:hover {
+                color: #ff455a; }
+              #messages-container #column-messages-container .messages-list-container .items .item .content .label .icon.pencil:hover {
+                color: #61afff; }
             #messages-container #column-messages-container .messages-list-container .items .item .content .description {
               margin-top: 0; }
         #messages-container #column-messages-container .messages-list-container .items .item:hover {
           background-color: rgba(0, 0, 0, 0.03); }
+          #messages-container #column-messages-container .messages-list-container .items .item:hover .content .label {
+            opacity: 1; }
           #messages-container #column-messages-container .messages-list-container .items .item:hover .comment-time {
             opacity: 1; }
     #messages-container #column-messages-container .text-input-container {
