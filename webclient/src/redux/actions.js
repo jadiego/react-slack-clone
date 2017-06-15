@@ -279,7 +279,7 @@ export const postMessage = (body) => {
 export const deleteMessage = (message) => {
   return (dispatch, getState) => {
     const { currentChannel } = getState();
-    dispatch({ type: 'FETCH START', payload: { fetch: 'post new message' } })
+    dispatch({ type: 'FETCH START', payload: { fetch: 'delete message' } })
     return axios({
       url: `messages/${message.id}`,
       method: 'delete'
@@ -291,7 +291,31 @@ export const deleteMessage = (message) => {
       })
       .catch(error => {
         if (error.response) {
-          dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'post new message' } })
+          dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'delete message' } })
+        }
+        return error;
+      });
+  }
+}
+
+export const editMessage = (newBody, message) => {
+  return dispatch => {
+    dispatch({ type: 'FETCH START', payload: { fetch: 'edit message' } })
+    return axios({
+      url: `messages/${message.id}`,
+      method: 'patch',
+      data: {
+        body: newBody
+      }
+    })
+      .then(resp => {
+        dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
+        dispatch({ type: 'MESSAGE UPDATE', payload: resp.data })
+        return resp;
+      })
+      .catch(error => {
+        if (error.response) {
+          dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'edit message' } })
         }
         return error;
       });

@@ -3,6 +3,7 @@ import { Segment, Container, Item, Image, Breadcrumb, Divider, Label, Icon } fro
 import { find } from 'lodash';
 import moment from "moment";
 import DeleteMessageModal from './deletemessagemodal';
+import EditMessageModal from './editmessagemodal';
 
 //import { bindActionCreators } from 'redux';
 //import { checkSession, getUsers, getChannels, getSessionKey, getChannelMessages, setCurrentChannel } from './redux/actions';
@@ -41,7 +42,7 @@ class MessagesList extends Component {
                 (m.creatorid !== a[i - 1].creatorid
                   || differenceBetweenTwoDates(m.createdAt, a[i - 1].createdAt, 'minutes', 8)) ? (
                     <Item.Content>
-                      {(m.creatorid === currentUser.id) && (<Label floating><DeleteMessageModal message={m}/><Icon name='pencil'/></Label>)}
+                      {(m.creatorid === currentUser.id) && (<Label floating><DeleteMessageModal message={m}/><EditMessageModal message={m}/></Label>)}
                       <Item.Header className='comment-username'>
                         <Breadcrumb>
                           <Breadcrumb.Section>{u.userName}</Breadcrumb.Section>
@@ -55,13 +56,13 @@ class MessagesList extends Component {
                     </Item.Content>
                   ) : (
                     <Item.Content>
-                      {(m.creatorid === currentUser.id) && (<Label floating><DeleteMessageModal message={m}/><Icon name='pencil'/></Label>)}
+                      {(m.creatorid === currentUser.id) && (<Label floating><DeleteMessageModal message={m}/><EditMessageModal message={m}/></Label>)}
                       <Item.Description>{m.body}</Item.Description>
                     </Item.Content>
                   )
               ) : (
                   <Item.Content>
-                    {(m.creatorid === currentUser.id) && (<Label floating><DeleteMessageModal message={m}/><Icon name='pencil'/></Label>)}
+                    {(m.creatorid === currentUser.id) && (<Label floating><DeleteMessageModal message={m}/><EditMessageModal message={m}/></Label>)}
                     <Item.Header className='comment-username'>
                       <Breadcrumb>
                         <Breadcrumb.Section>{u.userName}</Breadcrumb.Section>

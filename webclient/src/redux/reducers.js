@@ -100,17 +100,17 @@ let messages = (state = {}, action) => {
             return { ...state, ...state[action.payload.channelid].push(action.payload) };
         case "MESSAGE UPDATE":
             var x = { ...state };
-            var messages = x[action.data.channelid];
-            var i = findIndex(messages, (m) => { return m.id === action.data.id });
-            messages[i] = action.data;
-            x[action.data.channelid] = messages;
-            return x
+            var messages = x[action.payload.channelid];
+            var i = findIndex(messages, (m) => { return m.id === action.payload.id });
+            messages[i] = action.payload;
+            x[action.payload.channelid] = messages;
+            return x;
         case "MESSAGE DELETE":
             var x = { ...state }
             var messages = x[action.payload.channelid]
             var newmessages = remove(messages, m => { return m.id !== action.payload.id })
             x[action.payload.channelid] = newmessages
-            return x
+            return x;
         default:
             return state
     }
