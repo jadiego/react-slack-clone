@@ -107,9 +107,9 @@ let messages = (state = {}, action) => {
             return x
         case "MESSAGE DELETE":
             var x = { ...state }
-            var messages = x[action.channelid]
-            var newmessages = remove(messages, m => { return m.id !== action.messageid })
-            x[action.channelid] = newmessages
+            var messages = x[action.payload.channelid]
+            var newmessages = remove(messages, m => { return m.id !== action.payload.id })
+            x[action.payload.channelid] = newmessages
             return x
         default:
             return state

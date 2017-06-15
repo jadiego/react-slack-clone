@@ -276,6 +276,28 @@ export const postMessage = (body) => {
   }
 }
 
+export const deleteMessage = (message) => {
+  return (dispatch, getState) => {
+    const { currentChannel } = getState();
+    dispatch({ type: 'FETCH START', payload: { fetch: 'post new message' } })
+    return axios({
+      url: `messages/${message.id}`,
+      method: 'delete'
+    })
+      .then(resp => {
+        dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
+        dispatch({ type: 'MESSAGE DELETE', payload: message })
+        return resp;
+      })
+      .catch(error => {
+        if (error.response) {
+          dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'post new message' } })
+        }
+        return error;
+      });
+  }
+}
+
 export const createChannel = (name, description, isPrivate, members) => {
   return dispatch => {
     dispatch({ type: 'FETCH START', payload: { fetch: 'create new channel' } })
