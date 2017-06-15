@@ -23,6 +23,8 @@ let fetchError = (state = "", action) => {
 
 let currentUser = (state = {}, action) => {
     switch (action.type) {
+        case "SIGN OUT":
+            return {};
         case "SET CURRENT USER":
             return action.payload;
         case "UPDATE USER":
@@ -34,6 +36,8 @@ let currentUser = (state = {}, action) => {
 
 let users = (state = [], action) => {
     switch (action.type) {
+        case "SIGN OUT":
+            return [];
         case "SET USERS":
             return action.payload;
         case "USER NEW":
@@ -45,6 +49,8 @@ let users = (state = [], action) => {
 
 let channels = (state = [], action) => {
     switch (action.type) {
+        case "SIGN OUT":
+            return [];
         case "SET CHANNELS":
             return action.payload;
         case "CHANNEL NEW":
@@ -63,6 +69,8 @@ let channels = (state = [], action) => {
 
 let currentChannel = (state = {}, action) => {
     switch (action.type) {
+        case "SIGN OUT":
+            return {};
         case "CHANNEL UPDATE":
             if (action.payload.id === state.id) {
                 return action.payload;
