@@ -298,3 +298,52 @@ export const createChannel = (name, description, isPrivate, members) => {
       });
   }
 }
+
+export const editChannel = (name, description) => {
+  return (dispatch, getState) => {
+    const { currentChannel } = getState();
+    dispatch({ type: 'FETCH START', payload: { fetch: 'edit channel' } })
+    return axios({
+      url: `channels/${currentChannel.id}`,
+      method: 'patch',
+      data: {
+        name,
+        description,
+      }
+    })
+      .then(resp => {
+        dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
+        dispatch({ type: 'CHANNEL UPDATE', payload: resp.data })
+        console.log(resp);
+        return resp;
+      })
+      .catch(error => {
+        if (error.response) {
+          dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'edit channel' } })
+        }
+        return error;
+      });
+  }
+}
+
+export const deleteChannel = () => {
+  return (dispatch, getState) => {
+    const { currentChannel } = getState();
+    dispatch({ type: 'FETCH START', payload: { fetch: 'delete channel' } })
+    return axios({
+      url: `channels/${currentChannel.id}`,
+      method: 'delete',
+    })
+      .then(resp => {
+        dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
+        dispatch({ type: 'CHANNEL DELETE', payload: { id: currentChannel.id } })
+        return resp;
+      })
+      .catch(error => {
+        if (error.response) {
+          dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'delete channel' } })
+        }
+        return error;
+      });
+  }
+}

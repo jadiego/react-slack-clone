@@ -51,11 +51,11 @@ let channels = (state = [], action) => {
             return state.concat([action.payload]);
         case "CHANNEL UPDATE":
             let channels = state.concat([]);
-            let i = findIndex(channels, (c) => { return c.id === action.data.id });
-            channels[i] = action.data;
+            let i = findIndex(channels, (c) => { return c.id === action.payload.id });
+            channels[i] = action.payload;
             return channels;
         case "CHANNEL DELETE":
-            return remove(state, c => { return c.id !== action.channelid });
+            return remove(state, c => { return c.id !== action.payload.id });
         default:
             return state;
     }

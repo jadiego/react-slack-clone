@@ -24,8 +24,9 @@ class MainSidebar extends Component {
 
     return (
       <Menu vertical fixed='left' icon='labeled' id='main-sidebar-container' pointing>
-        <Menu.Item as={Link} to='/messages/general'>
+        <Menu.Item as={Link} to='/messages/general' className='main-logo'>
           <Image src={logo} id='sidebar-logo' />
+          <div className='main-title'>howl</div>
         </Menu.Item>
         <Menu.Item name='channels' active={sidebar.activeMenu === 'channels' && sidebar.visible} onClick={(event) => this.open(event, 'channels')}>
           <Icon name='hashtag' />
