@@ -87,7 +87,7 @@ class LoginModal extends Component {
             <Modal.Header as='h2' className="modal-header">Sign Up</Modal.Header>
           )}
         <Modal.Content className='modal-content-container'>
-          <Segment basic padded>
+          <Segment basic padded className='login-content'>
             {(mode === 'signin') ? (
               <Form id='signin' onSubmit={this.submit} loading={fetching.count !== 0} warning={fetchError.length > 0 && fetching.fetch === 'sign in'}>
                 <Header className="form-title" textAlign='center' as='h1'>

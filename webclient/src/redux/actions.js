@@ -34,6 +34,10 @@ const removeSessionKey = () => {
   return localStorage.removeItem(storageKey);
 }
 
+export const createDMChannelname = (name1, name2) => {
+  return [name1, name2].sort().join(':');
+}
+
 //config axios
 axios.defaults.baseURL = apiRoot;
 axios.interceptors.request.use(config => {
@@ -207,6 +211,10 @@ export const getChannels = () => {
 export const setCurrentChannel = (channelname) => {
   return (dispatch, getState) => {
     const { channels } = getState();
+    if (channelname === null || channelname === undefined) {
+      dispatch({ type: 'SET CURRENT CHANNEL', payload: {} });
+      return '';
+    }
     let channel = find(channels, ch => ch.name === channelname);
     dispatch({ type: 'SET CURRENT CHANNEL', payload: channel });
     return channel;
@@ -258,6 +266,33 @@ export const postMessage = (body) => {
       .catch(error => {
         if (error.response) {
           dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'post new message' } })
+        }
+        return error;
+      });
+  }
+}
+
+export const createChannel = (name, description, isPrivate, members) => {
+  return dispatch => {
+    dispatch({ type: 'FETCH START', payload: { fetch: 'create new channel' } })
+    return axios({
+      url: `channels`,
+      method: 'post',
+      data: {
+        name: name,
+        private: isPrivate,
+        members,
+        description,
+      }
+    })
+      .then(resp => {
+        dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
+        dispatch({ type: 'CHANNEL NEW', payload: resp.data })
+        return resp;
+      })
+      .catch(error => {
+        if (error.response) {
+          dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'create new channel' } })
         }
         return error;
       });

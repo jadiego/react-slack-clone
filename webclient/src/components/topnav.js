@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Segment, Image, Header, Button, Popup } from 'semantic-ui-react';
+import { withRouter } from 'react-router-dom';
 import logo from '../assets/circlelogo.svg';
 import { isEmpty } from 'lodash';
 
 import { bindActionCreators } from 'redux';
-import { signout } from '../redux/actions';
+import { signout, setCurrentChannel } from '../redux/actions';
 import { connect } from 'react-redux';
 
 import '../styles/topnav.css';
@@ -14,6 +15,10 @@ class TopNav extends Component {
   signout = (e) => {
     e.preventDefault();
     this.props.signout()
+    .then(resp => {
+      this.props.setCurrentChannel();
+      this.props.history.push('/messages');
+    })
   }
 
   render() {
@@ -46,8 +51,9 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({
-    signout
+    signout,
+    setCurrentChannel
   }, dispatch)
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(TopNav);
+export default withRouter(connect(mapStateToProps, mapDispatchToProps)(TopNav));

@@ -6,16 +6,44 @@
   }
 
   .modal-content-container {
-    form#signin, form#signup {
-      .form-title {
-        font-weight: bolder;
-        color: $color-brown;
-        letter-spacing: 3px;
-        font-size: 2em;
-        @extend .uppercase;
+    .login-content {
+      form#signin, form#signup {
+        .form-title {
+          font-weight: bolder;
+          color: $color-brown;
+          letter-spacing: 3px;
+          font-size: 2em;
+          @extend .uppercase;
 
-        img {
-          margin-top: 0;
+          img {
+            margin-top: 0;
+          }
+        }
+      }
+    }
+
+    .dm-content {
+      .list {
+        .item {
+          cursor: pointer;
+          
+          button {
+            opacity: 0;
+            margin: 3px 0;
+          }
+        }
+
+        .item::after {
+          content: '';
+          clear: both;
+        }
+
+        .item:hover {
+          background-color: rgba(0, 0, 0, 0.05);
+
+          button {
+            opacity: 1;
+          }
         }
       }
     }

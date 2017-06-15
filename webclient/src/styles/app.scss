@@ -97,14 +97,35 @@ a:hover {
       .channel-item {
         border-bottom: 1px solid rgba(0,0,0,0.15);
         color: inherit !important;
+
+        .icon.channel-settings-icon::before {
+          padding: 2px;
+          background-color: $color-third !important;
+          color: $text-grey;
+          border: 1px solid $color-third;
+          border-radius: 3px;
+          opacity: 0;
+        }
+
+        .icon.world, .icon.lock {
+          float: left;
+          padding-right: 6px;
+        }
       }
 
       .channel-item.active {
         background-color: #333;
+        .icon.channel-settings-icon::before {
+          opacity: 1;
+        }
       }
+      
 
       .channel-item:active, .channel-item:hover {
         background-color: rgba(0, 0, 0, 0.2);
+        .icon.channel-settings-icon::before {
+          opacity: 1;
+        }
       }
       
 

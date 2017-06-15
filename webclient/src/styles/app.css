@@ -105,10 +105,24 @@ a:hover {
       #app #pushable-container #sidebar-container .channel-item {
         border-bottom: 1px solid rgba(0, 0, 0, 0.15);
         color: inherit !important; }
+        #app #pushable-container #sidebar-container .channel-item .icon.channel-settings-icon::before {
+          padding: 2px;
+          background-color: #f9d55f !important;
+          color: #8c94a1;
+          border: 1px solid #f9d55f;
+          border-radius: 3px;
+          opacity: 0; }
+        #app #pushable-container #sidebar-container .channel-item .icon.world, #app #pushable-container #sidebar-container .channel-item .icon.lock {
+          float: left;
+          padding-right: 6px; }
       #app #pushable-container #sidebar-container .channel-item.active {
         background-color: #333; }
+        #app #pushable-container #sidebar-container .channel-item.active .icon.channel-settings-icon::before {
+          opacity: 1; }
       #app #pushable-container #sidebar-container .channel-item:active, #app #pushable-container #sidebar-container .channel-item:hover {
         background-color: rgba(0, 0, 0, 0.2); }
+        #app #pushable-container #sidebar-container .channel-item:active .icon.channel-settings-icon::before, #app #pushable-container #sidebar-container .channel-item:hover .icon.channel-settings-icon::before {
+          opacity: 1; }
       #app #pushable-container #sidebar-container .bottom-menu-item {
         position: absolute;
         bottom: 0;

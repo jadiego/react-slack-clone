@@ -2,12 +2,18 @@ import React, { Component } from 'react';
 import { Sidebar, Menu, Icon, Segment, Button, Image } from 'semantic-ui-react';
 import { NavLink, withRouter } from 'react-router-dom';
 import { isEmpty, find } from 'lodash';
+import DMModal from './dmmodal';
 
 import { connect } from 'react-redux';
-
-
+import { createDMChannelname } from '../redux/actions';
 
 class SubSidebar extends Component {
+    
+    check = (match, location, user) => {
+        const { currentChannel, currentUser } = this.props;
+        return currentChannel.name === createDMChannelname(user, currentUser.userName);
+    }
+
     render() {
         const { sidebar, currentUser, channels, users } = this.props;
         if (isEmpty(currentUser)) {
@@ -34,7 +40,7 @@ class SubSidebar extends Component {
                         vertical
                         id='sidebar-container'
                     >
-                        {channels.map(channel => {
+                        {channels !== undefined && channels.map(channel => {
                             return (!channel.name.includes(":")) && (
                                 <Menu.Item
                                     key={`key-${channel.id}`}
@@ -47,6 +53,7 @@ class SubSidebar extends Component {
                                             <Icon name='world' />
                                         )}
                                     {channel.name}
+                                    <Icon name='pencil' className='channel-settings-icon' />
                                 </Menu.Item>
                             )
                         })}
@@ -68,22 +75,31 @@ class SubSidebar extends Component {
                         vertical
                         id='sidebar-container'
                     >
-                        {channels.map(channel => {
+                        {channels !== undefined && channels.map(channel => {
+                            if (channel.name.includes(":")) {
+                                var user = find(channel.name.split(':'), n => n !== currentUser.userName);
+                                if (user === undefined) user = currentUser.userName;
+                            }
                             return (channel.name.includes(":")) && (
                                 <Menu.Item
                                     key={`key-${channel.id}`}
                                     as={NavLink} to={{ pathname: `/messages/${channel.name}` }}
                                     className='channel-item'
+                                    isActive={(match, location) => this.check(match, location, user)}
                                 >
                                     {(channel.private) ? (
                                         <Icon name='lock' />
                                     ) : (
                                             <Icon name='world' />
                                         )}
-                                    {find(channel.name.split(':'), n => n !== currentUser.userName || currentUser.userName)}
+                                    {user}
+                                    <Icon name='pencil' className='channel-settings-icon'/>
                                 </Menu.Item>
                             )
                         })}
+                        <Menu.Item className='bottom-menu-item'>
+                            <DMModal />
+                        </Menu.Item>
                     </Sidebar>
                 )
             }
@@ -97,6 +113,7 @@ const mapStateToProps = (state) => {
         currentUser: state.currentUser,
         channels: state.channels,
         users: state.users,
+        currentChannel: state.currentChannel,
     }
 }
 

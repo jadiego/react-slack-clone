@@ -48,7 +48,7 @@ let channels = (state = [], action) => {
         case "SET CHANNELS":
             return action.payload;
         case "CHANNEL NEW":
-            return state.concat([action.data]);
+            return state.concat([action.payload]);
         case "CHANNEL UPDATE":
             let channels = state.concat([]);
             let i = findIndex(channels, (c) => { return c.id === action.data.id });
