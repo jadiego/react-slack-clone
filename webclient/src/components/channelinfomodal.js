@@ -6,7 +6,7 @@ import '../styles/modal.css';
 
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { editChannel, deleteChannel } from '../redux/actions';
+import { editChannel, deleteChannel, setCurrentChannel } from '../redux/actions';
 
 
 class ChannelInfoModal extends Component {
@@ -22,7 +22,7 @@ class ChannelInfoModal extends Component {
     const { name, description, members } = this.state;
     this.props.editChannel(name, description)
       .then(resp => {
-        this.setState({ visible: false })
+        this.props.history.push(`/messages/${resp.data.name}`)
       })
   }
 

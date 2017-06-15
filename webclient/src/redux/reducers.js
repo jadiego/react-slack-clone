@@ -63,6 +63,11 @@ let channels = (state = [], action) => {
 
 let currentChannel = (state = {}, action) => {
     switch (action.type) {
+        case "CHANNEL UPDATE":
+            if (action.payload.id === state.id) {
+                return action.payload;
+            }
+            return state;
         case "SET CURRENT CHANNEL":
             if (action.payload === undefined) {
                 return state;

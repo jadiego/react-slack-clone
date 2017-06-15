@@ -8,14 +8,10 @@ import NewMessageForm from './newmessageform';
 import paragraph from '../assets/paragraph.png';
 
 import { bindActionCreators } from 'redux';
-import { setCurrentChannel, getChannelMessages } from '../redux/actions';
+import { setCurrentChannel, getChannelMessages, getChannelFromURL } from '../redux/actions';
 import { connect } from 'react-redux';
 
 import '../styles/messages.css';
-
-const getChannelFromURL = (props) => {
-  return props.location.pathname.split("/")[2];
-}
 
 class Messages extends Component {
   componentWillUpdate(nextProps) {

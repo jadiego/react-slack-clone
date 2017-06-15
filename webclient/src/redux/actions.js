@@ -38,6 +38,10 @@ export const createDMChannelname = (name1, name2) => {
   return [name1, name2].sort().join(':');
 }
 
+export const getChannelFromURL = (props) => {
+  return props.location.pathname.split("/")[2];
+}
+
 //config axios
 axios.defaults.baseURL = apiRoot;
 axios.interceptors.request.use(config => {
@@ -314,7 +318,6 @@ export const editChannel = (name, description) => {
       .then(resp => {
         dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
         dispatch({ type: 'CHANNEL UPDATE', payload: resp.data })
-        console.log(resp);
         return resp;
       })
       .catch(error => {
