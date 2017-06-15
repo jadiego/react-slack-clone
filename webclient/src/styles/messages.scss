@@ -11,13 +11,24 @@
   -webkit-box-flex: 1;
 
   .channel-name {
-    @extend .uppercase;
-    font-weight: bold;
-    font-size: 2em;
-    color: $text-grey;
-    padding-bottom: 5px;
-    margin: 0 20px 5px 20px;
+    background-color: rgba(0, 0, 0, 0.02);
+    color: white !important;
+    padding: 0 20px 5px 20px;
+    margin: 0 0 5px 0;
     border-bottom: 3px solid rgba(0,0,0,0.1);
+
+    .content {
+      .breadcrumb {
+        @extend .uppercase;
+        font-weight: bold;
+        font-size: 0.8em;
+        color: $text-grey;
+      }
+
+      .sub.header {
+        font-size: 0.5em;
+      }
+    }
 
     .world {
       color: rgb(208, 208, 208);
@@ -40,7 +51,7 @@
 
       .items {
         margin-bottom: 5px;
-        
+
         .comment-date {
           color: $color-primary;
           font-size: 1.1em;

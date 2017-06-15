@@ -13,7 +13,7 @@
   background-color: #1c8 !important; }
 
 .primary-button {
-  background-color: #0a9b94 !important; }
+  background-color: #4A4A63 !important; }
 
 .secondary-button {
   background-color: #f9d55f !important; }
@@ -54,7 +54,7 @@ h1, h2, h3, h4, h5, h6 {
   font-family: "Avenir", Helvetica, Arial, sans-serif !important; }
 
 a {
-  color: #0a9b94 !important;
+  color: #4A4A63 !important;
   font-size: 1em; }
 
 a:hover {
@@ -66,7 +66,7 @@ a:hover {
   #app #main-sidebar-container {
     border-top: 0;
     width: 94px;
-    background-color: #0a9b94;
+    background-color: #4A4A63;
     font-family: "Avenir", Helvetica, Arial, sans-serif; }
     #app #main-sidebar-container .active.item:after {
       background-color: #555555;
@@ -106,11 +106,8 @@ a:hover {
         border-bottom: 1px solid rgba(0, 0, 0, 0.15);
         color: inherit !important; }
         #app #pushable-container #sidebar-container .channel-item .icon.channel-settings-icon::before {
-          padding: 2px;
-          background-color: #f9d55f !important;
-          color: #8c94a1;
-          border: 1px solid #f9d55f;
-          border-radius: 3px;
+          padding: 5px;
+          color: white;
           opacity: 0; }
         #app #pushable-container #sidebar-container .channel-item .icon.world, #app #pushable-container #sidebar-container .channel-item .icon.lock {
           float: left;
@@ -119,10 +116,10 @@ a:hover {
         background-color: #333; }
         #app #pushable-container #sidebar-container .channel-item.active .icon.channel-settings-icon::before {
           opacity: 1; }
+        #app #pushable-container #sidebar-container .channel-item.active .icon.channel-settings-icon:hover::before {
+          color: #f9d55f; }
       #app #pushable-container #sidebar-container .channel-item:active, #app #pushable-container #sidebar-container .channel-item:hover {
         background-color: rgba(0, 0, 0, 0.2); }
-        #app #pushable-container #sidebar-container .channel-item:active .icon.channel-settings-icon::before, #app #pushable-container #sidebar-container .channel-item:hover .icon.channel-settings-icon::before {
-          opacity: 1; }
       #app #pushable-container #sidebar-container .bottom-menu-item {
         position: absolute;
         bottom: 0;

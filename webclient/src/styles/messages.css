@@ -1,4 +1,4 @@
-.uppercase, .blue-button, .green-button, .primary-button, .secondary-button, #messages-container #column-messages-container .text-input-container form button, .default-button, .clear-button, .modal-header, #messages-container .channel-name {
+.uppercase, .blue-button, .green-button, .primary-button, .secondary-button, #messages-container #column-messages-container .text-input-container form button, .default-button, .clear-button, .modal-header, #messages-container .channel-name .content .breadcrumb {
   text-transform: uppercase !important;
   font-weight: 300;
   letter-spacing: 1.5px; }
@@ -13,7 +13,7 @@
   background-color: #1c8 !important; }
 
 .primary-button {
-  background-color: #0a9b94 !important; }
+  background-color: #4A4A63 !important; }
 
 .secondary-button, #messages-container #column-messages-container .text-input-container form button {
   background-color: #f9d55f !important; }
@@ -42,12 +42,17 @@
   flex-grow: 1;
   -webkit-box-flex: 1; }
   #messages-container .channel-name {
-    font-weight: bold;
-    font-size: 2em;
-    color: #8c94a1;
-    padding-bottom: 5px;
-    margin: 0 20px 5px 20px;
+    background-color: rgba(0, 0, 0, 0.02);
+    color: white !important;
+    padding: 0 20px 5px 20px;
+    margin: 0 0 5px 0;
     border-bottom: 3px solid rgba(0, 0, 0, 0.1); }
+    #messages-container .channel-name .content .breadcrumb {
+      font-weight: bold;
+      font-size: 0.8em;
+      color: #8c94a1; }
+    #messages-container .channel-name .content .sub.header {
+      font-size: 0.5em; }
     #messages-container .channel-name .world {
       color: #d0d0d0; }
   #messages-container #column-messages-container {
@@ -65,7 +70,7 @@
       #messages-container #column-messages-container .messages-list-container .items {
         margin-bottom: 5px; }
         #messages-container #column-messages-container .messages-list-container .items .comment-date {
-          color: #0a9b94;
+          color: #4A4A63;
           font-size: 1.1em; }
         #messages-container #column-messages-container .messages-list-container .items .item {
           margin: 0 0 3px 0; }

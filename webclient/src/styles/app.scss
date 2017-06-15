@@ -99,11 +99,8 @@ a:hover {
         color: inherit !important;
 
         .icon.channel-settings-icon::before {
-          padding: 2px;
-          background-color: $color-third !important;
-          color: $text-grey;
-          border: 1px solid $color-third;
-          border-radius: 3px;
+          padding: 5px;
+          color: white;
           opacity: 0;
         }
 
@@ -118,16 +115,15 @@ a:hover {
         .icon.channel-settings-icon::before {
           opacity: 1;
         }
+
+        .icon.channel-settings-icon:hover::before {
+          color: $color-third;
+        }
       }
-      
 
       .channel-item:active, .channel-item:hover {
         background-color: rgba(0, 0, 0, 0.2);
-        .icon.channel-settings-icon::before {
-          opacity: 1;
-        }
       }
-      
 
       .bottom-menu-item{
         position: absolute;

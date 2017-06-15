@@ -53,7 +53,7 @@ class SubSidebar extends Component {
                                             <Icon name='world' />
                                         )}
                                     {channel.name}
-                                    <Icon name='pencil' className='channel-settings-icon' />
+                                    <Icon name='info circle' className='channel-settings-icon' />
                                 </Menu.Item>
                             )
                         })}
@@ -93,7 +93,7 @@ class SubSidebar extends Component {
                                             <Icon name='world' />
                                         )}
                                     {user}
-                                    <Icon name='pencil' className='channel-settings-icon'/>
+                                    <Icon name='info circle' className='channel-settings-icon'/>
                                 </Menu.Item>
                             )
                         })}

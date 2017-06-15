@@ -53,16 +53,19 @@ class Messages extends Component {
                   <Breadcrumb.Section>{currentChannel.name}</Breadcrumb.Section>
                 )}
             </Breadcrumb>
+            <Header.Subheader>
+              {currentChannel.description}
+            </Header.Subheader>
           </Header.Content>
         </Header>
         <div id='column-messages-container'>
           <div className='text-input-container'>
             <Form>
               {(isEmpty(currentUser)) ? (
-                  <LoginModal />
-                ) : (
-                    <NewMessageForm messagesEndRef={this.messagesEnd}/>
-                  )}
+                <LoginModal />
+              ) : (
+                  <NewMessageForm messagesEndRef={this.messagesEnd} />
+                )}
             </Form>
           </div>
           <Container fluid className='messages-list-container'>
