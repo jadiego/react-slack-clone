@@ -126,7 +126,7 @@ export const signout = () => {
         NProgress.done();
         removeSessionKey()
         dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
-        dispatch({ type: 'SET CURRENT USER', payload: {} })
+        dispatch({ type: 'SIGN OUT' })
         return resp;
       })
       .catch(error => {
