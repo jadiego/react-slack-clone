@@ -23,7 +23,9 @@ class ChannelInfoModal extends Component {
     const { name, description, members } = this.state;
     this.props.editChannel(name, description)
       .then(resp => {
-        this.props.history.push(`/messages/${resp.data.name}`)
+        if (resp.response == undefined) {
+          this.props.history.push(`/messages/${resp.data.name}`)
+        }
       })
   }
 
