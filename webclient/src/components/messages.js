@@ -50,7 +50,11 @@ class Messages extends Component {
                 )}
             </Breadcrumb>
             <Header.Subheader>
-              {currentChannel.description}
+              {(!isEmpty(currentChannel)) && (
+                <span>
+                  <Icon name='user'/> {currentChannel.members.length} / {currentChannel.description}
+                </span>
+              )}
             </Header.Subheader>
           </Header.Content>
         </Header>

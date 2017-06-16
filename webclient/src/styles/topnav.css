@@ -72,14 +72,8 @@
         #top-navbar-container .navbar-title #profile .content img {
           height: 100% !important;
           float: left; }
-    #top-navbar-container .navbar-title .search {
-      height: 100%;
-      display: inline-flex;
-      right: 0;
-      padding-right: 30px;
-      position: absolute; }
-      #top-navbar-container .navbar-title .search .input {
-        margin: 12px 8px 8px 8px; }
+    #top-navbar-container .navbar-title #profile:hover {
+      background-color: #61afff; }
 
 path {
   fill: rgba(0, 0, 0, 0.3); }

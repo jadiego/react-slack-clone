@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Segment, Modal, Icon, Button, Form, Label, Header, Message, Card, Divider, Checkbox } from 'semantic-ui-react';
-import { withRouter } from 'react-router-dom'
+import { Segment, Modal, Icon, Button, Form, Label, Header, Message, Card, Divider, Checkbox, Popup, List, Image } from 'semantic-ui-react';
+import { withRouter } from 'react-router-dom';
+import { find } from 'lodash';
 
 import '../styles/modal.css';
 
@@ -44,7 +45,7 @@ class ChannelInfoModal extends Component {
 
   render() {
     const { visible, name, description, checked } = this.state
-    const { fetching, fetchError, currentChannel, currentUser } = this.props;
+    const { fetching, fetchError, currentChannel, currentUser, users } = this.props;
     return (
       <Modal
         trigger={<Icon name='info circle' className='channel-settings-icon' onClick={this.showModal} />}
@@ -65,7 +66,26 @@ class ChannelInfoModal extends Component {
               <Card.Content description={currentChannel.description} />
               <Card.Content extra>
                 <Icon name='user' />
-                {currentChannel.members.length} members
+                {currentChannel.members.length}
+                <Popup
+                  trigger={<span className='members-popup'> members</span>}
+                  content={
+                    <List celled relaxed>
+                      {currentChannel.members.map(uid => {
+                        let u = find(users, user => user.id === uid);
+                        return <List.Item key={`key-usermodal-${u.id}`} onClick={() => this.submit(u)}>
+                          <Image shape='rounded' src={u.photoURL} size='mini' />
+                          <List.Content>
+                            <List.Header>{`${u.userName}`}</List.Header>
+                            {`${u.firstName} ${u.lastName}`}
+                          </List.Content>
+                        </List.Item>
+                      })}
+                    </List>
+                  }
+                  on='click'
+                  position='bottom center'
+                />
               </Card.Content>
             </Card>
             {(currentChannel.creatorid === currentUser.id) && (
@@ -116,6 +136,7 @@ const mapStateToProps = (state) => {
     fetchError: state.fetchError,
     currentUser: state.currentUser,
     currentChannel: state.currentChannel,
+    users: state.users,
   }
 }
 

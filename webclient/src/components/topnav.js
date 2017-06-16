@@ -1,9 +1,8 @@
 import React, { Component } from 'react';
-import { Segment, Image, Header, Button, Popup, Search } from 'semantic-ui-react';
+import { Segment } from 'semantic-ui-react';
 import logo from '../assets/circlelogo.svg';
 import { isEmpty } from 'lodash';
 import ProfilePopup from './profilepopup';
-import SearchUser from './searchuser';
 
 import { bindActionCreators } from 'redux';
 import { signout, setCurrentChannel } from '../redux/actions';
@@ -21,7 +20,6 @@ class TopNav extends Component {
           {(!isEmpty(currentUser)) && (
             <ProfilePopup />
           )}
-          <SearchUser />
         </div>
       </Segment>
     );

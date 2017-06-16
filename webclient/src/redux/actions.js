@@ -49,6 +49,7 @@ axios.interceptors.request.use(config => {
   return config;
 })
 
+// POST /v1/users
 export const signup = (modal, e, u, fn, ln, p1, p2) => {
   NProgress.start();
   return dispatch => {
@@ -84,6 +85,7 @@ export const signup = (modal, e, u, fn, ln, p1, p2) => {
   }
 }
 
+// POST /v1/sessions
 export const signin = (modal, email, password) => {
   NProgress.start();
   return dispatch => {
@@ -114,6 +116,7 @@ export const signin = (modal, email, password) => {
   }
 }
 
+// DELETE /v1/sessions/mine
 export const signout = () => {
   NProgress.start();
   return dispatch => {
@@ -139,6 +142,7 @@ export const signout = () => {
   }
 }
 
+// GET /v1/users/me
 export const checkSession = () => {
   NProgress.start();
   return dispatch => {
@@ -164,6 +168,7 @@ export const checkSession = () => {
   }
 }
 
+// GET /v1/users
 //get an array of all signed-up users from the api server.
 export const getUsers = () => {
   NProgress.start();
@@ -189,6 +194,7 @@ export const getUsers = () => {
   }
 }
 
+// GET /v1/channels
 export const getChannels = () => {
   NProgress.start();
   return dispatch => {
@@ -225,6 +231,7 @@ export const setCurrentChannel = (channelname) => {
   }
 }
 
+// GET /v1/channels/<channel-id>
 export const getChannelMessages = () => {
   NProgress.start();
   return (dispatch, getState) => {
@@ -250,6 +257,7 @@ export const getChannelMessages = () => {
   }
 }
 
+// POST /v1/messages
 export const postMessage = (body) => {
   return (dispatch, getState) => {
     const { currentChannel } = getState();
@@ -276,6 +284,7 @@ export const postMessage = (body) => {
   }
 }
 
+// DELETE /v1/messages/<message-id>
 export const deleteMessage = (message) => {
   return (dispatch, getState) => {
     const { currentChannel } = getState();
@@ -298,6 +307,7 @@ export const deleteMessage = (message) => {
   }
 }
 
+// PATCH /v1/messages/<message-id>
 export const editMessage = (newBody, message) => {
   return dispatch => {
     dispatch({ type: 'FETCH START', payload: { fetch: 'edit message' } })
@@ -322,6 +332,7 @@ export const editMessage = (newBody, message) => {
   }
 }
 
+// POST /v1/channels
 export const createChannel = (name, description, isPrivate, members) => {
   return dispatch => {
     dispatch({ type: 'FETCH START', payload: { fetch: 'create new channel' } })
@@ -349,6 +360,7 @@ export const createChannel = (name, description, isPrivate, members) => {
   }
 }
 
+// PATCH /v1/channels/<channel-id>
 export const editChannel = (name, description) => {
   return (dispatch, getState) => {
     const { currentChannel } = getState();
@@ -375,6 +387,7 @@ export const editChannel = (name, description) => {
   }
 }
 
+// DELETE /v1/channels/<channel-id>
 export const deleteChannel = () => {
   return (dispatch, getState) => {
     const { currentChannel } = getState();

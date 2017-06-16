@@ -50,7 +50,7 @@ class ProfilePopup extends Component {
             <List.Item disabled>
               <Header as='h5'>Profile Settings</Header>
             </List.Item>
-            <List.Item as={Link} to='/profile'>
+            <List.Item disabled>
               <Image floated='left' size='mini' src={currentUser.photoURL} />
               <List.Content>
                 <List.Header>@{currentUser.userName}</List.Header>
@@ -67,7 +67,6 @@ class ProfilePopup extends Component {
       </Popup>
     )
   }
-
 }
 
 const mapStateToProps = (state) => {

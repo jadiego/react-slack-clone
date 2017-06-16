@@ -63,6 +63,13 @@
   .modal .modal-content-container .dm-content .list .item:hover button {
     opacity: 1; }
 
+.modal .modal-content-container .channel-info-content .card .members-popup {
+  cursor: pointer;
+  color: #4981c8; }
+
+.modal .modal-content-container .channel-info-content .card .members-popup:hover {
+  color: #61afff; }
+
 .modal .exit-button {
   float: left; }
 

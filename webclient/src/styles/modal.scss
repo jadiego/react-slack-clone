@@ -47,6 +47,19 @@
         }
       }
     }
+
+    .channel-info-content {
+      .card {
+        .members-popup {
+          cursor: pointer;
+          color: $color-fourth;
+        }
+
+        .members-popup:hover {
+          color: $color-blue;
+        }
+      }
+    }
   }
 
   .exit-button {

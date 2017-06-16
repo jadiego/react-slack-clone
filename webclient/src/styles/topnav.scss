@@ -47,17 +47,9 @@
         }
       }
     }
-
-    .search {
-      height: 100%;
-      display: inline-flex;
-      right: 0;
-      padding-right: 30px;
-      position: absolute;
-
-      .input {
-        margin: 12px 8px 8px 8px;
-      }
+    
+    #profile:hover {
+      background-color: $color-blue;
     }
 
     .signout-button {
