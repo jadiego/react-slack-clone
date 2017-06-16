@@ -83,7 +83,7 @@ let currentChannel = (state = {}, action) => {
             return action.payload;
         case "USER JOINING CHANNEL":
             let x = { ...state };
-            x.members.push(action.data.id);
+            x.members.push(action.payload);
             return x;
         default:
             return state;

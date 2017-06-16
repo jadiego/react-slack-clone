@@ -26,7 +26,7 @@ class LoginModal extends Component {
   submit = (e) => {
     e.preventDefault();
     const { email, password, username, firstname, lastname, password1, password2 } = this.state;
-    if (e.target.id === 'signin') {
+    if (this.state.mode === 'signin') {
       this.props.signin(this, email, password)
         .then(resp => {
           if (resp.response === undefined) {

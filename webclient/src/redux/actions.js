@@ -220,14 +220,36 @@ export const getChannels = () => {
 
 export const setCurrentChannel = (channelname) => {
   return (dispatch, getState) => {
-    const { channels } = getState();
+    const { channels, currentUser } = getState();
     if (channelname === null || channelname === undefined) {
       dispatch({ type: 'SET CURRENT CHANNEL', payload: {} });
       return '';
     }
     let channel = find(channels, ch => ch.name === channelname);
     dispatch({ type: 'SET CURRENT CHANNEL', payload: channel });
+    joinToChannel(dispatch, channel, currentUser);
     return channel;
+  }
+}
+
+export const joinToChannel = (dispatch, channel, currentUser) => {
+  if (!includes(channel.members, currentUser.id)) {
+    dispatch({ type: 'FETCH START', payload: { fetch: 'user joining messages' } })
+    return axios({
+      url: `channels/${channel.id}`,
+      method: 'link'
+    })
+      .then(resp => {
+        dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
+        dispatch({ type: 'USER JOINING CHANNEL', payload: currentUser.id })
+        return resp;
+      })
+      .catch(error => {
+        if (error.response) {
+          dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'user joining messages' } })
+        }
+        return error;
+      });
   }
 }
 

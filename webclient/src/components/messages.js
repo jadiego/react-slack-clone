@@ -16,7 +16,7 @@ import '../styles/messages.css';
 class Messages extends Component {
   componentWillUpdate(nextProps) {
     if (getChannelFromURL(this.props) !== getChannelFromURL(nextProps)) {
-      this.props.setCurrentChannel(getChannelFromURL(nextProps))
+      let channel = this.props.setCurrentChannel(getChannelFromURL(nextProps))
       this.props.getChannelMessages()
         .then(resp => {
           const node = ReactDOM.findDOMNode(this.messagesEnd);
