@@ -1,6 +1,7 @@
 package messages
 
 import (
+	"errors"
 	"time"
 
 	"github.com/jadiego/howl/apiserver/models/users"
@@ -42,6 +43,14 @@ func (ms *MongoStore) GetChannelByID(id ChannelID) (*Channel, error) {
 
 //InsertChannel inserts a new channel into the store
 func (ms *MongoStore) InsertChannel(id users.UserID, newchannel *NewChannel) (*Channel, error) {
+	channel := &Channel{}
+	query := bson.M{"name": newchannel.Name}
+	err := ms.Session.DB(ms.DatabaseName).C(ms.ChannelsCollectionName).Find(query).One(channel)
+
+	if channel.Name == newchannel.Name {
+		return nil, errors.New("channel already exists")
+	}
+
 	c := newchannel.ToChannel()
 
 	//attach creator's id in new channel
@@ -49,7 +58,7 @@ func (ms *MongoStore) InsertChannel(id users.UserID, newchannel *NewChannel) (*C
 	//create id of channel
 	c.ID = ChannelID(bson.NewObjectId().Hex())
 
-	err := ms.Session.DB(ms.DatabaseName).C(ms.ChannelsCollectionName).Insert(c)
+	err = ms.Session.DB(ms.DatabaseName).C(ms.ChannelsCollectionName).Insert(c)
 	return c, err
 }
 
@@ -64,9 +73,17 @@ func (ms *MongoStore) GetChannelMessages(id ChannelID, n int) ([]*Message, error
 
 //UpdateChannel updates a channels name and description
 func (ms *MongoStore) UpdateChannel(updates *ChannelUpdates, currentchannel *Channel) (*Channel, error) {
+	channel := &Channel{}
+	query := bson.M{"name": currentchannel.Name}
+	err := ms.Session.DB(ms.DatabaseName).C(ms.ChannelsCollectionName).Find(query).One(channel)
+
+	if channel.Name == currentchannel.Name {
+		return nil, errors.New("channel already exists")
+	}
+
 	col := ms.Session.DB(ms.DatabaseName).C(ms.ChannelsCollectionName)
 	channelupdates := bson.M{"$set": updates}
-	err := col.UpdateId(currentchannel.ID, channelupdates)
+	err = col.UpdateId(currentchannel.ID, channelupdates)
 	if err != nil {
 		return nil, err
 	}
