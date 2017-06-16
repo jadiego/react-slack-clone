@@ -3,7 +3,7 @@ package handlers
 import (
 	"time"
 
-	"github.com/info344-s17/challenges-jadiego/apiserver/models/users"
+	"github.com/jadiego/howl/apiserver/models/users"
 )
 
 //SessionState defines a session state that contains atleast

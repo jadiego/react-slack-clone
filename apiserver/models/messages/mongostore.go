@@ -3,9 +3,10 @@ package messages
 import (
 	"time"
 
+	"github.com/jadiego/howl/apiserver/models/users"
+
 	"fmt"
 
-	"github.com/info344-s17/challenges-jadiego/apiserver/models/users"
 	"gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )

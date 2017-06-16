@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/websocket"
-	"github.com/info344-s17/challenges-jadiego/apiserver/sessions"
+	"github.com/jadiego/howl/apiserver/sessions"
 )
 
 //WebSocketUpgradeHandler handles websocket upgrade requests

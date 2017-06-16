@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"time"
+	"github.com/jadiego/howl/apiserver/models/users"
+	"github.com/jadiego/howl/apiserver/sessions"
 
-	"github.com/info344-s17/challenges-jadiego/apiserver/models/users"
-	"github.com/info344-s17/challenges-jadiego/apiserver/sessions"
+	"time"
 )
 
 //UsersHandler allows new users to sign up (POST) or returns all users

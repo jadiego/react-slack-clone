@@ -4,11 +4,11 @@ import (
 	"net/http"
 	"net/http/httputil"
 
+	"github.com/jadiego/howl/apiserver/sessions"
+
 	"encoding/json"
 
 	"fmt"
-
-	"github.com/info344-s17/challenges-jadiego/apiserver/sessions"
 )
 
 //GetServiceProxy returns a ReverProxy for a microservice

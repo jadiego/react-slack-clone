@@ -6,15 +6,14 @@ import (
 	"net/http"
 	"os"
 
+	"github.com/jadiego/howl/apiserver/handlers"
+	"github.com/jadiego/howl/apiserver/middleware"
+	"github.com/jadiego/howl/apiserver/models/messages"
+	"github.com/jadiego/howl/apiserver/models/users"
+	"github.com/jadiego/howl/apiserver/sessions"
+	"github.com/jadiego/howl/apiserver/websocket"
+
 	redis "gopkg.in/redis.v5"
-
-	"github.com/info344-s17/challenges-jadiego/apiserver/handlers"
-	"github.com/info344-s17/challenges-jadiego/apiserver/middleware"
-
-	"github.com/info344-s17/challenges-jadiego/apiserver/models/messages"
-	"github.com/info344-s17/challenges-jadiego/apiserver/models/users"
-	"github.com/info344-s17/challenges-jadiego/apiserver/sessions"
-	"github.com/info344-s17/challenges-jadiego/apiserver/websocket"
 )
 
 const (

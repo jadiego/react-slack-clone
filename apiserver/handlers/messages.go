@@ -4,11 +4,11 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"path"
+	"github.com/jadiego/howl/apiserver/models/messages"
+	"github.com/jadiego/howl/apiserver/models/users"
+	"github.com/jadiego/howl/apiserver/sessions"
 
-	"github.com/info344-s17/challenges-jadiego/apiserver/models/messages"
-	"github.com/info344-s17/challenges-jadiego/apiserver/models/users"
-	"github.com/info344-s17/challenges-jadiego/apiserver/sessions"
+	"path"
 )
 
 //ChannelsHandler handles all requests to the /v1/channels path.

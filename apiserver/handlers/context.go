@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"github.com/info344-s17/challenges-jadiego/apiserver/models/messages"
-	"github.com/info344-s17/challenges-jadiego/apiserver/models/users"
-	"github.com/info344-s17/challenges-jadiego/apiserver/sessions"
-	"github.com/info344-s17/challenges-jadiego/apiserver/websocket"
+	"github.com/jadiego/howl/apiserver/models/messages"
+	"github.com/jadiego/howl/apiserver/models/users"
+	"github.com/jadiego/howl/apiserver/sessions"
+	"github.com/jadiego/howl/apiserver/websocket"
 )
 
 //Context is a way for the main function to provide

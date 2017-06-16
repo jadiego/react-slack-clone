@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"time"
 
+	"github.com/jadiego/howl/apiserver/models/users"
+	"github.com/jadiego/howl/apiserver/websocket"
+
 	"encoding/json"
 
 	"strings"
-
-	"github.com/info344-s17/challenges-jadiego/apiserver/models/users"
-	"github.com/info344-s17/challenges-jadiego/apiserver/websocket"
 )
 
 //ChannelID defines the type for channel IDs
