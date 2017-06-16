@@ -138,6 +138,11 @@ func (ctx *Context) SpecificChannelHandler(w http.ResponseWriter, r *http.Reques
 			return
 		}
 
+		if err := cu.Validate(); err != nil {
+			http.Error(w, "invalid channel: "+err.Error(), http.StatusBadRequest)
+			return
+		}
+
 		uc, err := ctx.MessageStore.UpdateChannel(cu, c)
 		if err != nil {
 			http.Error(w, "error updating channel: "+err.Error(), http.StatusInternalServerError)

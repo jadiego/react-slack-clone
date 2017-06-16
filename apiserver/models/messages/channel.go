@@ -6,6 +6,8 @@ import (
 
 	"encoding/json"
 
+	"strings"
+
 	"github.com/info344-s17/challenges-jadiego/apiserver/models/users"
 	"github.com/info344-s17/challenges-jadiego/apiserver/websocket"
 )
@@ -45,6 +47,36 @@ func (nc *NewChannel) Validate() error {
 	//ensure Name is not empty
 	if len(nc.Name) < 1 {
 		return fmt.Errorf("channel name can't be empty")
+	}
+
+	splitString := strings.Fields(nc.Name)
+	if len(splitString) > 1 {
+		return fmt.Errorf("channel name can't contain spaces")
+	}
+
+	if len(nc.Name) > 21 {
+		return fmt.Errorf("channel name too long")
+	}
+
+	//if you made here, it's valid, so return nil
+	return nil
+}
+
+//Validate validates the new channel
+func (cu *ChannelUpdates) Validate() error {
+
+	//ensure Name is not empty
+	if len(cu.Name) < 1 {
+		return fmt.Errorf("channel name can't be empty")
+	}
+
+	splitString := strings.Fields(cu.Name)
+	if len(splitString) > 1 {
+		return fmt.Errorf("channel name can't contain spaces")
+	}
+
+	if len(cu.Name) > 21 {
+		return fmt.Errorf("channel name too long")
 	}
 
 	//if you made here, it's valid, so return nil
