@@ -1,7 +1,20 @@
-# INFO 344 Challenges
+# Howl
 
-This repo was created for you by GitHub Classroom. **DO NOT FORK THIS REPO INTO YOUR OWN ACCOUNT!** It is already private. Only you and the teaching team can see the code in this repo. Please make all of your commits to branches in this repo.
+Howl is an instant messaging web application, similar to Slack, which I built to learn more about server-side programming. The API Server starter code was provided by in class while the client side code was built using Facebook's [create-react-app](https://github.com/facebookincubator/create-react-app).
 
-Clone this repo to your development machine, and for each assignment, create a new branch, as directed in the challenge description. Make all commits for a given challenge only to that challenge branch, and push that branch up to GitHub. When you are finished with challenge, [create a GitHub Pull Request](https://help.github.com/articles/creating-a-pull-request/), asking to merge all commits from your challenge branch back into the `master` branch. We will use that pull request to provide detailed inline feedback on your code.
+# Features
+- Instant message anyone who has created an account
+- Create public or private channels
+- A chatbot that answers simple questions about chat logs
+- Account authentication during sign in
+- Storing sessions
+- Add/Remove users from a channel
 
-Note that you can still add commits to the branch after you create the pull request, and those new commits will be automatically added to the pull request as long as it's still open.
+# Build With
+- DigitalOcean: Cloud hosting which provides Linux virtual servers
+- MongoDB: NoSQL database program
+- Redis: In-memory data structure store for caching
+- React: Javascript library for building user interfaces
+- Redux: State container management system
+- Docker: Software container platform for deploying apps
+- Go: Programming language used for API server
