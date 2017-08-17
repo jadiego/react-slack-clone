@@ -1,6 +1,6 @@
 # Howl
 
-Howl is an instant messaging web application, similar to Slack, which I built to learn more about server-side programming. The API Server starter code was provided by in class while the client side code was built using Facebook's [create-react-app](https://github.com/facebookincubator/create-react-app).
+Howl is an instant messaging web application, similar to Slack, which I built in class to learn more about server-side programming. The API Server starter code was provided by in class while the client side code was built using Facebook's [create-react-app](https://github.com/facebookincubator/create-react-app).
 
 # Features
 - Instant message anyone who has created an account
