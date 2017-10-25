@@ -1,4 +1,4 @@
-.uppercase, .blue-button, .green-button, .red-button, .primary-button, .secondary-button, .default-button, .clear-button, .modal-header, #app #main-sidebar-container .item, #app #pushable-container #sidebar-container .bottom-menu-item button {
+.uppercase, .blue-button, .green-button, .red-button, .primary-button, .secondary-button, .default-button, .clear-button, .modal-header, #app #main-sidebar-container .item, #app #pushable-container .bottom-menu-item button {
   text-transform: uppercase !important;
   font-weight: 300;
   letter-spacing: 1.5px; }
@@ -88,13 +88,13 @@ a:hover {
       border-bottom: 1px solid rgba(0, 0, 0, 0.05); }
       #app #main-sidebar-container .item i.icon {
         color: rgba(255, 255, 255, 0.35); }
-    #app #main-sidebar-container div.item:nth-child(3) {
-      border-bottom: 1px solid rgba(0, 0, 0, 0.05); }
     #app #main-sidebar-container .bottom-menu-item {
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0; }
+    #app #main-sidebar-container div.item:nth-child(3) {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05); }
   #app #pushable-container {
     box-shadow: none;
     border: 0;
@@ -131,10 +131,5 @@ a:hover {
           color: #f9d55f; }
       #app #pushable-container #sidebar-container .channel-item:active, #app #pushable-container #sidebar-container .channel-item:hover {
         background-color: rgba(0, 0, 0, 0.2); }
-      #app #pushable-container #sidebar-container .bottom-menu-item {
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0; }
     #app #pushable-container #sidebar-container.visible ~ .pusher {
       width: calc(100% - 260px); }

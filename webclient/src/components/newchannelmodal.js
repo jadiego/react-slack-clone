@@ -31,7 +31,6 @@ class NewChannelModal extends Component {
       .then(resp => {
         if (resp.response === undefined) {
           this.setState({ visible: false, checked: false, name: "", description: "", members: [] })
-          this.props.history.push(name)
         }
       })
   }

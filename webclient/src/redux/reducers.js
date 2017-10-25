@@ -96,6 +96,9 @@ let messages = (state = {}, action) => {
             var x = { ...state };
             x[action.payload.channelid] = action.payload.messages;
             return x;
+        case "QUERY CHATBOT":
+            console.log(action);
+            return { ...state, ...state[action.payload.channelid].push(action.payload) };
         case "MESSAGE NEW":
             return { ...state, ...state[action.payload.channelid].push(action.payload) };
         case "MESSAGE UPDATE":

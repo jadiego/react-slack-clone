@@ -25,22 +25,26 @@ module.exports = function (store) {
       witaiClient.message(q)
         .then(data => {
           res.setHeader("Content-Type", "text/plain")
-          //console.log(JSON.stringify(data, undefined, 2));
-          switch (data.entities.intent[0].value) {
-            case "late-post":
-              handle.lateMessage(res, data, store, user);
-              break;
-            case "count":
-              handle.countMessages(res, data, store, user);
-              break;
-            case "most":
-              handle.mostMessages(res, data, store, user);
-              break;
-            case "member":
-              handle.memberMessages(res, data, store, user);
-              break;
-            default:
-              res.send("Sorry, I'm not sure how to answer that. Please try again.");
+          console.log(data.entities);
+          if (!data.entities) {
+            switch (data.entities.intent[0].value) {
+              case "late-post":
+                handle.lateMessage(res, data, store, user);
+                break;
+              case "count":
+                handle.countMessages(res, data, store, user);
+                break;
+              case "most":
+                handle.mostMessages(res, data, store, user);
+                break;
+              case "member":
+                handle.memberMessages(res, data, store, user);
+                break;
+              default:
+                res.send("Sorry, I'm not sure how to answer that. Please try again.");
+            }
+          } else {
+            res.send("Sorry, I'm not sure how to answer that. Please try again.");
           }
         })
         .catch(next);

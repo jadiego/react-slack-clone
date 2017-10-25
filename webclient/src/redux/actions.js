@@ -4,15 +4,15 @@ import NProgress from 'nprogress';
 
 const storageKey = "auth";
 
-// const newChannel = "new channel"
-// const newUser = "new user"
-// const newMessage = "new message"
-// const updatedChannel = "updated channel"
-// const updatedMessage = "updated message"
-// const deletedChannel = "deleted channel"
-// const deletedMessage = "deleted message"
-// const userJoinedChannel = "user joined channel"
-// const userLeftChannel = "user left channel"
+const newChannel = "new channel"
+const newUser = "new user"
+const newMessage = "new message"
+const updatedChannel = "updated channel"
+const updatedMessage = "updated message"
+const deletedChannel = "deleted channel"
+const deletedMessage = "deleted message"
+const userJoinedChannel = "user joined channel"
+const userLeftChannel = "user left channel"
 
 export var apiRoot = "https://api.chat.jadiego.me/v1/";
 var apiWS = "wss://api.chat.jadiego.me/v1/websocket"
@@ -232,6 +232,33 @@ export const setCurrentChannel = (channelname) => {
   }
 }
 
+// POST /v1/channels
+export const createChannel = (name, description, isPrivate, members) => {
+  return dispatch => {
+    dispatch({ type: 'FETCH START', payload: { fetch: 'create new channel' } })
+    return axios({
+      url: `channels`,
+      method: 'post',
+      data: {
+        name: name,
+        private: isPrivate,
+        members,
+        description,
+      }
+    })
+      .then(resp => {
+        dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
+        return resp;
+      })
+      .catch(error => {
+        if (error.response) {
+          dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'create new channel' } })
+        }
+        return error;
+      });
+  }
+}
+
 export const joinToChannel = (dispatch, channel, currentUser) => {
   if (!includes(channel.members, currentUser.id)) {
     dispatch({ type: 'FETCH START', payload: { fetch: 'user joining messages' } })
@@ -279,31 +306,70 @@ export const getChannelMessages = () => {
   }
 }
 
-// POST /v1/messages
+// POST  to either /v1/messages or /v1/bot
+// depending if the body of text starts with '@chatbot' or not.
 export const postMessage = (body) => {
   return (dispatch, getState) => {
-    const { currentChannel } = getState();
-    dispatch({ type: 'FETCH START', payload: { fetch: 'post new message' } })
-    return axios({
-      url: `messages`,
-      method: 'post',
-      data: {
-        channelid: currentChannel.id,
-        body,
-      }
-    })
-      .then(resp => {
-        dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
-        dispatch({ type: 'MESSAGE NEW', payload: resp.data })
-        return resp;
-      })
-      .catch(error => {
-        if (error.response) {
-          dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'post new message' } })
-        }
-        return error;
-      });
+    const { currentChannel, currentUser } = getState();
+    if (body !== "" && body.startsWith("@chatbot")) {
+      let searchQuery = body.split("@chatbot ")[1];
+      return queryChatBot(dispatch, currentChannel, currentUser, searchQuery);
+    } else {
+      return postMessageToChannel(dispatch, currentChannel, body);
+    }
+
   }
+}
+
+// POST to /v1/bot
+export const queryChatBot = (dispatch, currentChannel, currentUser, body) => {
+  dispatch({ type: 'FETCH START', payload: { fetch: 'query chatbot' } })
+  return axios({
+    url: `bot?q=${body}`,
+    method: 'post',
+    headers: {
+      'Content-Type': 'text/plain',
+    }
+  })
+    .then(resp => {
+      dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
+      let data = {
+        channelid: currentChannel.id,
+        creatorid: currentUser.id,
+        body: `"${body}": ${resp.data}`,
+      }
+      dispatch({ type: 'QUERY CHATBOT', payload: data})
+      return resp;
+    })
+    .catch(error => {
+      if (error.response) {
+        dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'query chatbot' } })
+      }
+      return error;
+    });
+}
+
+// POST to /v1/messages
+const postMessageToChannel = (dispatch, currentChannel, body) => {
+  dispatch({ type: 'FETCH START', payload: { fetch: 'post new message' } })
+  return axios({
+    url: `messages`,
+    method: 'post',
+    data: {
+      channelid: currentChannel.id,
+      body,
+    }
+  })
+    .then(resp => {
+      dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
+      return resp;
+    })
+    .catch(error => {
+      if (error.response) {
+        dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'post new message' } })
+      }
+      return error;
+    });
 }
 
 // DELETE /v1/messages/<message-id>
@@ -317,7 +383,6 @@ export const deleteMessage = (message) => {
     })
       .then(resp => {
         dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
-        dispatch({ type: 'MESSAGE DELETE', payload: message })
         return resp;
       })
       .catch(error => {
@@ -348,34 +413,6 @@ export const editMessage = (newBody, message) => {
       .catch(error => {
         if (error.response) {
           dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'edit message' } })
-        }
-        return error;
-      });
-  }
-}
-
-// POST /v1/channels
-export const createChannel = (name, description, isPrivate, members) => {
-  return dispatch => {
-    dispatch({ type: 'FETCH START', payload: { fetch: 'create new channel' } })
-    return axios({
-      url: `channels`,
-      method: 'post',
-      data: {
-        name: name,
-        private: isPrivate,
-        members,
-        description,
-      }
-    })
-      .then(resp => {
-        dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
-        dispatch({ type: 'CHANNEL NEW', payload: resp.data })
-        return resp;
-      })
-      .catch(error => {
-        if (error.response) {
-          dispatch({ type: 'FETCH END', payload: { ...error.response, fetch: 'create new channel' } })
         }
         return error;
       });
@@ -420,7 +457,6 @@ export const deleteChannel = () => {
     })
       .then(resp => {
         dispatch({ type: 'FETCH END', payload: { fetch: '', data: '' } })
-        dispatch({ type: 'CHANNEL DELETE', payload: { id: currentChannel.id } })
         return resp;
       })
       .catch(error => {
@@ -429,5 +465,77 @@ export const deleteChannel = () => {
         }
         return error;
       });
+  }
+}
+
+// /v1/websocket
+export const initiateWebSocketConnection = () => {
+  return (dispatch, getState) => {
+    const { currentUser } = getState()
+    var websock = new WebSocket(`${apiWS}?auth=${getSessionKey()}`)
+    websock.addEventListener("message", (wsevent) => {
+      var event = JSON.parse(wsevent.data)
+      switch (event.type) {
+        case newMessage:
+          var { currentChannel } = getState()
+          var message = JSON.parse(event.message);
+          if (currentChannel.id === message.channelid) {
+            console.log(message);
+            dispatch({ type: 'MESSAGE NEW', payload: message })
+          }
+          break
+        case newChannel:
+          var ch = JSON.parse(event.message)
+          if ((includes(ch.members, currentUser.id) || !ch.private)) {
+            dispatch({ type: 'CHANNEL NEW', payload: ch })
+          }
+          break
+        case deletedMessage:
+          var { currentChannel } = getState()
+          var message = JSON.parse(event.message)
+          if (currentChannel.id === message.channelid) {
+            dispatch({ type: 'MESSAGE DELETE', payload: message })
+          }
+          break
+        case updatedMessage:
+          var { currentChannel } = getState()
+          var message = JSON.parse(event.message)
+          if ((includes(currentChannel.members, currentUser.id))) {
+            dispatch({ type: 'MESSAGE UPDATE', data: message })
+          }
+          break
+        case deletedChannel:
+          var ch = JSON.parse(event.message)
+          if (includes(ch.members, currentUser.id)) {
+            dispatch({ type: 'CHANNEL DELETE', payload: { id: ch.id } })
+          }
+          var { currentChannel } = getState()
+          if (currentChannel.id === ch.id) {
+            if (currentChannel.creatorid !== currentUser.id) {
+              window.alert("Warning! the creator deleted the channel just recently. We will go ahead and redirect you to the general channel. Apologies for the inconvenience.")
+            }
+          }
+          break
+        case updatedChannel:
+          var ch = JSON.parse(event.message)
+          if ((includes(ch.members, currentUser.id))) {
+            dispatch({ type: 'CHANNEL UPDATE', data: ch })
+          }
+          break
+        case newUser:
+          var u = JSON.parse(event.message)
+          if (currentUser.id != u.id) {
+            dispatch({ type: 'USER NEW', data: u })
+          }
+          break
+        case userJoinedChannel:
+          var u = JSON.parse(event.message)
+          var { currentChannel } = getState()
+          if ((!includes(currentChannel.members, u.id))) {
+            dispatch({ type: 'USER JOINING CHANNEL', data: u })
+          }
+          break
+      }
+    })
   }
 }

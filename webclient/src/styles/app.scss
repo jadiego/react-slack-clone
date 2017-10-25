@@ -72,15 +72,15 @@ a:hover {
       }
     }
 
-    div.item:nth-child(3) {
-      border-bottom: 1px solid rgba(0,0,0,0.05);
-    }
-    
-    .bottom-menu-item{
+    .bottom-menu-item {
       position: absolute;
       bottom: 0;
       left: 0;
       right: 0;
+    }
+
+    div.item:nth-child(3) {
+      border-bottom: 1px solid rgba(0,0,0,0.05);
     }
   }
 
@@ -104,52 +104,47 @@ a:hover {
       color: white;
 
       .channel-item {
-        border-bottom: 1px solid rgba(0,0,0,0.15);
-        color: inherit !important;
-        white-space: nowrap;
-        text-overflow: ellipsis;
-        overflow-x: hidden;
+      border-bottom: 1px solid rgba(0,0,0,0.15);
+      color: inherit !important;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow-x: hidden;
 
-        .icon.channel-settings-icon::before {
-          padding: 5px;
-          color: white;
-          opacity: 0;
-        }
-
-        .icon.world, .icon.lock {
-          float: left;
-          padding-right: 6px;
-        }
+      .icon.channel-settings-icon::before {
+        padding: 5px;
+        color: white;
+        opacity: 0;
       }
 
-      .channel-item.active {
-        background-color: #333;
-        .icon.channel-settings-icon::before {
-          opacity: 1;
-        }
-
-        .icon.channel-settings-icon:hover::before {
-          color: $color-third;
-        }
+      .icon.world, .icon.lock {
+        float: left;
+        padding-right: 6px;
       }
+    }
+
+    .channel-item.active {
+      background-color: #333;
+      .icon.channel-settings-icon::before {
+        opacity: 1;
+      }
+
+      .icon.channel-settings-icon:hover::before {
+        color: $color-third;
+      }
+    }
 
       .channel-item:active, .channel-item:hover {
         background-color: rgba(0, 0, 0, 0.2);
       }
 
-      .bottom-menu-item{
-        position: absolute;
-        bottom: 0;
-        left: 0;
-        right: 0;
-
-        button {
-          @extend .uppercase;
-        }
-      }
-
       .clear-black-background {
         @extend .clear-black-background;
+      }
+    }
+
+    .bottom-menu-item{
+      button {
+        @extend .uppercase;
       }
     }
 

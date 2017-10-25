@@ -45,23 +45,23 @@ class SubSidebar extends Component {
             <Dimmer active={fetching.count !== 0} simple>
               <Loader size='mini'></Loader>
             </Dimmer>
-            {channels !== undefined && channels.map(channel => {
-              return (!channel.name.includes(":")) && (
-                <Menu.Item
-                  key={`key-${channel.id}`}
-                  as={NavLink} to={{ pathname: `/messages/${channel.name}` }}
-                  className='channel-item'
-                >
-                  {(channel.private) ? (
-                    <Icon name='lock' />
-                  ) : (
-                      <Icon name='world' />
-                    )}
-                  {channel.name}
-                  <ChannelInfoModal />
-                </Menu.Item>
-              )
-            })}
+              {channels !== undefined && channels.map(channel => {
+                return (!channel.name.includes(":")) && (
+                  <Menu.Item
+                    key={`key-${channel.id}`}
+                    as={NavLink} to={{ pathname: `/messages/${channel.name}` }}
+                    className='channel-item'
+                  >
+                    {(channel.private) ? (
+                      <Icon name='lock' />
+                    ) : (
+                        <Icon name='world' />
+                      )}
+                    {channel.name}
+                    <ChannelInfoModal />
+                  </Menu.Item>
+                )
+              })}
             <Menu.Item className='bottom-menu-item'>
               <NewChannelModal />
             </Menu.Item>
@@ -78,28 +78,28 @@ class SubSidebar extends Component {
             <Dimmer active={fetching.count !== 0} simple>
               <Loader size='mini'></Loader>
             </Dimmer>
-            {channels !== undefined && channels.map(channel => {
-              if (channel.name.includes(":")) {
-                var user = find(channel.name.split(':'), n => n !== currentUser.userName);
-                if (user === undefined) user = currentUser.userName;
-              }
-              return (channel.name.includes(":")) && (
-                <Menu.Item
-                  key={`key-${channel.id}`}
-                  as={NavLink} to={{ pathname: `/messages/${channel.name}` }}
-                  className='channel-item'
-                  isActive={(match, location) => this.check(match, location, user)}
-                >
-                  {(channel.private) ? (
-                    <Icon name='lock' />
-                  ) : (
-                      <Icon name='world' />
-                    )}
-                  {user}
-                  <ChannelInfoModal />
-                </Menu.Item>
-              )
-            })}
+              {channels !== undefined && channels.map(channel => {
+                if (channel.name.includes(":")) {
+                  var user = find(channel.name.split(':'), n => n !== currentUser.userName);
+                  if (user === undefined) user = currentUser.userName;
+                }
+                return (channel.name.includes(":")) && (
+                  <Menu.Item
+                    key={`key-${channel.id}`}
+                    as={NavLink} to={{ pathname: `/messages/${channel.name}` }}
+                    className='channel-item'
+                    isActive={(match, location) => this.check(match, location, user)}
+                  >
+                    {(channel.private) ? (
+                      <Icon name='lock' />
+                    ) : (
+                        <Icon name='world' />
+                      )}
+                    {user}
+                    <ChannelInfoModal />
+                  </Menu.Item>
+                )
+              })}
             <Menu.Item className='bottom-menu-item'>
               <DMModal />
             </Menu.Item>

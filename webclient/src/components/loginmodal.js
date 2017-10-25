@@ -7,7 +7,7 @@ import { isEmpty } from 'lodash';
 import '../styles/modal.css';
 
 import { bindActionCreators } from 'redux';
-import { signin, signup, getUsers, getChannels, setCurrentChannel, getChannelMessages } from '../redux/actions';
+import { signin, signup, getUsers, getChannels, setCurrentChannel, getChannelMessages, initiateWebSocketConnection } from '../redux/actions';
 import { connect } from 'react-redux';
 
 class LoginModal extends Component {
@@ -30,6 +30,7 @@ class LoginModal extends Component {
       this.props.signin(this, email, password)
         .then(resp => {
           if (resp.response === undefined) {
+            this.props.initiateWebSocketConnection()
             this.props.getUsers()
               .then(resp => this.props.getChannels())
               .then(resp => this.props.setCurrentChannel(this.props.location.pathname.split("/")[2]))
@@ -170,7 +171,8 @@ const mapDispatchToProps = (dispatch) => {
     getChannels,
     getUsers,
     setCurrentChannel,
-    getChannelMessages
+    getChannelMessages,
+    initiateWebSocketConnection
   }, dispatch)
 }
 

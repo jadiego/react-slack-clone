@@ -4,7 +4,7 @@ import { Container, Sidebar, Segment } from 'semantic-ui-react';
 import { isEmpty, isEqual } from 'lodash';
 
 import { bindActionCreators } from 'redux';
-import { checkSession, getUsers, getChannels, getSessionKey, getChannelMessages, setCurrentChannel } from './redux/actions';
+import { checkSession, getUsers, getChannels, getSessionKey, getChannelMessages, setCurrentChannel, initiateWebSocketConnection } from './redux/actions';
 import { connect } from 'react-redux';
 
 import Messages from './components/messages';
@@ -20,6 +20,7 @@ class App extends Component {
       this.props.checkSession()
         .then(resp => {
           if (!isEmpty(resp)) {
+            this.props.initiateWebSocketConnection()
             this.props.getUsers()
               .then(resp => this.props.getChannels())
               .then(resp => this.props.setCurrentChannel(this.props.location.pathname.split("/")[2]))
@@ -59,7 +60,8 @@ const mapDispatchToProps = (dispatch) => {
     getUsers,
     getChannels,
     getChannelMessages,
-    setCurrentChannel
+    setCurrentChannel,
+    initiateWebSocketConnection
   }, dispatch)
 }
 
