@@ -4,10 +4,10 @@ import (
 	"fmt"
 	"time"
 
+	"encoding/json"
+
 	"github.com/jadiego/howl/apiserver/models/users"
 	"github.com/jadiego/howl/apiserver/websocket"
-
-	"encoding/json"
 
 	"strings"
 )

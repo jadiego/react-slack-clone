@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/info344-s17/challenges-jadiego/apiserver/models/users"
+	"github.com/jadiego/howl/apiserver/models/users"
 )
 
 func TestMongoStore(t *testing.T) {

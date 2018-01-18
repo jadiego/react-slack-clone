@@ -9,8 +9,8 @@ import (
 
 	"encoding/json"
 
-	"github.com/info344-s17/challenges-jadiego/apiserver/models/users"
-	"github.com/info344-s17/challenges-jadiego/apiserver/sessions"
+	"github.com/jadiego/howl/apiserver/models/users"
+	"github.com/jadiego/howl/apiserver/sessions"
 )
 
 //Each test functions are meant to be run separtely
