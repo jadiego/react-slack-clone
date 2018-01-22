@@ -30,6 +30,7 @@ const lateMessage = async function (res, data, store, user) {
   let channelname = grabChannelFromData(data);
   if (channelname) {
     let channel = await store.getChannel(channelname);
+    console.log(channel);
     ifChannelExists(channel, res, async function () {
       let message = await store.getLastMessage(user.id, channel["_id"]);
       if (message) {
