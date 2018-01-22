@@ -1,6 +1,7 @@
 {
   "name": "webclient",
   "version": "0.1.0",
+  "homepage": "http://jadiego.github.io/howl",
   "private": true,
   "dependencies": {
     "axios": "^0.16.2",
