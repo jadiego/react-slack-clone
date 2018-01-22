@@ -1,7 +1,6 @@
 {
   "name": "webclient",
   "version": "0.1.0",
-  "homepage": "https://jadiego.github.io/howl",
   "private": true,
   "dependencies": {
     "axios": "^0.16.2",
@@ -26,7 +25,8 @@
     "gh-pages": "^1.1.0",
     "node-sass-chokidar": "0.0.2",
     "npm-run-all": "^4.0.2",
-    "react-scripts": "0.9.5"
+    "react-scripts": "0.9.5",
+    "surge": "^0.19.0"
   },
   "scripts": {
     "build-css": "node-sass-chokidar --include-path ./src --include-path ./node_modules src/ -o src/",
@@ -37,6 +37,6 @@
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject",
     "predeploy": "npm run build",
-    "deploy": "gh-pages -d build"
+    "deploy": "surge -p ./build -d https://jadiego-howl.surge.sh"
   }
 }
