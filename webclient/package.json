@@ -1,7 +1,7 @@
 {
   "name": "webclient",
   "version": "0.1.0",
-  "homepage": "http://jadiego.github.io/howl",
+  "homepage": "https://jadiego.github.io/howl",
   "private": true,
   "dependencies": {
     "axios": "^0.16.2",
@@ -23,6 +23,7 @@
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {
+    "gh-pages": "^1.1.0",
     "node-sass-chokidar": "0.0.2",
     "npm-run-all": "^4.0.2",
     "react-scripts": "0.9.5"
@@ -34,6 +35,8 @@
     "start": "npm-run-all -p watch-css start-js",
     "build": "npm run build-css && react-scripts build",
     "test": "react-scripts test --env=jsdom",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   }
 }
