@@ -14,8 +14,8 @@ const deletedMessage = "deleted message"
 const userJoinedChannel = "user joined channel"
 const userLeftChannel = "user left channel"
 
-export var apiRoot = "https://api.chat.jadiego.me/v1/";
-var apiWS = "wss://api.chat.jadiego.me/v1/websocket"
+export var apiRoot = "https://api.howl.jadiego.me/v1/";
+var apiWS = "wss://api.howl.jadiego.me/v1/websocket"
 if (window.location.hostname === "localhost" || window.location.hostname === "127.0.0.1") {
   apiRoot = "https://localhost:4000/v1/"
   apiWS = "wss://localhost:4000/v1/websocket"
