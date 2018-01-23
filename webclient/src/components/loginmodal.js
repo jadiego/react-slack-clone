@@ -104,6 +104,16 @@ class LoginModal extends Component {
                 </Form.Field>
                 <Button type='submit' fluid className='submit-button' style={{ display: 'none' }}>submit</Button>
                 <p style={{ textAlign: 'center' }}>
+                  <Label>
+                    Email
+                    <Label.Detail>guest@guest.com</Label.Detail>
+                  </Label>
+                  <Label>
+                    Password
+                    <Label.Detail>dinosaurs</Label.Detail>
+                  </Label>
+                </p>
+                <p style={{ textAlign: 'center' }}>
                   Don't have an account?
                   <br />
                   <a onClick={this.showSignup}>Sign Up</a>
