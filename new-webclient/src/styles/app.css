@@ -1,0 +1,61 @@
+@import "~normalize.css";
+@import "~tachyons";
+@import '~typeface-open-sans';
+
+* {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* change color to blue */
+.a-c-b {
+    color: rgb(24, 120, 252);
+}
+
+/* change color to black */
+.a-c-d {
+    color: #031b4e;
+}
+
+.a-bg-w {
+    background-color: rgb(253, 253, 253); 
+}
+
+.a-upper {
+    text-transform: uppercase !important;
+}
+
+.a-w-100 {
+    width: 100%;
+}
+
+.a-fh {
+    height: 100vh;
+}
+
+.a-middle {
+    justify-content: center;
+    align-content: center;
+}
+
+.a-tc {
+    text-align: center;
+}
+
+.a-padding-lr {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+.a-sider {
+    overflow: auto;
+    height: 100vh;
+    position: fixed;
+    left: 0;
+}
+
+.a-logo {
+    height: 32px;
+    background: rgba(255, 255, 255, .2);
+    margin: 16px;
+}

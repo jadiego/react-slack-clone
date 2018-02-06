@@ -1,10 +1,10 @@
-.top {
-    flex-grow: 1;
-}
-
-.bottom {
-    padding-top: 40px;
-    padding-bottom: 40px;
+.title {
+    font-family: 'Open Sans';
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    font-style: italic;
+    color: #031b4e;
 }
 
 img {
@@ -14,4 +14,37 @@ img {
 button {
     margin-top: 5px;
     margin-bottom: 5px;
+}
+
+@media screen and (max-width: 992px) {
+    .row {
+        display: flex;
+        flex-direction: column;
+        height: 100%;
+    }
+
+    .row > .col:nth-child(1) {
+        flex-grow: 1;
+    }
+}
+
+@media screen and (min-width: 992px) {
+    .row {
+        height: 100%;
+    }
+
+    .row > .col {
+        height: 100%;
+    }
+
+    .row > .col:nth-child(2) {
+        position: relative;
+    }
+
+    .row > .col:nth-child(2) > div {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+    }
 }
