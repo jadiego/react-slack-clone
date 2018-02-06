@@ -1,0 +1,17 @@
+.top {
+    flex-grow: 1;
+}
+
+.bottom {
+    padding-top: 40px;
+    padding-bottom: 40px;
+}
+
+img {
+    width: 100px;
+}
+
+button {
+    margin-top: 5px;
+    margin-bottom: 5px;
+}
