@@ -4,7 +4,7 @@ import (
 	"net/http"
 	"net/http/httputil"
 
-	"github.com/jadiego/howl/apiserver/sessions"
+	"github.com/jadiego/react-slack-clone/apiserver/sessions"
 
 	"encoding/json"
 

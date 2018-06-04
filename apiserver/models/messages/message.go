@@ -5,8 +5,8 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/jadiego/howl/apiserver/models/users"
-	"github.com/jadiego/howl/apiserver/websocket"
+	"github.com/jadiego/react-slack-clone/apiserver/models/users"
+	"github.com/jadiego/react-slack-clone/apiserver/websocket"
 )
 
 //MessageID defines the type for message IDs

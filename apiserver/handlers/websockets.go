@@ -4,7 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gorilla/websocket"
-	"github.com/jadiego/howl/apiserver/sessions"
+	"github.com/jadiego/react-slack-clone/apiserver/sessions"
 )
 
 //WebSocketUpgradeHandler handles websocket upgrade requests

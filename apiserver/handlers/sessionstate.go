@@ -3,7 +3,7 @@ package handlers
 import (
 	"time"
 
-	"github.com/jadiego/howl/apiserver/models/users"
+	"github.com/jadiego/react-slack-clone/apiserver/models/users"
 )
 
 //SessionState defines a session state that contains atleast

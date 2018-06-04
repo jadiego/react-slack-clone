@@ -8,7 +8,7 @@ import (
 	"net/mail"
 	"time"
 
-	"github.com/jadiego/howl/apiserver/websocket"
+	"github.com/jadiego/react-slack-clone/apiserver/websocket"
 	"golang.org/x/crypto/bcrypt"
 )
 

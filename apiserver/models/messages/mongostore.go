@@ -2,13 +2,11 @@ package messages
 
 import (
 	"errors"
+	"fmt"
 	"time"
 
-	"github.com/jadiego/howl/apiserver/models/users"
-
-	"fmt"
-
-	"gopkg.in/mgo.v2"
+	"github.com/jadiego/react-slack-clone/apiserver/models/users"
+	mgo "gopkg.in/mgo.v2"
 	"gopkg.in/mgo.v2/bson"
 )
 
