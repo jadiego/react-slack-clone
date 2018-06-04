@@ -1,0 +1,17 @@
+@media only screen and (max-width: 767px) {
+  #form-container {
+    width: 80%;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  #form-container {
+    width: 40%;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  #form-container {
+    width: 30%;
+  }
+}

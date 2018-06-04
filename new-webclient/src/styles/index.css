@@ -1,0 +1,30 @@
+#root {
+  width: 100%;
+  height: 100vh;
+}
+
+/* background color blue */
+.bg-blue {
+  background-color: rgb(94, 145, 248) !important;
+}
+
+.bg-white {
+  background-color: #FFF !important;
+}
+
+/* color white text */
+.white {
+  color: #FFF !important;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container-middle {
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  display: flex;
+}

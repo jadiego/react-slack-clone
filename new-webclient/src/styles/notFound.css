@@ -1,4 +1,3 @@
-.heading {
-    font-size: 33vw;
-    margin-bottom: 0;
+#error-title {
+  font-size: 12vw !important;
 }
