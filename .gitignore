@@ -11,7 +11,7 @@ apiserver/apiserver
 node_modules
 .idea
 .vscode
-tls
+config
 *.env
 *.sh
 
