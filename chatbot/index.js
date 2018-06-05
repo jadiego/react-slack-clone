@@ -3,8 +3,9 @@
 const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-const mongodb = require("mongodb");
+const MongoClient = require("mongodb").MongoClient;
 const cors = require("cors");
+const assert = require("assert");
 
 const MessageStore = require("./models/messages/mongostore.js");
 
@@ -27,11 +28,21 @@ app.use(cors());
 let mongoconf = {
   reconnectTries: Number.MAX_VALUE,
   autoReconnect: true,
-  reconnectInterval: 1000
+  reconnectInterval: 1000,
 };
 
-mongodb.MongoClient.connect(`mongodb://${mongoAddr}/chat`, mongoconf)
-  .then(db => {
+(async function() {
+  const url = `mongodb://${mongoAddr}/chat`;
+  const dbName = "chat";
+  let client;
+
+  try {
+    client = await MongoClient.connect(
+      url,
+      mongoconf
+    );
+    const db = client.db(dbName);
+
     let colChannels = db.collection("channels");
     let colMessages = db.collection("messages");
     let colUsers = db.collection("users");
@@ -48,7 +59,11 @@ mongodb.MongoClient.connect(`mongodb://${mongoAddr}/chat`, mongoconf)
     app.listen(port, host, () => {
       console.log(`server is listening at http://${host}:${port}...`);
     });
-  })
-  .catch(err => {
-    console.error(err);
-  });
+  } catch (err) {
+    console.log(err.stack);
+  }
+
+  if (client) {
+    client.close();
+  }
+})();
