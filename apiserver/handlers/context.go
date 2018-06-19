@@ -1,10 +1,10 @@
 package handlers
 
 import (
-	"github.com/jadiego/howl/apiserver/models/messages"
-	"github.com/jadiego/howl/apiserver/models/users"
-	"github.com/jadiego/howl/apiserver/sessions"
-	"github.com/jadiego/howl/apiserver/websocket"
+	"github.com/jadiego/react-slack-clone/apiserver/models/messages"
+	"github.com/jadiego/react-slack-clone/apiserver/models/users"
+	"github.com/jadiego/react-slack-clone/apiserver/sessions"
+	"github.com/jadiego/react-slack-clone/apiserver/websocket"
 )
 
 //Context is a way for the main function to provide

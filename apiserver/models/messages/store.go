@@ -3,7 +3,7 @@ package messages
 import (
 	"errors"
 
-	"github.com/jadiego/howl/apiserver/models/users"
+	"github.com/jadiego/react-slack-clone/apiserver/models/users"
 )
 
 //ErrChannelNotFound is returned when the requested channel is not found in the store

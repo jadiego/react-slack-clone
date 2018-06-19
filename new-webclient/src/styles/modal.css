@@ -1,0 +1,30 @@
+.modal-container {
+  padding: 10px !important;
+  background-color: white !important;
+}
+
+.modal-inner {
+  background-color: white !important;
+  height: 100%;
+}
+
+@media only screen and (max-width: 767px) {
+  .modal-inner {
+    width: 80% !important;
+    margin: 0 auto !important;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991px) {
+  .modal-inner {
+    width: 50% !important;
+    margin: 0 auto !important;
+  }
+}
+
+@media only screen and (min-width: 992px) {
+  .modal-inner {
+    width: 50% !important;
+    margin: 0 auto !important;
+  }
+}

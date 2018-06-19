@@ -1,0 +1,69 @@
+html {
+  overflow: hidden;
+}
+
+#root {
+  width: 100%;
+  height: 100vh;
+}
+
+/* background color blue */
+.bg-blue {
+  background-color: rgb(19, 110, 251) !important;
+}
+
+.bg-white {
+  background-color: #FFF !important;
+}
+
+.bg-green {
+  background-color: rgb(40, 198, 114) !important;
+}
+
+.bg-gray {
+  background-color: rgb(250, 250, 250) !important;
+}
+
+.bg-gray2 {
+  background-color: #f6f6f7 !important;
+}
+
+.black {
+  color: rgb(33, 33, 33) !important;
+}
+
+.black2 {
+  color: rgb(18, 39, 36) !important;
+}
+
+.white {
+  color: #FFF !important;
+}
+
+.gray {
+  color: rgb(114,119,123) !important;
+}
+
+.gray2 {
+  color: rgb(153,170,181) !important;
+}
+
+.blue {
+  color: rgb(53, 159, 222) !important;
+}
+
+* {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.container-middle {
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  display: flex;
+}
+
+.fw3 {
+  font-weight: 300 !important;
+}

@@ -4,8 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"github.com/jadiego/howl/apiserver/models/users"
-	"github.com/jadiego/howl/apiserver/sessions"
+	"github.com/jadiego/react-slack-clone/apiserver/models/users"
+	"github.com/jadiego/react-slack-clone/apiserver/sessions"
 
 	"time"
 )

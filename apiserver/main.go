@@ -6,13 +6,12 @@ import (
 	"net/http"
 	"os"
 
-	"github.com/jadiego/howl/apiserver/handlers"
-	"github.com/jadiego/howl/apiserver/middleware"
-	"github.com/jadiego/howl/apiserver/models/messages"
-	"github.com/jadiego/howl/apiserver/models/users"
-	"github.com/jadiego/howl/apiserver/sessions"
-	"github.com/jadiego/howl/apiserver/websocket"
-
+	"github.com/jadiego/react-slack-clone/apiserver/handlers"
+	"github.com/jadiego/react-slack-clone/apiserver/middleware"
+	"github.com/jadiego/react-slack-clone/apiserver/models/messages"
+	"github.com/jadiego/react-slack-clone/apiserver/models/users"
+	"github.com/jadiego/react-slack-clone/apiserver/sessions"
+	"github.com/jadiego/react-slack-clone/apiserver/websocket"
 	redis "gopkg.in/redis.v5"
 )
 
