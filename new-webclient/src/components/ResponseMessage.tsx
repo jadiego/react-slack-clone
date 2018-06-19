@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Message, SemanticCOLORS } from "semantic-ui-react";
+import { SemanticCOLORS, Segment } from "semantic-ui-react";
 import "../styles/responsemessage.css";
 
 interface Props {
@@ -16,9 +16,9 @@ class ResponseMessage extends React.Component<Props> {
     }
   
     if (!props.color) {
-      return <Message id="responsemessage" className="w-100">{props.message}</Message>
+      return <Segment inverted id="responsemessage" color="grey" className="w-100">{props.message}</Segment>
     } else {
-      return <Message id="responsemessage" color={props.color} className="w-100">{props.message}</Message>;
+      return <Segment inverted id="responsemessage" color={props.color} className="w-100">{props.message}</Segment>;
     }
   }
 }

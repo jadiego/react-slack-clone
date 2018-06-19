@@ -1,15 +1,15 @@
 import * as React from "react";
 import { Header, Form, Segment, Button } from "semantic-ui-react";
-import { FetchState, StoreState, SignupFormArgs } from "../redux/types";
 import { connect, Dispatch } from "react-redux";
-import { Actions } from "../redux/action-helper";
-import { signup, hideMessageBar } from "../redux/operations";
 import { bindActionCreators } from "redux";
 import { Link, RouteComponentProps } from "react-router-dom";
 
+import { Actions, model } from "../redux/";
+import { signup, hideMessageBar, showMessageBar } from "../redux/operations";
+
 interface Props extends StateProps, DispatchProps {}
 
-class Signup extends React.Component<Props & RouteComponentProps<any>, SignupFormArgs> {
+class Signup extends React.Component<Props & RouteComponentProps<any>, model.SignupFormArgs> {
   readonly state = {
     email: "",
     username: "",
@@ -28,13 +28,10 @@ class Signup extends React.Component<Props & RouteComponentProps<any>, SignupFor
 
   signup = async () => {
     let resp = (await this.props.signup!({ ...this.state })) as any;
+    // if signup was succesful push back to login page
     if (resp === null) {
-      this.props.history.push("/", {
-        referrer: this.props.location.pathname,
-        reason: "Success",
-        color: "red",
-        message: "Account succesfully created"
-      });
+      this.props.history.push("/");
+      this.props.showMessageBar!("green", "Account succesfully created");
     }
   };
 
@@ -118,7 +115,7 @@ class Signup extends React.Component<Props & RouteComponentProps<any>, SignupFor
               type="submit"
               fluid
               content="SUBMIT"
-              className="bg-blue white"
+              className="bg-green white"
               onClick={this.signup}
             />
           </Form>
@@ -132,20 +129,21 @@ class Signup extends React.Component<Props & RouteComponentProps<any>, SignupFor
 }
 
 interface StateProps {
-  fetching: FetchState;
+  fetching: model.FetchState;
 }
 
-const mapStateToProps = (state: StoreState): StateProps => ({
+const mapStateToProps = (state: model.StoreState): StateProps => ({
   fetching: state.fetching
 });
 
 interface DispatchProps {
   signup?: typeof signup;
   hideMessageBar?: typeof hideMessageBar;
+  showMessageBar?: typeof showMessageBar;
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => ({
-  ...bindActionCreators({ signup, hideMessageBar }, dispatch)
+  ...bindActionCreators({ signup, hideMessageBar, showMessageBar }, dispatch)
 });
 
 export default connect<Props>(

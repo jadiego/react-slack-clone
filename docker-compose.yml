@@ -1,0 +1,49 @@
+version: '3.2'
+
+services:
+  redis:
+    image: redis
+    volumes:
+      - react-slack-clone-redisdb:/data
+    container_name: slackredis
+
+  mongo:
+    image: mongo
+    volumes:
+      - react-slack-clone-mongodb:/data/db
+    container_name: slackmongo
+
+  node:
+    build: ./chatbot/
+    environment:
+      - WITAITOKEN
+      - MONGOADDR=mongo:27017
+    depends_on:
+      - mongo
+    container_name: slackchatbot
+    
+  goapi:
+    build: ./apiserver/
+    ports:
+      - 443:443
+      - 4000:443
+    environment:
+      - CHATBOTADDR=node:80
+      - REDISADDR=redis:6379
+      - DBADDR=mongo:27017
+      - SESSIONKEY
+      - TLSKEY=/tls/privkey.pem
+      - TLSCERT=/tls/fullchain.pem
+    volumes:
+      - ./tls/fullchain.pem:/tls/fullchain.pem:ro
+      - ./tls/privkey.pem:/tls/privkey.pem:ro
+    depends_on:
+      - mongo
+      - redis
+      - node
+    container_name: slackapi
+
+
+volumes:
+  react-slack-clone-mongodb: {}
+  react-slack-clone-redisdb: {}

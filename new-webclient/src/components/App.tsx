@@ -1,33 +1,36 @@
 import * as React from "react";
 import { BrowserRouter, Route, Switch } from "react-router-dom";
-import PrivateRoute from "./PrivateRoute";
+import { connect } from "react-redux";
+
+import PrivateRoute from "../auth/PrivateRoute";
 import NotFound from "../pages/NotFound";
 import Login from "../pages/Login";
 import Signup from "../pages/Signup";
 import Chat from "../pages/Chat";
 import ResponseMessage from "./ResponseMessage";
-import { StoreState, MessageBarState } from "../redux/types";
-import { connect } from "react-redux";
+
+import { model } from "../redux/";
 
 class App extends React.Component<StateProps> {
   render() {
     const { messageBar } = this.props;
 
+    // 47px is the exact height if you inspect the ResponseMessage.tsx component
     let height = "100%";
     if (messageBar.visible) {
-      height = "calc(100% - 49px)";
+      height = "calc(100% - 47px)";
     }
     
     return (
       <BrowserRouter>
         <React.Fragment>
           <ResponseMessage open={messageBar.visible} message={messageBar.message} color={messageBar.color} />
-          <div className={`w-100 h-100 bg-blue white container-middle`} style={{height }}>
+          <div className="w-100 h-100" style={{ height }}>
             <Switch>
-              <Route exact path="/" component={Login} />
+              <PrivateRoute path="/channel/" component={Chat} />
               <Route exact path="/signup" component={Signup} />
-              <PrivateRoute path="/channel/:channelid" component={Chat} />
-              <Route path="*" component={NotFound} />
+              <Route exact path="/" component={Login} />
+              <Route component={NotFound} />
             </Switch>
           </div>
         </React.Fragment>
@@ -37,10 +40,10 @@ class App extends React.Component<StateProps> {
 }
 
 interface StateProps {
-  messageBar: MessageBarState;
+  messageBar: model.MessageBarState;
 }
 
-const mapStateToProps = (state: StoreState): StateProps => ({
+const mapStateToProps = (state: model.StoreState): StateProps => ({
   messageBar: state.messagebar
 });
 

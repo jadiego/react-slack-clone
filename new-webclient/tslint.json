@@ -15,6 +15,7 @@
     "object-literal-sort-keys": false,
     "no-console": false,
     "prefer-const": false,
-    "member-ordering": false
+    "member-ordering": false,
+    "max-classes-per-file": false
   }
 }

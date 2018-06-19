@@ -1,7 +1,8 @@
 import * as React from "react";
 import { Redirect, Route, RouteProps } from "react-router";
+import { isAuth } from "../auth/isauth";
 
-export interface Props extends RouteProps {
+interface Props extends RouteProps {
   component: React.ComponentType<any>;
 }
 
@@ -19,11 +20,9 @@ const PrivateRoute: React.SFC<Props> = (props) => {
           return (
             <Redirect
               to={{
-                pathname: "/",
+                pathname: "/?redir=" + encodeURIComponent(props.location.pathname),
                 state: {
-                  referrer: props.location.pathname,
-                  reason: "Unauthorized",
-                  color: "red",
+                  color: "yellow",
                   message: "You need to sign in first for access to this page"
                 }
               }}
@@ -34,15 +33,5 @@ const PrivateRoute: React.SFC<Props> = (props) => {
     />
   );
 };
-
-function isAuth() {
-  if (process.env.REACT_APP_API_TOKEN_KEY === undefined) {
-    throw Error("auth env key not set");
-  }
-
-  let t = localStorage.getItem(process.env.REACT_APP_API_TOKEN_KEY);
-
-  return t !== null && t.length !== 0;
-}
 
 export default PrivateRoute;
