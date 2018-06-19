@@ -11,9 +11,11 @@ apiserver/apiserver
 node_modules
 .idea
 .vscode
-config
+ssl
 *.env
 *.sh
+*.pem
+
 
 /webclient/.env
 /webclient/npm-debug.log*
