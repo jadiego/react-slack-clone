@@ -1,16 +1,14 @@
 package handlers
 
 import (
+	"bytes"
+	"encoding/json"
 	"net/http"
 	"net/http/httptest"
 	"testing"
 
-	"bytes"
-
-	"encoding/json"
-
-	"github.com/jadiego/react-slack-clone/apiserver/models/users"
-	"github.com/jadiego/react-slack-clone/apiserver/sessions"
+	"github.com/jadiego/react-slack-clone/apiservers/gateway/models/users"
+	"github.com/jadiego/react-slack-clone/apiservers/gateway/sessions"
 )
 
 //Each test functions are meant to be run separtely

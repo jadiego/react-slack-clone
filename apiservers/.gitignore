@@ -1,0 +1,9 @@
+# tls
+tls
+*.pem
+
+# env files
+*.env
+
+# executable
+/gateway/gateway

@@ -165,11 +165,9 @@ func (ms *MongoStore) DeleteMessage(id MessageID) error {
 
 //NewMongoStore constructs a new MongoStore using the provided
 //addr. If the 'mongoAddr' is nil, it will use a default port and host
+//Ensure atleast one public channel named "general"
+//to ensure users have somewhere to post messages
 func NewMongoStore(mongoAddr, DBName, ChannelCollectionName, MessageCollectionName string) (*MongoStore, error) {
-	if len(mongoAddr) == 0 {
-		mongoAddr = "localhost:27017"
-	}
-
 	sess, err := mgo.Dial(mongoAddr)
 	if err != nil {
 		return nil, err
