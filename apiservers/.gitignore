@@ -7,3 +7,7 @@ tls
 
 # executable
 /gateway/gateway
+/messaging/messaging
+
+# vscode
+.vscode
