@@ -25,8 +25,8 @@ type User struct {
 	Email     string `json:"-"`
 	PassHash  []byte `json:"-" bson:"passHash"` // stored in mongo, but never encoded to clients
 	UserName  string `json:"userName"`
-	FirstName string `json:"firstName"`
-	LastName  string `json:"lastName"`
+	FirstName string `json:"-"`
+	LastName  string `json:"-"`
 	PhotoURL  string `json:"photoURL"`
 }
 

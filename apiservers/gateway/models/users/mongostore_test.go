@@ -7,11 +7,11 @@ import (
 	"github.com/globalsign/mgo"
 )
 
-//NOTE: tests in this file will use the MONGOADDR
-//environment variable for the mongodb server address.
-//If not defined, it will default to a local instance of mongoDB.
-//To start a local redis server using Docker, run
-//this command:
+// NOTE: tests in this file will use the MONGOADDR
+// environment variable for the mongodb server address.
+// If not defined, it will default to a local instance of mongoDB.
+// To start a local redis server using Docker, run
+// this command:
 // docker container run -d -p 27017:27017 --name testmongo mongo
 
 func TestMongoStore(t *testing.T) {
