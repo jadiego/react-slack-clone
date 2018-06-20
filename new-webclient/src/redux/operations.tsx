@@ -6,6 +6,7 @@ import { Actions } from "./action-helper";
 import { actions } from "./actions";
 import { model } from ".";
 import { handleError, AppError } from "../errors";
+import { deleteToken, getToken, setToken } from "./util";
 
 export const showMessageBar = actions.showMessageBarUI;
 
@@ -36,7 +37,7 @@ export const signin = (email: string, password: string) => async (
     if (resp.ok) {
       dispatch(actions.signinSuccess(await resp.json()));
       let key = resp.headers.get("authorization")!;
-      localStorage.setItem(process.env.REACT_APP_API_TOKEN_KEY!, key);
+      setToken(key);
       return null;
     } else {
       throw AppError(resp.status, await resp.text());
@@ -84,7 +85,7 @@ export const checkSession = () => async (dispatch: Dispatch<Actions>) => {
     dispatch(actions.createSessionStart());
     let resp = await fetch(process.env.REACT_APP_API_ROOT + "users/me", {
       headers: {
-        "Authorization": localStorage.getItem(process.env.REACT_APP_API_TOKEN_KEY!)!,
+        "Authorization": getToken()!,
       }
     });
     if (resp.ok) {
@@ -94,7 +95,7 @@ export const checkSession = () => async (dispatch: Dispatch<Actions>) => {
       throw AppError(resp.status, await resp.text());
     }
   } catch (err) {
-    localStorage.removeItem(process.env.REACT_APP_API_TOKEN_KEY!);
+    deleteToken()
     return handleError(dispatch, actions.createSessionError(err.message), err.message);
   }
 };
@@ -127,7 +128,7 @@ export const getChannels = () => async (dispatch: Dispatch<Actions>) => {
     dispatch(actions.getChannelsStart());
     let resp = await fetch(process.env.REACT_APP_API_ROOT + "channels", {
       headers: {
-        "Authorization": localStorage.getItem(process.env.REACT_APP_API_TOKEN_KEY!)!,
+        "Authorization": getToken()!,
       }
     });
     if (resp.ok) {
@@ -146,7 +147,7 @@ export const getChannelMessages = (channelid: string) => async (dispatch: Dispat
     dispatch(actions.getMessagesStart());
     let resp = await fetch(process.env.REACT_APP_API_ROOT + "channels/" + channelid, {
       headers: {
-        "Authorization": localStorage.getItem(process.env.REACT_APP_API_TOKEN_KEY!)!,
+        "Authorization": getToken()!,
       }
     });
     if (resp.ok) {
@@ -167,7 +168,7 @@ export const postMessage = (text: string) => async (dispatch: Dispatch<Actions>,
     let resp = await fetch(process.env.REACT_APP_API_ROOT + "messages", {
       method: "POST",
       headers: {
-        "Authorization": localStorage.getItem(process.env.REACT_APP_API_TOKEN_KEY!)!,
+        "Authorization": getToken()!,
       },
       body: JSON.stringify({ channelid: currentChannel!.id, body: text })
     });
@@ -188,7 +189,7 @@ export const createChannel = (args: model.NewChannelFormArgs) => async (dispatch
     let resp = await fetch(process.env.REACT_APP_API_ROOT + "channels", {
       method: "POST",
       headers: {
-        "Authorization": localStorage.getItem(process.env.REACT_APP_API_TOKEN_KEY!)!,
+        "Authorization": getToken()!,
       },
       body: JSON.stringify(args),
     });

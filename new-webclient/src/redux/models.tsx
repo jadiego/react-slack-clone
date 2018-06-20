@@ -52,10 +52,7 @@ export interface NewChannelFormArgs {
 
 export interface User {
   id: string;
-  email: string;
   userName: string;
-  firstName: string;
-  lastName: string;
   photoURL: string;
 }
 

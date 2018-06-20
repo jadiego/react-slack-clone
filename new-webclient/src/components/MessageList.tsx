@@ -4,7 +4,7 @@ import { model } from "../redux";
 import Scrollbars from "react-custom-scrollbars";
 import Message from "./Message";
 import { connect } from "react-redux";
-import memoizeOne from "memoize-one";
+import memoizeOne from "memoize-one"; // changed export in @types file
 import { Item, Divider } from "semantic-ui-react";
 import * as moment from "moment";
 import { formatMsg } from "../redux/util";

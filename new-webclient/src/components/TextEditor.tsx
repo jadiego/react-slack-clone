@@ -24,8 +24,12 @@ class TextEditor extends React.Component<Props, State> {
   handleOnKeyPress = (e: any) => {
     if (e.key === "Enter" && !e.shiftKey) {
       e.preventDefault();
+      let { text } = this.state;
       (async () => {
-        let resp = await this.props.postMessage!(this.state.text);
+        if (text.trim().length === 0) {
+          return;
+        }
+        let resp = await this.props.postMessage!(text);
         if (resp !== null) {
           setTimeout(() => {
             this.props.hideMessageBar!();

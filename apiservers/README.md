@@ -14,7 +14,7 @@ Requirements:
 openssl req -x509 -sha256 -nodes -days 365 -newkey rsa:2048 -subj "/CN=localhost" -keyout privkey.pem -out fullchain.pem
 ``` 
 This will create 2 files **privkey.pem** and **fullchain.pem** at the directory where the command was ran. 
-> I suggest storing them in a folder (tls) and remember to not push these to git
+> I suggest storing them in a folder (tls) and remember to not push these to the git repo
 
 
 2. cd into root directory of apiservers and run 

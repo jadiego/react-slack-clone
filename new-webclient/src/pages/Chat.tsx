@@ -21,6 +21,7 @@ import { List } from "react-content-loader";
 import ChannelsAndUsersList from "../components/ChannelsAndUsersList";
 import Scrollbars from "react-custom-scrollbars";
 import MessageContainer from "./MessageContainer";
+import { deleteToken } from "../redux/util";
 
 interface Props extends DispatchProps, StateProps {}
 
@@ -50,6 +51,7 @@ class ChatNew extends React.Component<Props & RouteComponentProps<any>, State> {
       this.props.getChannels!()
     ]);
     if (u !== null || c !== null) {
+      deleteToken()
       this.props.history.push("/?redir=" + encodeURIComponent(this.props.location.pathname));
       return;
     }

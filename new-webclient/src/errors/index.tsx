@@ -12,7 +12,7 @@ export class APIServerDownError extends Error {
       Error.captureStackTrace(this, APIServerDownError);
     }
 
-    this.message = "The server encountered an internal error.";
+    this.message = APIServerDownErrorMessage;
   }
 }
 
@@ -27,6 +27,7 @@ export class UserUnauthorizedError extends Error {
 }
 
 export function AppError(status: number, message: string): Error {
+  console.warn(`|%c${status}%c| %c${message}`, "color: red;", "color: black;", "color: gray;");
   switch (status) {
     case 401:
       return new UserUnauthorizedError(message);
@@ -41,6 +42,6 @@ export function handleError(dispatch: Dispatch<Actions>, action: Actions, error:
     return APIServerDownErrorMessage;
  } else {
    dispatch(action);
-   return "";
+   return error;
  }
 }

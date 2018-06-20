@@ -141,7 +141,7 @@ func (ctx *Context) SessionsMineHandler(w http.ResponseWriter, r *http.Request) 
 
 		// Respond to the client with a simple message saying
 		// that the user has been signed out
-		w.Header().Add(headerContentType, contentTypeText)
+		w.Header().Add(headerContentType, contentTypeTextUTF8)
 		w.Write([]byte("User has signed out"))
 	}
 }

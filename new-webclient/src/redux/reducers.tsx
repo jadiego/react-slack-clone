@@ -36,6 +36,7 @@ const messagebar = (state = model.MessageBarInitialState, action: Actions): mode
     case types.MESSAGES_FETCH_ERROR:
     case types.USERS_FETCH_ERROR:
     case types.CHANNELS_FETCH_ERROR:
+    case types.POST_MESSAGE_ERROR:
       return { visible: true, color: "yellow", message: action.payload };
     case types.SIGNUP_FETCH_SUCCESS:
       return { visible: true, color: "green", message: "Account succesfully created" }; 
