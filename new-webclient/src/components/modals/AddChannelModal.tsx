@@ -79,6 +79,7 @@ class AddChannelButton extends React.Component<Props, State> {
   render() {
     const { visible, checked, description, name, warning } = this.state;
     const { fetching } = this.props;
+
     return (
       <React.Fragment>
         <AddButton onClick={this.handleOpen} />

@@ -21,13 +21,12 @@ class UserProfle extends React.Component<Props> {
           <Card.Content>
             <Image
               floated="right"
+              ui
               size="mini"
               src={user.photoURL}
-              ui
               spaced="right"
             />
             <Card.Header className="black2">{user.userName}</Card.Header>
-            <Card.Meta className="gray">{user.email}</Card.Meta>
           </Card.Content>
         </Card>
     );

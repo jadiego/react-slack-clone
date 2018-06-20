@@ -26,7 +26,6 @@ class Login extends React.Component<Props & RouteComponentProps<any>, State> {
   };
 
   componentDidMount() {
-    console.log(this.props);
     const { location } = this.props;
     if (location.state) {
       console.log(location.state);

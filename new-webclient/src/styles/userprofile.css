@@ -3,6 +3,10 @@
   margin-bottom: 0;
 }
 
+#user-profile .header {
+  padding: 8px 3px;
+}
+
 .content {
   padding-top: 7px !important;
   padding-bottom: 7px !important;
