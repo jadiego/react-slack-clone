@@ -52,6 +52,10 @@ html {
   color: rgb(53, 159, 222) !important;
 }
 
+.red-text {
+  color: rgb(238, 32, 36) !important;
+}
+
 * {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -66,4 +70,12 @@ html {
 
 .fw3 {
   font-weight: 300 !important;
+}
+
+.pa0 {
+  padding: 0 !important;
+}
+
+.ma0 {
+  margin: 0 !important;
 }

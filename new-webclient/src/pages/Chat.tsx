@@ -102,12 +102,17 @@ class ChatNew extends React.Component<Props & RouteComponentProps<any>, State> {
                 channels={channels}
                 users={users}
                 currentChannel={currentchannel}
+                currentUser={currentuser}
               />
             )}
           </Scrollbars>
         </Grid.Column>
         <Grid.Column id="messages">
-          <MessageContainer loading={loading} messages={messages} currentchannel={currentchannel}/>
+          <MessageContainer 
+          loading={loading} 
+          messages={messages} 
+          currentchannel={currentchannel}
+          />
         </Grid.Column>
       </Grid>
     );

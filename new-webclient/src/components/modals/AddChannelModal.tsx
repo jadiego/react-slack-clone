@@ -23,7 +23,7 @@ const AddButton = (props: any) => (
     position="top center"
     inverted
     basic
-    style={{ paddingTop: "4px", paddingBottom: "4px" }}
+    style={{ paddingTop: "3px", paddingBottom: "3px" }}
   />
 );
 

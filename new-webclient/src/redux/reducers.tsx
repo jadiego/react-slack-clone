@@ -60,6 +60,9 @@ const channels = (state = model.ChannelsInitialState, action: Actions): model.Ch
       return action.payload;
     case types.CHANNELS_CREATE_SUCCESS:
       return [ ...state, ...[action.payload] ];
+    case types.DELETE_CHANNEL_SUCCESS:
+      let chans = state.slice()
+      return chans.filter(chan => chan.id !== action.payload);
     default:
       return state;
   }
@@ -92,9 +95,7 @@ const messages = (state = model.MessagesInitialState, action: Actions): model.Me
     case types.MESSAGES_FETCH_SUCCESS:
       return action.payload;
     case types.POST_MESSAGE_SUCCESS:
-      let m = state.slice();
-      m.push(action.payload);
-      return m;
+      return [ ...state, action.payload ];
     default:
       return state;
   }
