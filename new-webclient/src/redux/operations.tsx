@@ -85,7 +85,7 @@ export const checkSession = () => async (dispatch: Dispatch<Actions>) => {
     dispatch(actions.createSessionStart());
     let resp = await fetch(process.env.REACT_APP_API_ROOT + "users/me", {
       headers: {
-        "Authorization": getToken()!,
+        Authorization: getToken()!
       }
     });
     if (resp.ok) {
@@ -95,8 +95,12 @@ export const checkSession = () => async (dispatch: Dispatch<Actions>) => {
       throw AppError(resp.status, await resp.text());
     }
   } catch (err) {
-    deleteToken()
-    return handleError(dispatch, actions.createSessionError(err.message), err.message);
+    deleteToken();
+    return handleError(
+      dispatch,
+      actions.createSessionError(err.message),
+      err.message
+    );
   }
 };
 
@@ -115,7 +119,11 @@ export const getUsers = () => async (dispatch: Dispatch<Actions>) => {
       throw AppError(resp.status, await resp.text());
     }
   } catch (err) {
-    return handleError(dispatch, actions.getUsersError(err.message), err.message);
+    return handleError(
+      dispatch,
+      actions.getUsersError(err.message),
+      err.message
+    );
   }
 };
 
@@ -128,7 +136,7 @@ export const getChannels = () => async (dispatch: Dispatch<Actions>) => {
     dispatch(actions.getChannelsStart());
     let resp = await fetch(process.env.REACT_APP_API_ROOT + "channels", {
       headers: {
-        "Authorization": getToken()!,
+        Authorization: getToken()!
       }
     });
     if (resp.ok) {
@@ -138,18 +146,31 @@ export const getChannels = () => async (dispatch: Dispatch<Actions>) => {
       throw AppError(resp.status, await resp.text());
     }
   } catch (err) {
-    return handleError(dispatch, actions.getChannelsError(err.message), err.message);
+    return handleError(
+      dispatch,
+      actions.getChannelsError(err.message),
+      err.message
+    );
   }
-}
+};
 
-export const getChannelMessages = (channelid: string) => async (dispatch: Dispatch<Actions>) => {
+/**
+ * Retrieves the channel messages with the given channel id
+ * GET /v1/channels/<id>
+ */
+export const getChannelMessages = (channelid: string) => async (
+  dispatch: Dispatch<Actions>
+) => {
   try {
     dispatch(actions.getMessagesStart());
-    let resp = await fetch(process.env.REACT_APP_API_ROOT + "channels/" + channelid, {
-      headers: {
-        "Authorization": getToken()!,
+    let resp = await fetch(
+      process.env.REACT_APP_API_ROOT + "channels/" + channelid,
+      {
+        headers: {
+          Authorization: getToken()!
+        }
       }
-    });
+    );
     if (resp.ok) {
       dispatch(actions.getMessagesSuccess(await resp.json()));
       return null;
@@ -157,18 +178,29 @@ export const getChannelMessages = (channelid: string) => async (dispatch: Dispat
       throw AppError(resp.status, await resp.text());
     }
   } catch (err) {
-    return handleError(dispatch, actions.getMessagesError(err.message), err.message);
+    return handleError(
+      dispatch,
+      actions.getMessagesError(err.message),
+      err.message
+    );
   }
-}
+};
 
-export const postMessage = (text: string) => async (dispatch: Dispatch<Actions>, getState: () => model.StoreState) => {
+/**
+ * Creates a message for the channel
+ * POST /v1/messages
+ */
+export const postMessage = (text: string) => async (
+  dispatch: Dispatch<Actions>,
+  getState: () => model.StoreState
+) => {
   try {
     dispatch(actions.postMessageStart());
-    const { currentChannel }  = getState()
+    const { currentChannel } = getState();
     let resp = await fetch(process.env.REACT_APP_API_ROOT + "messages", {
       method: "POST",
       headers: {
-        "Authorization": getToken()!,
+        Authorization: getToken()!
       },
       body: JSON.stringify({ channelid: currentChannel!.id, body: text })
     });
@@ -179,19 +211,29 @@ export const postMessage = (text: string) => async (dispatch: Dispatch<Actions>,
       throw AppError(resp.status, await resp.text());
     }
   } catch (err) {
-    return handleError(dispatch, actions.postMessageError(err.message), err.message);
+    return handleError(
+      dispatch,
+      actions.postMessageError(err.message),
+      err.message
+    );
   }
-}
+};
 
-export const createChannel = (args: model.NewChannelFormArgs) => async (dispatch: Dispatch<Actions>) => {
+/**
+ * Creates a channel with given arguments
+ * POST /v1/channels
+ */
+export const createChannel = (args: model.NewChannelFormArgs) => async (
+  dispatch: Dispatch<Actions>
+) => {
   try {
     dispatch(actions.createChannelStart());
     let resp = await fetch(process.env.REACT_APP_API_ROOT + "channels", {
       method: "POST",
       headers: {
-        "Authorization": getToken()!,
+        Authorization: getToken()!
       },
-      body: JSON.stringify(args),
+      body: JSON.stringify(args)
     });
     if (resp.ok) {
       dispatch(actions.createChannelSuccess(await resp.json()));
@@ -200,6 +242,76 @@ export const createChannel = (args: model.NewChannelFormArgs) => async (dispatch
       throw AppError(resp.status, await resp.text());
     }
   } catch (err) {
-    return handleError(dispatch, actions.createChannelError(err.message), err.message);
+    return handleError(
+      dispatch,
+      actions.createChannelError(err.message),
+      err.message
+    );
   }
-}
+};
+
+/**
+ * Deletes the channel with given id
+ * DELETE /v1/channels/<id>
+ */
+export const deleteChannel = (id: string) => async (
+  dispatch: Dispatch<Actions>
+) => {
+  try {
+    dispatch(actions.deleteChannelStart());
+    let resp = await fetch(process.env.REACT_APP_API_ROOT + `channels/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: getToken()!
+      }
+    });
+    if (resp.ok) {
+      dispatch(actions.deleteChannelSuccess(id));
+      return null;
+    } else {
+      throw AppError(resp.status, await resp.text());
+    }
+  } catch (err) {
+    return handleError(
+      dispatch,
+      actions.deleteChannelError(err.message),
+      err.message
+    );
+  }
+};
+
+/**
+ * Helper async action creator that moves UI back to the general channel. This method will
+ * get called when we delete a channel we are currently on
+ */
+export const moveBackToGeneralChannel = () => async (
+  dispatch: Dispatch<Actions>,
+  getState: () => model.StoreState
+) => {
+  try {
+    const { channels } = getState();
+    let genchan = channels.find(chan => chan.name === "general")!;
+    dispatch(actions.getMessagesStart());
+    let resp = await fetch(
+      process.env.REACT_APP_API_ROOT + "channels/" + genchan.id,
+      {
+        headers: {
+          Authorization: getToken()!
+        }
+      }
+    );
+    if (resp.ok) {
+      dispatch(actions.getMessagesSuccess(await resp.json()));
+      dispatch(actions.setChannel(genchan));
+      return null;
+    } else {
+      throw AppError(resp.status, await resp.text());
+    }
+  } catch (err) {
+    return handleError(
+      dispatch,
+      actions.deleteChannelError(err.message),
+      err.message
+    );
+  }
+};

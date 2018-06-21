@@ -26,7 +26,7 @@
 }
 
 #sidebar .menu .item {
-  font-size: 0.97em;
+  font-size: 0.98em;
   padding-top: 8px;
   padding-bottom: 8px;
 }
@@ -37,7 +37,22 @@
 
 #sidebar .menu .item .item .icon {
   margin-left: 0;
-  margin-right: 4px;
+  margin-right: 6px;
+}
+
+#sidebar .menu .item .item .icon {
+  margin-left: 0;
+  margin-right: 6px;
+}
+
+#sidebar .menu .item .item .setting.icon {
+  display: none;
+}
+
+#sidebar .menu .item .active.item .setting.icon,
+#sidebar .menu .item .item:focus .setting.icon, 
+#sidebar .menu .item .item:hover .setting.icon {
+  display: block;
 }
 
 #client-header {

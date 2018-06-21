@@ -33,4 +33,7 @@ export const actions = {
   createChannelStart: () => createAction(types.CHANNELS_CREATE_START),
   createChannelSuccess: (channel: model.Channel) => createAction(types.CHANNELS_CREATE_SUCCESS, channel),
   createChannelError: (error: string) => createAction(types.CHANNELS_CREATE_ERROR, error),
+  deleteChannelStart: () => createAction(types.DELETE_CHANNEL_START),
+  deleteChannelSuccess: (message: string) => createAction(types.DELETE_CHANNEL_SUCCESS, message),
+  deleteChannelError: (error: string) => createAction(types.DELETE_CHANNEL_ERROR, error),
 };

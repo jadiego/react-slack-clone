@@ -22,6 +22,10 @@ export const CHANNELS_CREATE_ERROR = "channels/CREATE_ERROR";
 
 export const SET_CURRENT_CHANNEL = "channel/SET_CHANNEL";
 
+export const DELETE_CHANNEL_START = "channel/DELETE_START";
+export const DELETE_CHANNEL_SUCCESS = "channel/DELETE_SUCCESS";
+export const DELETE_CHANNEL_ERROR = "channel/DELETE_ERROR";
+
 export const MESSAGES_FETCH_START = "messages/FETCH_START";
 export const MESSAGES_FETCH_SUCCESS = "messages/FETCH_SUCCESS";
 export const MESSAGES_FETCH_ERROR = "messages/FETCH_ERROR";

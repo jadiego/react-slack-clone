@@ -183,6 +183,12 @@ func (ms *MongoStore) GetMessageByID(id MessageID) (*Message, error) {
 // InsertMessage inserts a new message and returns a new Message
 // with a newly assigned ID
 func (ms *MongoStore) InsertMessage(id users.UserID, newmessage *NewMessage) (*Message, error) {
+	channel := &Channel{}
+	err := ms.Session.DB(ms.DatabaseName).C(ms.ChanColName).FindId(newmessage.ChannelID).One(channel)
+	if err == mgo.ErrNotFound {
+		return nil, ErrChannelNotFound
+	}
+
 	m, err := newmessage.ToMessage()
 	if err != nil {
 		return nil, err

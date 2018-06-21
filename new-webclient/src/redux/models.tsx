@@ -26,9 +26,9 @@ export const MessageBarInitialState = {
 
 export const MessagesInitialState: Message[] = [];
 
-export const ChannelsInitialState = [];
+export const ChannelsInitialState: Channel[] = [];
 
-export const UsersInitialState = [];
+export const UsersInitialState: User[] = [];
 
 export const currentUser = null;
 

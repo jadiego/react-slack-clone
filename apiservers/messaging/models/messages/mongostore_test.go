@@ -14,6 +14,8 @@ import (
 // To start a local redis server using Docker, run
 // this command:
 // docker container run -d -p 27017:27017 --name testmongo mongo
+// To delete it
+// docker container rm -f testmongo
 
 // TestMongoStore tests the full CRUD lifecycle
 func TestMongoStore(t *testing.T) {
@@ -131,6 +133,53 @@ func TestGetMyChannels(t *testing.T) {
 				t.Fatalf("got the wrong private channel: \n%v\n%v\n", channel, dmch)
 			}
 		}
+	}
+}
+
+// TestDeleteChannel tetsts deleting a channel
+// and error handling of posting a message to a deleted channel
+func TestMessageAfterDeleteChannel(t *testing.T) {
+	//start messages db
+	mdb, err := NewMongoStore("", "", "", "")
+	if err != nil {
+		t.Fatalf(err.Error())
+	}
+	defer mdb.Session.Close()
+
+	userid1 := users.UserID("590035312ec886172f6d1df7")
+
+	// create fake chan with random name
+	name := randomStr()
+	newch := &NewChannel{
+		Name: name,
+	}
+	ch, err := mdb.InsertChannel(userid1, newch)
+	if err != nil {
+		t.Fatalf("error inserting channel: %v", err.Error())
+	}
+
+	err = mdb.DeleteChannel(ch.ID)
+	if err != nil {
+		t.Fatalf("error deleting channel: %v", err.Error())
+	}
+
+	// expecting chan not found err
+	rch, err := mdb.GetChannelByID(ch.ID)
+	if err != ErrChannelNotFound {
+		t.Fatalf("expected error retrieving deleted channel, instead got %v", rch)
+	} else if err != nil && err != ErrChannelNotFound {
+		t.Fatalf("%v\n", err.Error())
+	}
+
+	nmsg := &NewMessage{
+		ChannelID: ch.ID,
+		Body:      "this text should error out",
+	}
+	msg, err := mdb.InsertMessage(userid1, nmsg)
+	if err != ErrChannelNotFound {
+		t.Fatalf("expected error retrieving deleted channel, instead posted %v succesfully", msg)
+	} else if err != nil && err != ErrChannelNotFound {
+		t.Fatalf("%v\n", err.Error())
 	}
 }
 

@@ -39,7 +39,7 @@ func (ctx *Context) MessageHandler(w http.ResponseWriter, r *http.Request) {
 
 		m, err := ctx.MessageStore.InsertMessage(user.ID, nm)
 		if err != nil {
-			http.Error(w, "error inserting message: "+err.Error(), http.StatusBadRequest)
+			http.Error(w, "error posting message: "+err.Error(), http.StatusBadRequest)
 			return
 		}
 

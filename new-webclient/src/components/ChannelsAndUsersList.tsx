@@ -2,6 +2,7 @@ import * as React from "react";
 import { model, Actions } from "../redux/";
 import { Menu, Icon } from "semantic-ui-react";
 import AddChannelButton from "./modals/AddChannelModal";
+import EditChannelButton from "./modals/EditChannelModal";
 import { Link } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { Dispatch, connect } from "react-redux";
@@ -11,16 +12,20 @@ interface Props extends DispatchProps {
   channels: model.Channel[];
   users: model.User[];
   currentChannel: model.Channel | null;
+  currentUser: model.User | null;
 }
 
 class ChannelsAndUsersList extends React.Component<Props> {
   async changeChannel(chan: model.Channel) {
+    if (chan.id === this.props.currentChannel!.id) {
+      return;
+    }
     await this.props.getChannelMessages!(chan.id);
     await this.props.setCurrentChannel!(chan);
   }
 
   render() {
-    const { channels, currentChannel } = this.props;
+    const { channels, currentChannel, currentUser } = this.props;
     return (
       <Menu vertical borderless fluid>
         <Menu.Item>
@@ -48,6 +53,9 @@ class ChannelsAndUsersList extends React.Component<Props> {
                   <Icon name="hashtag" style={{ float: "left" }} />
                 )}
                 {chan.name}
+                {currentUser && currentUser.id === chan.creatorid ? (
+                  <EditChannelButton channel={chan} />
+                ) : null}
               </Menu.Item>
             ))}
           </Menu.Menu>
