@@ -38,5 +38,9 @@ export const SESSION_FETCH_START = "session/FETCH_START";
 export const SESSION_FETCH_SUCCESS = "session/FETCH_SUCCESS";
 export const SESSION_FETCH_ERROR = "session/FETCH_ERROR";
 
+export const INIT_WS_START = "ws/INIT_START";
+export const INIT_WS_SUCCESS = "ws/INIT_ERROR";
+export const INIT_WS_ERROR = "ws/INIT_ERROR";
+
 export const UI_SHOW_MESSAGEBAR = "ui/SHOW_MESSAGEBAR";
 export const UI_CLEAR_MESSAGEBAR = "ui/CLEAR_MESSAGEBAR";

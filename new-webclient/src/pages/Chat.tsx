@@ -22,6 +22,7 @@ import ChannelsAndUsersList from "../components/ChannelsAndUsersList";
 import Scrollbars from "react-custom-scrollbars";
 import MessageContainer from "./MessageContainer";
 import { deleteToken } from "../redux/util";
+import { initiateWebSocketConnection } from "../redux/operations/websocket";
 
 interface Props extends DispatchProps, StateProps {}
 
@@ -42,6 +43,8 @@ class ChatNew extends React.Component<Props & RouteComponentProps<any>, State> {
       this.props.history.push("/?redir=" + encodeURIComponent(this.props.location.pathname));
       return;
     }
+
+    await this.props.initiateWebSocketConnection!()
 
     // Load users & channels list concurrently. If both
     // fetch calls return null then it was succesful. If not
@@ -142,6 +145,7 @@ interface DispatchProps {
   getUsers?: typeof getUsers;
   showMessageBar?: typeof showMessageBar;
   setCurrentChannel?: typeof setCurrentChannel;
+  initiateWebSocketConnection?: typeof initiateWebSocketConnection;
 }
 
 const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => ({
@@ -152,7 +156,8 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => ({
       getUsers,
       getChannelMessages,
       showMessageBar,
-      setCurrentChannel
+      setCurrentChannel,
+      initiateWebSocketConnection,
     },
     dispatch
   )
