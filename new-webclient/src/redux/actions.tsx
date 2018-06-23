@@ -36,4 +36,7 @@ export const actions = {
   deleteChannelStart: () => createAction(types.DELETE_CHANNEL_START),
   deleteChannelSuccess: (message: string) => createAction(types.DELETE_CHANNEL_SUCCESS, message),
   deleteChannelError: (error: string) => createAction(types.DELETE_CHANNEL_ERROR, error),
+  initWSStart: () => createAction(types.INIT_WS_START),
+  initWSSuccess: () => createAction(types.INIT_WS_SUCCESS),
+  initWSError: () => createAction(types.INIT_WS_ERROR),
 };

@@ -1,0 +1,73 @@
+version: '3.2'
+
+services:
+  redis:
+    image: redis
+    volumes:
+      - react-slack-clone-redisdb:/data
+    container_name: slackredis
+    restart: unless-stopped
+
+  mongo:
+    image: mongo
+    volumes:
+      - react-slack-clone-mongodb:/data/db
+    container_name: slackmongo
+    restart: unless-stopped
+
+  rabbitmq:
+    image: rabbitmq
+    volumes:
+      - react-slack-clone-rabbitmq:/var/lib/rabbitmq
+    container_name: slackmq
+    restart: unless-stopped
+
+  gomessages:
+    build: ./messaging/
+    ports:
+      - 4001:80 #forwards https://localhost:4001 on local computer to port 80 on container
+    environment:
+      - DBADDR=mongo:27017
+      - MQADDR=rabbitmq:5672
+      - TLSKEY=/tls/privkey.pem
+      - TLSCERT=/tls/fullchain.pem
+      - SESSIONKEY
+    volumes:
+      - ./tls/fullchain.pem:/tls/fullchain.pem:ro
+      - ./tls/privkey.pem:/tls/privkey.pem:ro
+    depends_on:
+      - mongo
+      - rabbitmq
+    container_name: slackmessagesms
+    restart: unless-stopped
+
+  gogateway:
+    image: jadiego/react-slack-clone-apigateway
+    build: ./gateway/
+    ports:
+      - 443:443
+      - 4000:443
+    environment:
+      - MSGADDR=gomessages:80
+      - REDISADDR=redis:6379
+      - DBADDR=mongo:27017
+      - MQADDR=rabbitmq:5672
+      - TLSKEY=/tls/privkey.pem
+      - TLSCERT=/tls/fullchain.pem
+      - SESSIONKEY
+    volumes:
+      - ./tls/fullchain.pem:/tls/fullchain.pem:ro
+      - ./tls/privkey.pem:/tls/privkey.pem:ro
+    depends_on:
+      - rabbitmq
+      - mongo
+      - redis
+      - gomessages
+    container_name: slackapigateway
+    restart: unless-stopped
+
+
+volumes:
+  react-slack-clone-mongodb:
+  react-slack-clone-redisdb:
+  react-slack-clone-rabbitmq:
