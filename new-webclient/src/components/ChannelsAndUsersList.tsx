@@ -7,7 +7,7 @@ import EditChannelButton from "./modals/EditChannelModal";
 import { Link } from "react-router-dom";
 import { bindActionCreators } from "redux";
 import { Dispatch, connect } from "react-redux";
-import { setCurrentChannel, getChannelMessages } from "../redux/operations";
+import { setCurrentChannel, getChannelMessages } from "../redux/operations/operations";
 
 interface Props extends DispatchProps {
   channels: model.Channel[];

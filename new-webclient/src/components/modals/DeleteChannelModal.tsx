@@ -1,9 +1,9 @@
 import * as React from "react";
 import { Button, Modal, Message } from "semantic-ui-react";
 import { Actions, model } from "../../redux";
-import { deleteChannel, moveBackToGeneralChannel } from "../../redux/operations";
 import { Dispatch, connect } from "react-redux";
 import { bindActionCreators } from "redux";
+import { deleteChannel, moveBackToGeneralChannel } from "../../redux/operations/operations";
 
 interface State {
   visible: boolean;

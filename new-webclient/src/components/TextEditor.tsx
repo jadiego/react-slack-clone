@@ -4,7 +4,7 @@ import Scrollbars from "react-custom-scrollbars";
 import { connect, Dispatch } from "react-redux";
 import { Actions } from "../redux";
 import { bindActionCreators } from "redux";
-import { postMessage, hideMessageBar } from "../redux/operations";
+import { postMessage, hideMessageBar } from "../redux/operations/operations";
 
 interface Props extends DispatchProps {
   scrollToBottom: (behavior: ScrollBehavior) => void;

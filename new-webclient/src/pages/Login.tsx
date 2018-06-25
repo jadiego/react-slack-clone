@@ -8,7 +8,7 @@ import { parse } from 'query-string';
 import "../styles/login.css";
 
 import { Actions, model } from "../redux/";
-import { signin, showMessageBar, hideMessageBar } from "../redux/operations";
+import { signin, showMessageBar, hideMessageBar } from "../redux/operations/operations";
 import { isAuth } from "../auth/isauth";
 import LoginForm from "../components/forms/LoginForm";
 

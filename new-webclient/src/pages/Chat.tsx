@@ -11,7 +11,7 @@ import {
   getUsers,
   setCurrentChannel,
   showMessageBar
-} from "../redux/operations";
+} from "../redux/operations/operations";
 import { Dispatch, connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { ChannelWithName, ChannelWithID } from "../redux/selectors";

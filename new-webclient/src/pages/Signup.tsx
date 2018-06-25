@@ -5,7 +5,7 @@ import { bindActionCreators } from "redux";
 import { Link, RouteComponentProps } from "react-router-dom";
 
 import { Actions, model } from "../redux/";
-import { signup, hideMessageBar, showMessageBar } from "../redux/operations";
+import { signup, hideMessageBar, showMessageBar } from "../redux/operations/operations";
 
 interface Props extends StateProps, DispatchProps {}
 
