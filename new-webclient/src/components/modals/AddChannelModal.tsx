@@ -8,7 +8,7 @@ import {
   Button
 } from "semantic-ui-react";
 import { model, Actions } from "../../redux";
-import { createChannel } from "../../redux/operations";
+import { createChannel } from "../../redux/operations/operations";
 import { bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
 import AddChannelForm from "../forms/AddChannelForm";

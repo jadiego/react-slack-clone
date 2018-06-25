@@ -2,11 +2,11 @@
 // that might dispatch one or more actions
 
 import { Dispatch } from "redux";
-import { Actions } from "./action-helper";
-import { actions } from "./actions";
-import { model } from ".";
-import { handleError, AppError } from "../errors";
-import { deleteToken, getToken, setToken } from "./util";
+import { Actions } from "../action-helper";
+import { actions } from "../actions";
+import { setToken, getToken, deleteToken } from "../util";
+import { AppError, handleError } from "../../errors";
+import { model } from "..";
 
 export const showMessageBar = actions.showMessageBarUI;
 

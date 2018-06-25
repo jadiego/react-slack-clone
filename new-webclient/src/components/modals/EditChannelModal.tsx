@@ -13,7 +13,7 @@ import "../../styles/modal.css";
 import { connect, Dispatch } from "react-redux";
 import EditChannelForm from "../forms/EditChannelForm";
 import DeleteChannelButton from "./DeleteChannelModal";
-import { updateChannel } from "../../redux/operations";
+import { updateChannel } from "../../redux/operations/operations";
 import { bindActionCreators } from "redux";
 
 const EditButton = (props: any) => (

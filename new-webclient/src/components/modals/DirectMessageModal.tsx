@@ -9,11 +9,11 @@ import {
   DropdownItemProps
 } from "semantic-ui-react";
 import { model, Actions } from "../../redux";
-import { createChannel } from "../../redux/operations";
 import { bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
 import "../../styles/modal.css";
 import AddDMChannelForm from "../forms/AddDMChannelForm";
+import { createChannel } from "../../redux/operations/operations";
 
 const AddButton = (props: any) => (
   <Popup
