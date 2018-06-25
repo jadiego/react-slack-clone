@@ -8,11 +8,13 @@ import {
   Button,
   Message
 } from "semantic-ui-react";
-import { model } from "../../redux";
+import { model, Actions } from "../../redux";
 import "../../styles/modal.css";
-import { connect } from "react-redux";
+import { connect, Dispatch } from "react-redux";
 import EditChannelForm from "../forms/EditChannelForm";
 import DeleteChannelButton from "./DeleteChannelModal";
+import { updateChannel } from "../../redux/operations";
+import { bindActionCreators } from "redux";
 
 const EditButton = (props: any) => (
   <Popup
@@ -27,7 +29,7 @@ const EditButton = (props: any) => (
   />
 );
 
-interface Props extends StateProps {
+interface Props extends StateProps, DispatchProps {
   channel: model.Channel;
 }
 
@@ -58,13 +60,26 @@ class EditChannelButton extends React.Component<Props, State> {
   handleOpen = (e: any) => {
     e.preventDefault();
     e.stopPropagation();
-    this.setState({ visible: true });
+    let { name, description } = this.props.channel;
+    this.setState({ visible: true, name, description});
   };
 
   handleClose = () => this.setState(initialState);
 
   submit = () => {
-    // do something
+    this.setState({ warning: "" });
+    let args = {
+      name: this.state.name,
+      description: this.state.description
+    } as model.EditChannelFormArgs;
+    (async () => {
+      let resp = await this.props.updateChannel!(this.props.channel.id, args);
+      if (resp !== null) {
+        this.setState({ warning: (resp as any) as string });
+      } else {
+        this.setState({ visible: false });
+      }
+    })();
   };
 
   render() {
@@ -109,11 +124,11 @@ class EditChannelButton extends React.Component<Props, State> {
               />
               <Header size="huge">Danger Zone</Header>
               <Message as={Segment} clearing>
-                <DeleteChannelButton id={channel.id}/>
+                <DeleteChannelButton id={channel.id} />
                 <Message.Header>Delete this channel</Message.Header>
                 <span>
-                  Once you delete a channel, there is no going back. Please
-                  be certain.
+                  Once you delete a channel, there is no going back. Please be
+                  certain.
                 </span>
               </Message>
             </Segment>
@@ -132,12 +147,15 @@ const mapStateToProps = (state: model.StoreState): StateProps => ({
   fetching: state.fetching
 });
 
-// interface DispatchProps {
-//   createChannel?: typeof createChannel;
-// }
+interface DispatchProps {
+  updateChannel?: typeof updateChannel;
+}
 
-// const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => ({
-//   ...bindActionCreators({ createChannel }, dispatch)
-// });
+const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => ({
+  ...bindActionCreators({ updateChannel }, dispatch)
+});
 
-export default connect<StateProps>(mapStateToProps)(EditChannelButton);
+export default connect<StateProps>(
+  mapStateToProps,
+  mapDispatchToProps
+)(EditChannelButton);

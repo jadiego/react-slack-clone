@@ -5,21 +5,22 @@ import {
   Segment,
   TransitionablePortal,
   Header,
-  Button
+  Button,
+  DropdownItemProps
 } from "semantic-ui-react";
 import { model, Actions } from "../../redux";
 import { createChannel } from "../../redux/operations";
 import { bindActionCreators, Dispatch } from "redux";
 import { connect } from "react-redux";
-import AddChannelForm from "../forms/AddChannelForm";
 import "../../styles/modal.css";
+import AddDMChannelForm from "../forms/AddDMChannelForm";
 
 const AddButton = (props: any) => (
   <Popup
     trigger={
       <Icon name="plus" style={{ float: "right" }} onClick={props.onClick} />
     }
-    content="Create channel"
+    content="Start a new direct message"
     position="top center"
     inverted
     basic
@@ -27,38 +28,28 @@ const AddButton = (props: any) => (
   />
 );
 
-interface Props extends DispatchProps, StateProps {}
+interface Props extends DispatchProps, StateProps {
+  users: model.User[];
+}
 
 interface State {
   visible: boolean;
-  checked: boolean;
-  description: string;
-  name: string;
   warning: string;
+  value: string;
 }
 
 const initialState: State = {
   visible: false,
-  checked: false,
-  description: "",
-  name: "",
-  warning: ""
+  warning: "",
+  value: "",
 };
-class AddChannelButton extends React.Component<Props, State> {
+class AddDMChannelButton extends React.Component<Props, State> {
   readonly state = initialState;
 
   submit = () => {
     this.setState({ warning: "" });
-
-    const { checked, description, name } = this.state;
-    let args: model.NewChannelFormArgs = {
-      description,
-      private: checked,
-      name,
-      members: [],
-      type: 0,
-    };
     (async () => {
+      let args = { members: [this.state.value], type: 1} as any;
       let resp = await this.props.createChannel!(args);
       if (resp !== null) {
         this.setState({ warning: (resp as any) as string });
@@ -68,18 +59,25 @@ class AddChannelButton extends React.Component<Props, State> {
     })();
   };
 
-  handleChange = (e: any) =>
-    this.setState({ [e.target.name]: e.target.value } as any);
+  handleChange = (e: any, { value }: any) => this.setState({ value } as any);
 
   handleOpen = () => this.setState({ visible: true });
 
   handleClose = () => this.setState(initialState);
 
-  togglePrivacy = () => this.setState({ checked: !this.state.checked });
+  options = (): DropdownItemProps[] => {
+    return this.props.users.map(u => {
+      let image = {
+      size:"mini",
+      src:u.photoURL,
+      }
+      return { image, text: u.userName, value: u.id, key: u.id };
+    })
+  }
 
   render() {
-    const { visible, checked, description, name, warning } = this.state;
     const { fetching } = this.props;
+    const { visible, warning, value } = this.state;
 
     return (
       <React.Fragment>
@@ -104,16 +102,14 @@ class AddChannelButton extends React.Component<Props, State> {
               onClick={this.handleClose}
             />
             <Segment basic padded className="modal-inner" clearing>
-              <Header size="huge">Create a Channel</Header>
-              <AddChannelForm
-                checked={checked}
+              <Header size="huge">Direct Messages</Header>
+              <AddDMChannelForm 
                 count={fetching.count}
-                description={description}
-                name={name}
                 warning={warning}
                 submit={this.submit}
                 handleChange={this.handleChange}
-                togglePrivacy={this.togglePrivacy}
+                options={this.options()}
+                value={value}
               />
             </Segment>
           </Segment>
@@ -135,11 +131,11 @@ interface DispatchProps {
   createChannel?: typeof createChannel;
 }
 
-const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => ({
+const mapDispatchToProps = (dispatch: Dispatch<Actions>) => ({
   ...bindActionCreators({ createChannel }, dispatch)
 });
 
-export default connect<Props>(
+export default connect<StateProps, DispatchProps>(
   mapStateToProps,
   mapDispatchToProps
-)(AddChannelButton);
+)(AddDMChannelButton);

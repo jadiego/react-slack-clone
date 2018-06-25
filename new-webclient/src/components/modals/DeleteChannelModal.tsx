@@ -23,7 +23,7 @@ class DeleteChannelButton extends React.Component<Props, State> {
   show = () => this.setState({ visible: true });
 
   handleConfirm = () => {
-    const { id, currentchannel } = this.props;
+    const { id } = this.props;
     (async () => {
       let resp = await this.props.deleteChannel!(id);
       if (resp !== null) {
@@ -31,11 +31,9 @@ class DeleteChannelButton extends React.Component<Props, State> {
       } else {
         // if succesful we don't need to force a visible update
         // because it will unmount itself. So we do nothing here
-        // except for check if we are on that page. If we are then
-        // we should change the current channel to general channel
-        if (currentchannel!.id === id) {
-          await this.props.moveBackToGeneralChannel!();
-        }
+        // except for check if we are on that page. However, if 
+        // we are on on the same page then the app will reload to
+        // the home page "/".
       }
     })();
   }

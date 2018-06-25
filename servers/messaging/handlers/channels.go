@@ -26,47 +26,91 @@ func (ctx *Context) ChannelsHandler(w http.ResponseWriter, r *http.Request) {
 
 	switch r.Method {
 	case "POST":
+		queryparams := r.URL.Query()
+		ctype := queryparams.Get("type")
+
+		if ctype != "0" && ctype != "1" {
+			http.Error(w, "channel type must be provided", http.StatusBadRequest)
+			return
+		}
+
 		// Decode the request body into a models.NewChannel struct
 		d := json.NewDecoder(r.Body)
-		nc := &messages.NewChannel{}
-		if err := d.Decode(nc); err != nil {
-			http.Error(w, "invalid JSON", http.StatusBadRequest)
-			return
-		}
 
-		// Validate the models.NewChannel
-		err := nc.Validate()
-		if err != nil {
-			http.Error(w, "invalid channel: "+err.Error(), http.StatusBadRequest)
-			return
-		}
+		if ctype == "0" {
+			nc := &messages.NewChannel{}
+			if err := d.Decode(nc); err != nil {
+				http.Error(w, "invalid JSON", http.StatusBadRequest)
+				return
+			}
 
-		// adds creator to members list if empty
-		if len(nc.Members) == 0 {
-			nc.Members = append(nc.Members, user.ID)
-		}
+			// Validate the models.NewChannel
+			err := nc.Validate()
+			if err != nil {
+				http.Error(w, "invalid channel: "+err.Error(), http.StatusBadRequest)
+				return
+			}
 
-		c, err := ctx.MessageStore.InsertChannel(user.ID, nc)
-		if err != nil {
-			http.Error(w, "error inserting channel: "+err.Error(), http.StatusInternalServerError)
-			return
-		}
+			// adds creator to members list if empty
+			if len(nc.Members) == 0 {
+				nc.Members = append(nc.Members, user.ID)
+			}
 
-		chevent, err := c.ToChannelEvent("new")
-		if err != nil {
-			http.Error(w, "error creating websocket channel event", http.StatusInternalServerError)
-			return
-		}
-		err = ctx.MessagingMQ.PublishToMessagingMQ(chevent)
-		if err != nil {
-			http.Error(w, "error notifying websocket clients: "+err.Error(), http.StatusInternalServerError)
-			return
-		}
+			c, err := ctx.MessageStore.InsertChannel(user.ID, nc)
+			if err != nil {
+				http.Error(w, "error inserting channel: "+err.Error(), http.StatusInternalServerError)
+				return
+			}
 
-		w.Header().Add(headerContentType, contentTypeJSONUTF8)
-		encoder := json.NewEncoder(w)
-		encoder.Encode(c)
+			chevent, err := c.ToChannelEvent("new")
+			if err != nil {
+				http.Error(w, "error creating websocket channel event", http.StatusInternalServerError)
+				return
+			}
+			err = ctx.MessagingMQ.PublishToMessagingMQ(chevent)
+			if err != nil {
+				http.Error(w, "error notifying websocket clients: "+err.Error(), http.StatusInternalServerError)
+				return
+			}
 
+			w.Header().Add(headerContentType, contentTypeJSONUTF8)
+			encoder := json.NewEncoder(w)
+			encoder.Encode(c)
+		} else {
+			nc := &messages.NewDMChannel{}
+			if err := d.Decode(nc); err != nil {
+				http.Error(w, "invalid JSON", http.StatusBadRequest)
+				return
+			}
+
+			// Validate the models.NewDMhannel
+			err := nc.Validate()
+			if err != nil {
+				http.Error(w, "invalid channel: "+err.Error(), http.StatusBadRequest)
+				return
+			}
+
+			c, err := ctx.MessageStore.InsertDMChannel(user.ID, nc)
+			if err != nil {
+				http.Error(w, "error inserting channel: "+err.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			chevent, err := c.ToChannelEvent("new")
+			if err != nil {
+				http.Error(w, "error creating websocket channel event", http.StatusInternalServerError)
+				return
+			}
+			err = ctx.MessagingMQ.PublishToMessagingMQ(chevent)
+			if err != nil {
+				http.Error(w, "error notifying websocket clients: "+err.Error(), http.StatusInternalServerError)
+				return
+			}
+
+			w.Header().Add(headerContentType, contentTypeJSONUTF8)
+			encoder := json.NewEncoder(w)
+			encoder.Encode(c)
+		}
 	case "GET":
 
 		// returns a slice of channels the current user is authorized to see.
@@ -116,7 +160,8 @@ func (ctx *Context) SpecificChannelHandler(w http.ResponseWriter, r *http.Reques
 	switch r.Method {
 	// gets the most recent 500 messages form the specified channel if user is allowed.
 	case "GET":
-		if c.Private && !c.IsMember(user.ID) {
+		if (c.Type == 0 && c.Private && !c.IsMember(user.ID)) &&
+			(c.Type == 1 && (c.CreatorID != user.ID || !c.IsMember(user.ID))) {
 			http.Error(w, "error getting channel : you are either not a member or the channel is private", http.StatusUnauthorized)
 			return
 		}

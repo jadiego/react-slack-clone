@@ -16,15 +16,19 @@ export const CHANNELS_FETCH_START = "channels/FETCH_START";
 export const CHANNELS_FETCH_SUCCESS = "channels/FETCH_SUCCESS";
 export const CHANNELS_FETCH_ERROR = "channels/FETCH_ERROR";
 
-export const CHANNELS_CREATE_START = "channels/CREATE_START";
-export const CHANNELS_CREATE_SUCCESS = "channels/CREATE_SUCCESS";
-export const CHANNELS_CREATE_ERROR = "channels/CREATE_ERROR";
-
-export const SET_CURRENT_CHANNEL = "channel/SET_CHANNEL";
+export const CREATE_CHANNEL_START = "channel/CREATE_START";
+export const CREATE_CHANNEL_SUCCESS = "channel/CREATE_SUCCESS";
+export const CREATE_CHANNEL_ERROR = "channel/CREATE_ERROR";
 
 export const DELETE_CHANNEL_START = "channel/DELETE_START";
 export const DELETE_CHANNEL_SUCCESS = "channel/DELETE_SUCCESS";
 export const DELETE_CHANNEL_ERROR = "channel/DELETE_ERROR";
+
+export const UPDATE_CHANNEL_START = "channel/UPDATE_START";
+export const UPDATE_CHANNEL_SUCCESS = "channel/UPDATE_SUCCESS";
+export const UPDATE_CHANNEL_ERROR = "channel/UPDATE_ERROR";
+
+export const SET_CURRENT_CHANNEL = "channel/SET_CHANNEL";
 
 export const MESSAGES_FETCH_START = "messages/FETCH_START";
 export const MESSAGES_FETCH_SUCCESS = "messages/FETCH_SUCCESS";
@@ -39,8 +43,16 @@ export const SESSION_FETCH_SUCCESS = "session/FETCH_SUCCESS";
 export const SESSION_FETCH_ERROR = "session/FETCH_ERROR";
 
 export const INIT_WS_START = "ws/INIT_START";
-export const INIT_WS_SUCCESS = "ws/INIT_ERROR";
+export const INIT_WS_SUCCESS = "ws/INIT_SUCCESS";
 export const INIT_WS_ERROR = "ws/INIT_ERROR";
+
+export const WS_CHANNEL_UPDATE = "ws/CHANNEL_UPDATE"
+export const WS_CHANNEL_NEW = "ws/CHANNEL_NEW"
+export const WS_CHANNEL_DELETE = "ws/CHANNEL_DELETE"
+
+export const WS_MESSAGE_UPDATE = "ws/MESSAGE_UPDATE"
+export const WS_MESSAGE_NEW = "ws/MESSAGE_NEW"
+export const WS_MESSAGE_DELETE = "ws/MESSAGE_DELETE"
 
 export const UI_SHOW_MESSAGEBAR = "ui/SHOW_MESSAGEBAR";
 export const UI_CLEAR_MESSAGEBAR = "ui/CLEAR_MESSAGEBAR";

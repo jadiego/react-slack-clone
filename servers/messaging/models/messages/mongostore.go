@@ -31,9 +31,9 @@ type MongoStore struct {
 // channels the user is a member of, as well as all public channels, if is creator)
 func (ms *MongoStore) GetMyChannels(id users.UserID) ([]*Channel, error) {
 	channels := []*Channel{}
-	idquery := bson.M{"members": id}
-	privatequery := bson.M{"private": false}
-	query := bson.M{"$or": []bson.M{idquery, privatequery}}
+	privatechans := bson.M{"$or": []bson.M{{"members": id}, {"creator_id": id}}}
+	publicchans := bson.M{"private": false}
+	query := bson.M{"$or": []bson.M{privatechans, publicchans}}
 	err := ms.Session.DB(ms.DatabaseName).C(ms.ChanColName).Find(query).All(&channels)
 	return channels, err
 }

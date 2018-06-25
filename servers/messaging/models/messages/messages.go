@@ -37,7 +37,7 @@ type MessageUpdates struct {
 // MessageEvent represents a websocket notification for messages
 type MessageEvent struct {
 	Type    string  `json:"type"`
-	Subtype string  `json:"sybtype"`
+	Subtype string  `json:"subtype"`
 	Message Message `json:"message"`
 }
 

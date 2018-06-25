@@ -44,9 +44,20 @@ export interface SignupFormArgs {
 }
 
 export interface NewChannelFormArgs {
-  name: string,
-  private: boolean,
-  members: string[],
+  name: string;
+  private: boolean;
+  members: string[];
+  description: string;
+  type: 0;
+}
+
+export interface NewDMChannelFormArgs {
+  members: string[];
+  type: 1;
+}
+
+export interface EditChannelFormArgs {
+  name: string;
   description: string;
 }
 
@@ -64,6 +75,7 @@ export interface Channel {
   creatorid: string;
   members: string[];
   private: boolean;
+  type: number;
 }
 
 export interface Message {
