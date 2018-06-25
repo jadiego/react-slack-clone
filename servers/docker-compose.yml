@@ -12,6 +12,8 @@ services:
     image: mongo
     volumes:
       - react-slack-clone-mongodb:/data/db
+    ports:
+      - 27017:27017
     container_name: slackmongo
     restart: unless-stopped
 

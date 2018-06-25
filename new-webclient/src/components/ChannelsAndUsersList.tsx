@@ -2,6 +2,7 @@ import * as React from "react";
 import { model, Actions } from "../redux/";
 import { Menu, Icon } from "semantic-ui-react";
 import AddChannelButton from "./modals/AddChannelModal";
+import AddDMChannelButton from "./modals/DirectMessageModal";
 import EditChannelButton from "./modals/EditChannelModal";
 import { Link } from "react-router-dom";
 import { bindActionCreators } from "redux";
@@ -24,8 +25,16 @@ class ChannelsAndUsersList extends React.Component<Props> {
     await this.props.setCurrentChannel!(chan);
   }
 
+  idToUsername(id: string) {
+    return this.props.users.find((u) => u.id === id)!.userName;
+  }
+
   render() {
-    const { channels, currentChannel, currentUser } = this.props;
+    const { channels, currentChannel, currentUser, users } = this.props;
+
+    let chans = channels.filter(c => c.type === 0);
+    let dmchans = channels.filter(c=> c.type === 1);
+
     return (
       <Menu vertical borderless fluid>
         <Menu.Item>
@@ -35,7 +44,7 @@ class ChannelsAndUsersList extends React.Component<Props> {
           </Menu.Header>
 
           <Menu.Menu>
-            {channels.map(chan => (
+            {chans.map(chan => (
               <Menu.Item
                 key={chan.id}
                 name={chan.name}
@@ -64,10 +73,27 @@ class ChannelsAndUsersList extends React.Component<Props> {
         <Menu.Item>
           <Menu.Header className="gray">
             DIRECT MESSAGES
-            <AddChannelButton />
+            <AddDMChannelButton users={users}/>
           </Menu.Header>
 
-          <Menu.Menu>{/* messages go here */}</Menu.Menu>
+          <Menu.Menu>
+          {dmchans.map(chan => (
+              <Menu.Item
+                key={chan.id}
+                name={chan.id}
+                as={Link}
+                to={`/channel/${chan.id}`}
+                // tslint:disable-next-line:jsx-no-lambda
+                onClick={() => this.changeChannel(chan)}
+                active={
+                  currentChannel !== null && currentChannel.id === chan.id
+                }
+              >
+                <Icon name="at" style={{ float: "left" }} />
+                {this.idToUsername(chan.members[0])}
+              </Menu.Item>
+            ))}
+          </Menu.Menu>
         </Menu.Item>
       </Menu>
     );

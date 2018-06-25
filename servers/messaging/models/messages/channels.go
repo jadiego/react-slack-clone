@@ -52,7 +52,7 @@ type ChannelUpdates struct {
 // ChannelEvent represents a websocket notification for channels
 type ChannelEvent struct {
 	Type    string  `json:"type"`
-	Subtype string  `json:"sybtype"`
+	Subtype string  `json:"subtype"`
 	Channel Channel `json:"channel"`
 }
 

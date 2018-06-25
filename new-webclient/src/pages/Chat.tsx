@@ -2,7 +2,7 @@ import * as React from "react";
 import { Grid } from "semantic-ui-react";
 
 import "../styles/chat.css";
-import { RouteComponentProps } from "react-router";
+import { RouteComponentProps, Route } from "react-router";
 import { model, Actions } from "../redux";
 import {
   checkSession,
@@ -40,11 +40,13 @@ class ChatNew extends React.Component<Props & RouteComponentProps<any>, State> {
     // then push client back to login page for authentication
     let resp = await this.props.checkSession!();
     if (resp !== null) {
-      this.props.history.push("/?redir=" + encodeURIComponent(this.props.location.pathname));
+      this.props.history.push(
+        "/?redir=" + encodeURIComponent(this.props.location.pathname)
+      );
       return;
     }
 
-    await this.props.initiateWebSocketConnection!()
+    await this.props.initiateWebSocketConnection!();
 
     // Load users & channels list concurrently. If both
     // fetch calls return null then it was succesful. If not
@@ -54,8 +56,10 @@ class ChatNew extends React.Component<Props & RouteComponentProps<any>, State> {
       this.props.getChannels!()
     ]);
     if (u !== null || c !== null) {
-      deleteToken()
-      this.props.history.push("/?redir=" + encodeURIComponent(this.props.location.pathname));
+      deleteToken();
+      this.props.history.push(
+        "/?redir=" + encodeURIComponent(this.props.location.pathname)
+      );
       return;
     }
 
@@ -81,17 +85,28 @@ class ChatNew extends React.Component<Props & RouteComponentProps<any>, State> {
     // Fetch current channel's messages
     await this.props.getChannelMessages!(channel.id);
 
-
     this.setState({ loading: false });
   }
 
   render() {
     const { loading } = this.state;
-    const { currentuser, channels, users, currentchannel, messages } = this.props;
+    const {
+      currentuser,
+      channels,
+      users,
+      currentchannel,
+      messages
+    } = this.props;
 
     return (
       <Grid id="chat-container" columns="equal">
-        <Grid.Column mobile="4" computer="3" className="bg-gray" id="sidebar">
+        <Grid.Column
+          mobile="3"
+          computer="3"
+          widescreen="2"
+          className="bg-gray"
+          id="sidebar"
+        >
           <Scrollbars autoHide>
             {loading ? (
               <UserProfileLoader />
@@ -111,10 +126,17 @@ class ChatNew extends React.Component<Props & RouteComponentProps<any>, State> {
           </Scrollbars>
         </Grid.Column>
         <Grid.Column id="messages">
-          <MessageContainer 
-          loading={loading} 
-          messages={messages} 
-          currentchannel={currentchannel}
+          <Route
+            path="/channel/:id"
+            // tslint:disable-next-line:jsx-no-lambda
+            render={(props) => (
+              <MessageContainer
+                loading={loading}
+                messages={messages}
+                currentchannel={currentchannel}
+                {...props}
+              />
+            )}
           />
         </Grid.Column>
       </Grid>
@@ -157,7 +179,7 @@ const mapDispatchToProps = (dispatch: Dispatch<Actions>): DispatchProps => ({
       getChannelMessages,
       showMessageBar,
       setCurrentChannel,
-      initiateWebSocketConnection,
+      initiateWebSocketConnection
     },
     dispatch
   )

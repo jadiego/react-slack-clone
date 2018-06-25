@@ -1,9 +1,18 @@
-.modal-container input, .modal-container textarea {
+.modal-container input, .modal-container textarea, .modal-container div[role="listbox"] {
   background-color: rgba(79,84,92,.02) !important;
 }
 
-.modal-container input:hover, .modal-container textarea:hover {
+.modal-container input:hover, .modal-container textarea:hover, .modal-container div[role="listbox"] {
   border-color: #b9bbbe !important;
+}
+
+.modal-container div[role="listbox"] .item {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.modal-container div[role="listbox"] img {
+  margin-right: 5px !important;
 }
 
 .modal-container {

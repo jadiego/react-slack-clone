@@ -223,12 +223,12 @@ export const postMessage = (text: string) => async (
  * Creates a channel with given arguments
  * POST /v1/channels
  */
-export const createChannel = (args: model.NewChannelFormArgs) => async (
+export const createChannel = (args: model.NewChannelFormArgs | model.NewDMChannelFormArgs) => async (
   dispatch: Dispatch<Actions>
 ) => {
   try {
     dispatch(actions.createChannelStart());
-    let resp = await fetch(process.env.REACT_APP_API_ROOT + "channels", {
+    let resp = await fetch(process.env.REACT_APP_API_ROOT + "channels?type=" + args.type, {
       method: "POST",
       headers: {
         Authorization: getToken()!
@@ -275,6 +275,38 @@ export const deleteChannel = (id: string) => async (
     return handleError(
       dispatch,
       actions.deleteChannelError(err.message),
+      err.message
+    );
+  }
+};
+
+/**
+ * Updates the channel with given id and args
+ * DELETE /v1/channels/<id>
+ */
+export const updateChannel = (
+  id: string,
+  args: model.EditChannelFormArgs
+) => async (dispatch: Dispatch<Actions>) => {
+  try {
+    dispatch(actions.updateChannelStart());
+    let resp = await fetch(process.env.REACT_APP_API_ROOT + `channels/${id}`, {
+      method: "PATCH",
+      headers: {
+        Authorization: getToken()!
+      },
+      body: JSON.stringify(args),
+    });
+    if (resp.ok) {
+      dispatch(actions.updateChannelSuccess(await resp.json()));
+      return null;
+    } else {
+      throw AppError(resp.status, await resp.text());
+    }
+  } catch (err) {
+    return handleError(
+      dispatch,
+      actions.updateChannelError(err.message),
       err.message
     );
   }
