@@ -33,16 +33,16 @@ const (
 	apiSpecificChannels = apiChannels + "/"
 	apiSpecificMessages = apiMessages + "/"
 	apiWebSocket        = apiRoot + "websocket"
-	// apiChatBot          = apiRoot + "bot"
+	apiChatBot          = apiRoot + "bot"
 )
 
 var (
-	port      = os.Getenv("PORT")
-	host      = os.Getenv("HOST")
-	redisAddr = os.Getenv("REDISADDR")
-	dbAddr    = os.Getenv("DBADDR")
-	mqAddr    = os.Getenv("MQADDR")
-	// chatbotAddr = os.Getenv("CHATBOTADDR")
+	port        = os.Getenv("PORT")
+	host        = os.Getenv("HOST")
+	redisAddr   = os.Getenv("REDISADDR")
+	dbAddr      = os.Getenv("DBADDR")
+	mqAddr      = os.Getenv("MQADDR")
+	chatbotAddr = os.Getenv("CHATBOTADDR")
 	msgAddrs    = os.Getenv("MSGADDR")
 	sesskey     = os.Getenv("SESSIONKEY")
 	tlsKeyPath  = os.Getenv("TLSKEY")
@@ -76,9 +76,9 @@ func init() {
 	if len(msgAddrs) == 0 {
 		log.Fatal("you must supply a value for MSGADDR")
 	}
-	// if len(chatbotAddr) == 0 {
-	// 	log.Fatal("you must supply a value for CHATBOTADDR")
-	// }
+	if len(chatbotAddr) == 0 {
+		log.Fatal("you must supply a value for CHATBOTADDR")
+	}
 }
 
 func main() {
@@ -118,6 +118,9 @@ func main() {
 	muxWithMiddleware.Handle(apiSpecificChannels, handlers.NewServiceProxy(msgAddrs, ctx))
 	muxWithMiddleware.Handle(apiMessages, handlers.NewServiceProxy(msgAddrs, ctx))
 	muxWithMiddleware.Handle(apiSpecificMessages, handlers.NewServiceProxy(msgAddrs, ctx))
+
+	// setup Chatbot microservice
+	muxWithMiddleware.Handle(apiChatBot, handlers.NewServiceProxy(chatbotAddr, ctx))
 
 	// create a new Notifer and set up websocket handler
 	notifier := handlers.NewNotifier()

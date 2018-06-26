@@ -1,6 +1,4 @@
-"use strict";
-
-const mongodb = require('mongodb');
+const mongodb = require("mongodb");
 const moment = require("moment");
 
 /**
@@ -24,7 +22,7 @@ class MongoStore {
    * @param {string} name
    */
   async getChannel(name) {
-    let query = { "name": name };
+    let query = { name: name };
     let channel = await this.ChannelCol.findOne(query);
     return channel;
   }
@@ -34,7 +32,7 @@ class MongoStore {
    * @param {string} id
    */
   async getUser(id) {
-    let query = { "_id": id };
+    let query = { _id: id };
     let user = await this.UsersCol.findOne(query);
     return user;
   }
@@ -56,25 +54,35 @@ class MongoStore {
    * @param {string} channelid
    */
   async getLastMessage(userid, channelid) {
+    let query;
     if (channelid === undefined) {
-      var query = { "creator_id": userid };
+      query = { creator_id: userid };
     } else {
-      var query = { "creator_id": userid, "channel_id": channelid };
+      query = { creator_id: userid, channel_id: channelid };
     }
-    let options = { "sort": [["createdat", "desc"]] };
+    let options = { sort: [["createdat", "desc"]] };
     let message = await this.MessagesCol.findOne(query, options);
     return message;
   }
 
   async countMessages(userid, channelid, date) {
+    let query;
     if (date === undefined) {
-      var query = { "creator_id": userid, "channel_id": channelid };
+      query = { creator_id: userid, channel_id: channelid };
     } else {
       var dateQuery = {
-        "$gte": moment(date).startOf("day").toDate(),
-        "$lt": moment(date).endOf("day").toDate()
+        $gte: moment(date)
+          .startOf("day")
+          .toDate(),
+        $lt: moment(date)
+          .endOf("day")
+          .toDate()
       };
-      var query = { "creator_id": userid, "channel_id": channelid, "createdat": dateQuery };
+      query = {
+        creator_id: userid,
+        channel_id: channelid,
+        createdat: dateQuery
+      };
     }
     let count = await this.MessagesCol.count(query);
     return count;
@@ -86,7 +94,7 @@ class MongoStore {
       $group: { _id: "$creator_id", count: { $sum: 1 } }
     };
     let sortQuery = { $sort: { count: -1 } };
-    let query = [matchQuery, groupQuery, sortQuery]
+    let query = [matchQuery, groupQuery, sortQuery];
 
     let cursor = await this.MessagesCol.aggregate(query);
     let results = await cursor.toArray();

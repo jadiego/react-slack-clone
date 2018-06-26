@@ -1,8 +1,7 @@
 FROM node
-RUN mkdir /app
 WORKDIR /app
-COPY package.json /app
+COPY package.json package-lock.json ./
 RUN npm install
-COPY . /app
+COPY . .
 EXPOSE 80
 CMD ["node", "index.js"]
