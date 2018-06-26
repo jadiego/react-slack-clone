@@ -1,0 +1,181 @@
+#chat-container {
+  margin: 0;
+  height: 100%;
+}
+
+#sidebar {
+  padding: 0 !important;
+  border-right: 1px solid rgb(207, 207, 209);
+  color: #2c2d30;
+}
+
+#sidebar .active.item {
+  background: rgb(53, 159, 222);
+  color: white;
+}
+
+#sidebar i.plus:hover {
+  cursor: pointer;
+}
+
+#sidebar .menu {
+  border: 0;
+  background-color: inherit;
+  box-shadow: none;
+  overflow-y: hidden;
+}
+
+#sidebar .menu .item {
+  font-size: 0.98em;
+  padding-top: 8px;
+  padding-bottom: 8px;
+}
+
+#sidebar .menu .item .item {
+  padding: 0.591429em 1.04285714em;
+}
+
+#sidebar .menu .item .item .icon {
+  margin-left: 0;
+  margin-right: 6px;
+}
+
+#sidebar .menu .item .item .icon {
+  margin-left: 0;
+  margin-right: 6px;
+}
+
+#sidebar .menu .item .item .setting.icon {
+  display: none;
+}
+
+#sidebar .menu .item .active.item .setting.icon,
+#sidebar .menu .item .item:focus .setting.icon, 
+#sidebar .menu .item .item:hover .setting.icon {
+  display: block;
+}
+
+#client-header {
+  margin: 0;
+  height: 52.16px;
+  border: 0;
+  border-radius: 0;
+  border-bottom: 1px solid rgb(207, 207, 209);
+  padding-top: 0px;
+  display: flex;
+  align-items: center;
+  padding-bottom: 0px;
+}
+
+#client-header .header {
+  margin: auto 0;
+}
+
+#client-header .header .content {
+  padding-left: 4px;
+}
+
+#messages {
+  padding: 0 !important;
+}
+
+#messages-container {
+  height: calc(100% - 52.16px); /* The 40 px is from #topnav */
+  border: 0 !important;
+  border-radius: 0;
+  padding: 0;
+  margin: 0 !important;
+
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  overflow-y: hidden;
+}
+
+#messages-container #messages-list-container {
+  display: flex;
+  flex: 1;
+  padding: 10px 0px;
+  height: 100%;
+  flex-direction: column;
+}
+
+#messages-container #messages-list-container .items {
+  margin: 0;
+}
+
+#messages-container #messages-list-container .item {
+  padding-left: 20px;
+  padding-right: 20px;
+  margin: 0;
+}
+
+#messages-container #messages-list-container .item:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+#messages-container #messages-list-container .image {
+  padding-top: 7px;
+}
+
+#messages-container #messages-list-container .meta {
+  margin: 0;
+}
+
+#messages-container #messages-list-container .description {
+  margin-top: 0.2em;
+  word-wrap: break-word;
+  color: #737f8d;
+}
+
+#messages-container #messages-list-container .comment-name {
+  font-weight: 800;
+}
+
+#messages-container #messages-list-container .comment-date {
+  color: rgba(0, 0, 0, 0.4);
+}
+
+#messages-container #textarea-container {
+  margin: 0 15px;
+  padding: 10px 0;
+  border-top: solid 1px rgb(229,229,229);
+  order: 1;
+  flex-shrink: 0;
+}
+
+#messages-container #textarea-container textarea {
+  border: 0;
+  background-color: #f6f6f7;
+  width: 100%;
+  outline: none;
+  border-radius: 4px;
+  padding: 10px;
+  color: #737f8d !important;
+}
+
+#messages-container .track-vertical {
+  position: absolute;
+  width: 8px !important;
+  right: 5px;
+  bottom: 3px;
+  top: 3px;
+  border-radius: 4px;
+  background-color: #f6f6f7;
+}
+
+#messages-container .thumb-vertical {
+  position: relative;
+  display: block;
+  width: 100%;
+  cursor: pointer;
+  border-radius: inherit;
+  background-color: rgb(53, 159, 222);
+  height: 79px;
+}
+
+@media only screen and (max-width: 767px) {
+  #messages-container #messages-list-container .image {
+    display: none;
+  }
+}

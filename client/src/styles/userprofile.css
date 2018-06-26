@@ -1,0 +1,28 @@
+#user-profile {
+  box-shadow: none;
+  margin-bottom: 0;
+}
+
+#user-profile .header {
+  padding: 8px 3px;
+  overflow-x: hidden;
+  text-overflow: ellipsis;
+  font-size: 1em;
+}
+
+#user-profile .content {
+  padding-top: 7px;
+  padding-bottom: 7px;
+  display: flex;
+  align-items: center;
+}
+
+#user-profile .image {
+  margin: 0;
+  margin-right: 3px;
+}
+
+#user-profile.card {
+  width: 100% !important;
+  border-radius: 0 !important;
+}
