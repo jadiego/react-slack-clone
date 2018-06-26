@@ -23,7 +23,17 @@ services:
       - react-slack-clone-rabbitmq:/var/lib/rabbitmq
     container_name: slackmq
     restart: unless-stopped
-
+  
+  nodechatbot:
+    build: ./chatbot/
+    environment:
+      - WITAITOKEN
+      - MONGOADDR=mongo:27017
+    depends_on:
+      - mongo
+    container_name: slackchatbot
+    restart: unless-stopped
+  
   gomessages:
     build: ./messaging/
     ports:
@@ -51,6 +61,7 @@ services:
       - 4000:443
     environment:
       - MSGADDR=gomessages:80
+      - CHATBOTADDR=nodechatbot:80
       - REDISADDR=redis:6379
       - DBADDR=mongo:27017
       - MQADDR=rabbitmq:5672

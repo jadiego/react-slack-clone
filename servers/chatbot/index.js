@@ -1,11 +1,11 @@
-"use strict";
-
 const express = require("express");
 const morgan = require("morgan");
 const bodyParser = require("body-parser");
-const MongoClient = require("mongodb").MongoClient;
+const mongodb = require("mongodb");
 const cors = require("cors");
 const assert = require("assert");
+const sleep = require('sleep');
+
 
 const MessageStore = require("./models/messages/mongostore.js");
 
@@ -15,14 +15,14 @@ const mongoAddr = process.env.MONGOADDR || "localhost:27017";
 
 const app = express();
 
-//for request logging
+// for request logging
 app.use(morgan(process.env.LOGFORMAT || "dev"));
 
-//middleware that parses any JSON posted to this app.
-//the parsed data will be available on the req.body property
+// middleware that parses any JSON posted to this app.
+// the parsed data will be available on the req.body property
 app.use(bodyParser.json());
 
-//add cors headers
+// add cors headers
 app.use(cors());
 
 let mongoconf = {
@@ -31,16 +31,14 @@ let mongoconf = {
   reconnectInterval: 1000,
 };
 
+const url = `mongodb://${mongoAddr}`;
+const dbName = "chat";
+
 (async function() {
-  const url = `mongodb://${mongoAddr}/chat`;
-  const dbName = "chat";
   let client;
 
   try {
-    client = await MongoClient.connect(
-      url,
-      mongoconf
-    );
+    client = await mongodb.MongoClient.connect(url, mongoconf);
     const db = client.db(dbName);
 
     let colChannels = db.collection("channels");
@@ -50,14 +48,14 @@ let mongoconf = {
     let handlers = require("./handlers/messages.js");
     app.use(handlers(store));
 
-    //error handler
+    // error handler
     app.use((err, req, res, next) => {
       console.log(err);
       res.status(err.status || 500).send(err.message);
     });
 
     app.listen(port, host, () => {
-      console.log(`server is listening at http://${host}:${port}...`);
+      console.log(`chatbot is listening at http://${host}:${port}...`);
     });
   } catch (err) {
     console.log(err.stack);

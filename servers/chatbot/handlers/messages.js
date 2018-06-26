@@ -1,5 +1,3 @@
-"use strict";
-
 const express = require('express');
 const {
   Wit
@@ -21,10 +19,9 @@ module.exports = function (store) {
 
   router.post('/v1/bot', (req, res, next) => {
     try {
+      // q is the query param "q='is __ blah?' within the URL"
       let q = req.query.q;
       let user = JSON.parse(req.header('X-User'));
-
-      console.log(`user ${user.email} is asking ${q}`);
 
       witaiClient.message(q)
         .then(data => {
