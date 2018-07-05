@@ -30,7 +30,7 @@ The **[gateway](https://github.com/jadiego/react-slack-clone/tree/master/servers
 
 ## Development
 
-See [backend development guide](apiservers/README.md) for more on how to setup backend servers for development on local machine. A `docker-compose.yml` has been provided in order to run the proper Docker instances with a simple command.
+See [backend development guide](servers/README.md) for more on how to setup backend servers for development on local machine. A `docker-compose.yml` has been provided in order to run the proper Docker instances with a simple command.
 ```
 docker-compose up
 ```
