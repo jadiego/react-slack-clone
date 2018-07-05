@@ -58,7 +58,6 @@ services:
     build: ./gateway/
     ports:
       - 443:443
-      - 4000:443
     environment:
       - MSGADDR=gomessages:80
       - CHATBOTADDR=nodechatbot:80

@@ -12,7 +12,13 @@ Howl is an instant messaging web application, similar to Slack, that features a 
 
 ## Software Architecture
 
-The client is built with React with Typescript, using [CRA](https://github.com/wmonk/create-react-app-typescript) as a boilerplate. Redux was also used to manage application state and react-router.
+### Frontend
+The web client is was bootstrapped with React with Typescript, using [CRA](https://github.com/wmonk/create-react-app-typescript). Redux was also used to manage application state and react-router to handle client-side routing.
+
+### Server side
+
+![server side architecture](./docs/server-side-architecture.png)
+
 
 The API server uses a **microservices architecture** to decouple the multiple components that comprises the whole API server. Any request sent to the API server first has to go through the API gateway. 
 
@@ -24,9 +30,12 @@ The **[gateway](https://github.com/jadiego/react-slack-clone/tree/master/servers
 
 ## Development
 
-See [backend development guide](apiservers/README.md) for more on how to setup backend servers for development
+See [backend development guide](apiservers/README.md) for more on how to setup backend servers for development on local machine. A `docker-compose.yml` has been provided in order to run the proper Docker instances with a simple command.
+```
+docker-compose up
+```
 
-The frontend client can be started using the commands below within the client directory
+The frontend client can be started using the commands below within the client directory.
 ```
 npm install
 HTTPS=true npm start
