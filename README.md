@@ -1,6 +1,6 @@
-# Howl
+# react-slack-clone
 
-Howl is an instant messaging web application, similar to Slack, that features a microservice architecture and a React-Typescript web client.
+react-slack-clone is an instant messaging web application, similar to Slack, that features a microservice architecture and a React-Typescript with Redux web client.
 
 ## Features
 - Realtime instant messaging through websockets
