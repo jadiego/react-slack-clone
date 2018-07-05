@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Form, Button } from "semantic-ui-react";
+import { Form, Button, Label } from "semantic-ui-react";
 
 interface Props {
   count: number;
@@ -37,6 +37,16 @@ const LoginForm: React.SFC<Props> = props => (
       className="bg-green white"
       onClick={props.submit}
     />
+    <div className="tc pt2">
+      <Label>
+        Email
+        <Label.Detail>stranger@email.com</Label.Detail>
+      </Label>
+      <Label>
+        Password
+        <Label.Detail>dinosaurs</Label.Detail>
+      </Label>
+    </div>
   </Form>
 );
 

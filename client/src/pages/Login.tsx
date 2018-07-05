@@ -3,12 +3,16 @@ import { Segment, Header } from "semantic-ui-react";
 import { connect, Dispatch } from "react-redux";
 import { bindActionCreators } from "redux";
 import { Link, RouteComponentProps, Redirect } from "react-router-dom";
-import { parse } from 'query-string';
+import { parse } from "query-string";
 
 import "../styles/login.css";
 
 import { Actions, model } from "../redux/";
-import { signin, showMessageBar, hideMessageBar } from "../redux/operations/operations";
+import {
+  signin,
+  showMessageBar,
+  hideMessageBar
+} from "../redux/operations/operations";
 import { isAuth } from "../auth/isauth";
 import LoginForm from "../components/forms/LoginForm";
 
@@ -78,6 +82,9 @@ class Login extends React.Component<Props & RouteComponentProps<any>, State> {
         <Link to="/signup" className="white">
           Don't have an account? Get Started
         </Link>
+        <span className="gray2 pt2">
+          <a href="https://github.com/jadiego/react-slack-clone" className="gray2">Source Code</a>
+        </span>
       </div>
     );
   }

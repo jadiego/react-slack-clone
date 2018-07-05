@@ -22,7 +22,7 @@ class App extends React.Component<StateProps> {
     }
     
     return (
-      <BrowserRouter>
+      <BrowserRouter basename="/react-slack-clone">
         <React.Fragment>
           <ResponseMessage open={messageBar.visible} message={messageBar.message} color={messageBar.color} />
           <div className="w-100 h-100" style={{ height }}>

@@ -66,6 +66,9 @@ class Signup extends React.Component<Props & RouteComponentProps<any>, model.Sig
         <Link to="/" className="white">
           Already have an acount? Login
         </Link>
+        <span className="gray2 pt2">
+          <a href="https://github.com/jadiego/react-slack-clone" className="gray2">Source Code</a>
+        </span>
       </div>
     );
   }

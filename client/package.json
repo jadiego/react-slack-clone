@@ -24,8 +24,11 @@
     "start": "react-scripts-ts start",
     "build": "react-scripts-ts build",
     "test": "react-scripts-ts test --env=jsdom",
-    "eject": "react-scripts-ts eject"
+    "eject": "react-scripts-ts eject",
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build"
   },
+  "homepage": "https://jadiego.github.io/react-slack-clone",
   "devDependencies": {
     "@types/jest": "^23.0.0",
     "@types/memoize-one": "^3.1.0",
@@ -37,6 +40,7 @@
     "@types/react-dom": "^16.0.5",
     "@types/react-redux": "^6.0.1",
     "@types/react-router-dom": "^4.2.7",
+    "gh-pages": "^1.2.0",
     "typescript": "^2.9.1"
   }
 }
