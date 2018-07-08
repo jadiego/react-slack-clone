@@ -12,7 +12,7 @@ import (
 
 const (
 	// DefaultDBName is the default MongoDB database name
-	DefaultDBName = "chat"
+	DefaultDBName = "slack-clone"
 	// DefaultChanColName is the default MongoDB collections name for channel objects
 	DefaultChanColName = "channels"
 	// DefaultMsgColName is the default MongoDB collections name for message objects

@@ -11,7 +11,7 @@ const MessageStore = require("./models/messages/mongostore.js");
 
 const host = process.env.HOST || "";
 const port = process.env.PORT || "80";
-const mongoAddr = process.env.MONGOADDR || "localhost:27017";
+const mongoAddr = process.env.MONGOADDR || "mongodb://localhost:27017";
 
 const app = express();
 
@@ -31,8 +31,8 @@ let mongoconf = {
   reconnectInterval: 1000,
 };
 
-const url = `mongodb://${mongoAddr}`;
-const dbName = "chat";
+const url = mongoAddr;
+const dbName = "slack-clone";
 
 (async function() {
   let client;

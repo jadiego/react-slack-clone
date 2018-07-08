@@ -1,0 +1,6 @@
+{
+  "env": {
+    "MQADDR": "@slack-clone-rabbitmq-url",
+    "DBADDR": "@slack-clone-mongo-url"
+  }
+}

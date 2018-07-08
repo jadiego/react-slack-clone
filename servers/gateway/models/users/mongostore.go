@@ -89,7 +89,7 @@ func NewMongoStore(mongoAddr, DBName, CollectName string) (*MongoStore, error) {
 		return nil, err
 	}
 	if len(DBName) == 0 {
-		DBName = "chat"
+		DBName = "slack-clone"
 	}
 
 	if len(CollectName) == 0 {
