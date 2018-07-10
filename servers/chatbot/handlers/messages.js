@@ -7,7 +7,7 @@ const handle = require("./intent.js")
 //setup wit ai
 const witaiToken = process.env.WITAITOKEN;
 if (!witaiToken) {
-  console.error("please set WITAITTOKEN to your wit.ai app token");
+  console.error("please set WITAITOKEN to your wit.ai app token");
   process.exit(1);
 }
 const witaiClient = new Wit({

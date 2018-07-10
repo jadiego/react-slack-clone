@@ -25,22 +25,22 @@ services:
     restart: unless-stopped
   
   nodechatbot:
+    image: jadiego/react-slack-clone-chatbot
     build: ./chatbot/
     environment:
       - WITAITOKEN
-      - MONGOADDR=mongo:27017
+      - MONGOADDR=mongodb://mongo:27017
     depends_on:
       - mongo
     container_name: slackchatbot
     restart: unless-stopped
   
-  gomessages:
+  gomessaging:
+    image: jadiego/react-slack-clone-apimessaging
     build: ./messaging/
-    ports:
-      - 4001:80 #forwards https://localhost:4001 on local computer to port 80 on container
     environment:
-      - DBADDR=mongo:27017
-      - MQADDR=rabbitmq:5672
+      - DBADDR=mongodb://mongo:27017
+      - MQADDR=amqp://rabbitmq:5672
       - TLSKEY=/tls/privkey.pem
       - TLSCERT=/tls/fullchain.pem
       - SESSIONKEY
@@ -59,11 +59,11 @@ services:
     ports:
       - 443:443
     environment:
-      - MSGADDR=gomessages:80
+      - MSGADDR=gomessaging:80
       - CHATBOTADDR=nodechatbot:80
       - REDISADDR=redis:6379
-      - DBADDR=mongo:27017
-      - MQADDR=rabbitmq:5672
+      - DBADDR=mongodb://mongo:27017
+      - MQADDR=amqp://rabbitmq:5672
       - TLSKEY=/tls/privkey.pem
       - TLSCERT=/tls/fullchain.pem
       - SESSIONKEY
@@ -74,7 +74,7 @@ services:
       - rabbitmq
       - mongo
       - redis
-      - gomessages
+      - gomessaging
     container_name: slackapigateway
     restart: unless-stopped
 

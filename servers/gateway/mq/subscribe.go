@@ -79,7 +79,7 @@ func connectToMQ(addr string) (*amqp.Connection, error) {
 	var err error
 
 	for i := 0; i < MaxConnRetries; i++ {
-		conn, err = amqp.Dial("amqp://" + addr)
+		conn, err = amqp.Dial(addr)
 		if err != nil {
 			log.Printf("Failed to connect to MQ server at %s: %s\n", addr, err)
 			log.Printf("Will attempt again in %d seconds\n", i*4)

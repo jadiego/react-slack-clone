@@ -23,7 +23,6 @@ const (
 
 const (
 	apiRoot             = "/v1/"
-	apiSummary          = apiRoot + "summary"
 	apiUsers            = apiRoot + "users"
 	apiSessions         = apiRoot + "sessions"
 	apiSessionsMine     = apiSessions + "/mine"
@@ -47,6 +46,7 @@ var (
 	sesskey     = os.Getenv("SESSIONKEY")
 	tlsKeyPath  = os.Getenv("TLSKEY")
 	tlsCertPath = os.Getenv("TLSCERT")
+	chatEnv     = os.Getenv("CHAT_ENV")
 )
 
 func init() {
@@ -62,22 +62,18 @@ func init() {
 		fmt.Println("Redis address not set. Defaulting to port: " + defaultRedisPort)
 		redisAddr = defaultRedisPort
 	}
-	if len(dbAddr) == 0 {
-		fmt.Println("DB address not set. Defaulting to port: " + defaultMongoPort)
-		dbAddr = defaultMongoPort
-	}
 	if len(mqAddr) == 0 {
 		fmt.Println("MQ address not set. Defaulting to port: " + defaultMongoPort)
 		dbAddr = defaultMongoPort
-	}
-	if len(tlsCertPath) == 0 || len(tlsKeyPath) == 0 {
-		log.Fatal("you must supply a value for TLS key and cert paths")
 	}
 	if len(msgAddrs) == 0 {
 		log.Fatal("you must supply a value for MSGADDR")
 	}
 	if len(chatbotAddr) == 0 {
 		log.Fatal("you must supply a value for CHATBOTADDR")
+	}
+	if len(tlsCertPath) == 0 || len(tlsKeyPath) == 0 {
+		log.Fatal("you must supply a value for TLS key and cert paths")
 	}
 }
 
@@ -113,13 +109,13 @@ func main() {
 	muxWithMiddleware.HandleFunc(apiSessionsMine, ctx.SessionsMineHandler)
 	muxWithMiddleware.HandleFunc(apiUsersMe, ctx.UsersMeHanlder)
 
-	// setup Messages microservice
+	// setup Messages microservice routes
 	muxWithMiddleware.Handle(apiChannels, handlers.NewServiceProxy(msgAddrs, ctx))
 	muxWithMiddleware.Handle(apiSpecificChannels, handlers.NewServiceProxy(msgAddrs, ctx))
 	muxWithMiddleware.Handle(apiMessages, handlers.NewServiceProxy(msgAddrs, ctx))
 	muxWithMiddleware.Handle(apiSpecificMessages, handlers.NewServiceProxy(msgAddrs, ctx))
 
-	// setup Chatbot microservice
+	// setup Chatbot microservice route
 	muxWithMiddleware.Handle(apiChatBot, handlers.NewServiceProxy(chatbotAddr, ctx))
 
 	// create a new Notifer and set up websocket handler

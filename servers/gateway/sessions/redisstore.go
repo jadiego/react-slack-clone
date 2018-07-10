@@ -30,11 +30,10 @@ func NewRedisStore(client *redis.Client, sessionDuration time.Duration) *RedisSt
 	// set defaults for parameters
 	// if `client` is nil, set it to a redis.NewClient()
 	// pointing at a redis instance on the same machine
-	ropts := redis.Options{
-		Addr: "localhost",
-	}
 	if client == nil {
-		client = redis.NewClient(&ropts)
+		client = redis.NewClient(&redis.Options{
+			Addr: "localhost",
+		})
 	}
 
 	// if `sessionDuration` is < 0
