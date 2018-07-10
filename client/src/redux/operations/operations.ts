@@ -4,7 +4,7 @@
 import { Dispatch } from "redux";
 import { Actions } from "../action-helper";
 import { actions } from "../actions";
-import { setToken, getToken, deleteToken } from "../util";
+import { setToken, getToken, deleteToken, fillChanName } from "../util";
 import { AppError, handleError } from "../../errors";
 import { model } from "..";
 
@@ -12,7 +12,20 @@ export const showMessageBar = actions.showMessageBarUI;
 
 export const hideMessageBar = actions.clearMessageBarUI;
 
-export const setCurrentChannel = actions.setChannel;
+export const setCurrentChannel = (chan: model.Channel) => async (
+  dispatch: Dispatch<Actions>,
+  getState: () => model.StoreState
+) => {
+  try {
+    if (chan.name.length === 0) {
+      let { users, currentUser  } = getState();
+      chan = fillChanName(chan, users, currentUser!);
+    }
+    dispatch(actions.setChannel(chan));
+  } catch (err) {
+    console.warn(err.message);
+  }
+};
 
 /**
  * Returns null if singin is succesful, returns error message if error occured.
@@ -223,18 +236,21 @@ export const postMessage = (text: string) => async (
  * Creates a channel with given arguments
  * POST /v1/channels
  */
-export const createChannel = (args: model.NewChannelFormArgs | model.NewDMChannelFormArgs) => async (
-  dispatch: Dispatch<Actions>
-) => {
+export const createChannel = (
+  args: model.NewChannelFormArgs | model.NewDMChannelFormArgs
+) => async (dispatch: Dispatch<Actions>) => {
   try {
     dispatch(actions.createChannelStart());
-    let resp = await fetch(process.env.REACT_APP_API_ROOT + "channels?type=" + args.type, {
-      method: "POST",
-      headers: {
-        Authorization: getToken()!
-      },
-      body: JSON.stringify(args)
-    });
+    let resp = await fetch(
+      process.env.REACT_APP_API_ROOT + "channels?type=" + args.type,
+      {
+        method: "POST",
+        headers: {
+          Authorization: getToken()!
+        },
+        body: JSON.stringify(args)
+      }
+    );
     if (resp.ok) {
       dispatch(actions.createChannelSuccess(await resp.json()));
       return null;
@@ -295,7 +311,7 @@ export const updateChannel = (
       headers: {
         Authorization: getToken()!
       },
-      body: JSON.stringify(args),
+      body: JSON.stringify(args)
     });
     if (resp.ok) {
       dispatch(actions.updateChannelSuccess(await resp.json()));
