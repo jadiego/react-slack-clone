@@ -1,14 +1,14 @@
 # react-slack-clone
 
 react-slack-clone is an instant messaging web application, similar to Slack, that features a microservice architecture and a React-Typescript with Redux web client.
+> ⚠️ No live demo since the API server can't be hosted for free at the moment. To see the app in action more, it has to be run [locally](#development).
 
 ## Features
-- Realtime instant messaging through websockets
-- Create public/private channels or DM someone directly
-- A chatbot that answers simple questions about chat logs
-- Account authentication during sign in
-- Storing sessions
-- Add/Remove users from a channel
+- Realtime instant messaging through websockets client-side, and concurrency practices server-side using go channels and mutexes.
+- Private/DM channels using react-router private authenticated routes.
+- A chatbot powered by Wit.ai that answers to questions about chat logs.
+- credential/session encryption with bcrypt and hmac.
+- Restful API structured into three microservices.
 
 ## Software Architecture
 
@@ -27,6 +27,17 @@ The **[gateway](https://github.com/jadiego/react-slack-clone/tree/master/servers
 **[messaging](https://github.com/jadiego/react-slack-clone/tree/master/servers/messaging)** is responsible for interacting with the channels and message data on mongoDB.
 
 **[chatbot](https://github.com/jadiego/react-slack-clone/tree/master/servers/chatbot)** is responsible for answering simple chatbot queries.
+
+## Tech Stack
+- Go
+- Node.js
+- Express
+- React TypeScript
+- Redux
+- RabbitMQ
+- Redis
+- MongoDB
+- Wit.ai
 
 ## Development
 
